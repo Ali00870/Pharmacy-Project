@@ -1,0 +1,241 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+
+
+
+
+
+
+<body>
+<div class="cart">
+    <div class="top-cart">
+        <h3>My Cart <span class="cart-total-count">(0 Items in Cart)</span></h3>
+        <span class="close-cart">
+            <i class="fa-regular fa-circle-xmark"></i>
+        </span>
+    </div>
+
+    <div class="cart-items"></div>
+
+    <div class="bottom-cart">
+        <div class="cart-total">
+            <p>Cart Total</p>
+            <p class="cart-total-price">$0</p>
+        </div>
+
+        <div class="cart-buttons">
+            <a href="/checkout.html" class="btn-cart">Proceed To Checkout</a>
+            <button class="btn-cart trans-bg shop-more-btn">Shop More</button>
+        </div>
+    </div>
+</div>
+
+<!-- End Cart -->
+<!-- Start Slider -->
+<section class="slider">
+    <div class="container">
+        <div class="sidebar">
+            <h2><i class="fa-solid fa-bars"></i> Shop By Department</h2>
+            <a href="">All Categories</a>
+            <a href="">Best Seller Products</a>
+            <a href="">New Arrival</a>
+            <a href="">Top 10 Offers</a>
+            <a href="">Medicines</a>
+            <a href="">Vitamins & Supplements</a>
+            <a href="">Personal Care</a>
+            <a href="">Medical Equipment</a>
+            <a href="">Health & Wellness</a>
+
+        </div>
+
+        <div class="swiper-slider mySwiper">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <a href=""><img src="https://media.gettyimages.com/id/1434361182/photo/modern-medical-store-interior.jpg?s=612x612&w=0&k=20&c=9BO0KAO5jpoFtzsFcmTTWwhBgYMRPXuYyVJQ9dMu1y4=" alt="Slider" /></a>
+                </div>
+                <div class="swiper-slide">
+                    <a href=""><img src="https://media.gettyimages.com/id/1502427930/photo/shelves-with-medicaments-in-pharmacy.jpg?s=612x612&w=0&k=20&c=9tpdZMHOYeq4bUp4GMMxVZqaJhXnij0vadCkt0g2hIM=" alt="Slider" /></a>
+                </div>
+                <div class="swiper-slide">
+                    <a href=""><img src="https://media.gettyimages.com/id/1197837359/photo/mature-woman-buying-a-medicine-at-the-pharmacy.jpg?s=1024x1024&w=gi&k=20&c=NiHwQ335bR1sdKZzKLCzZb96B_K3ABcAuH4nfwMBDyA=" alt="Slider" /></a>
+                </div>
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+</section>
+<!-- End Slider -->
+<!-- Start Features -->
+<div class="features">
+    <div class="container">
+        <div class="feature">
+            <img src="/img/features1.png" alt="Feature" />
+
+            <div class="text">
+                <h4>Free Shipping</h4>
+                <p>Free Shipping In All Orders</p>
+            </div>
+        </div>
+
+        <div class="feature">
+            <img src="/img/features2.png" alt="Feature" />
+
+            <div class="text">
+                <h4>Free Shipping</h4>
+                <p>Free Shipping In All Orders</p>
+            </div>
+        </div>
+
+        <div class="feature">
+            <img src="/img/features3.png" alt="Feature" />
+
+            <div class="text">
+                <h4>Free Shipping</h4>
+                <p>Free Shipping In All Orders</p>
+            </div>
+        </div>
+
+        <div class="feature">
+            <img src="/img/features4.png" alt="Feature" />
+
+            <div class="text">
+                <h4>Free Shipping</h4>
+                <p>Free Shipping In All Orders</p>
+            </div>
+        </div>
+
+        <div class="feature">
+            <img src="/img/features5.png" alt="Feature" />
+
+            <div class="text">
+                <h4>Free Shipping</h4>
+                <p>Free Shipping In All Orders</p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Features -->
+<!-- Start Banner -->
+<section class="banner">
+    <div class="container">
+        <div class="banner-item">
+            <div class="banner-glass"></div>
+            <a href="#"></a>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaUyDnuaok3n7JyRKf0xmdltXqAdmnpOcd3g&s" alt="" />
+        </div>
+
+        <div class="banner-item">
+            <div class="banner-glass"></div>
+            <a href="#"></a>
+            <img src="https://www.expatfocus.com/stable/wp-content/uploads/2023/07/Prescriptions-and-Medications.png" alt="" />
+        </div>
+
+        <div class="banner-item">
+            <div class="banner-glass"></div>
+            <a href="#"></a>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTROKkDpnsztDJQJrbzvjWzmZy67U4ZXPcWNA&s" alt="" />
+        </div>
+    </div>
+</section>
+<!-- End Banner -->
+<!-- Start Big Banner -->
+<section class="banner banner-big">
+    <div class="container">
+        <div class="banner-item">
+            <div class="banner-glass"></div>
+            <a href="#"></a>
+            <img src="https://harb.fkhealthplus.com/pmp/assets/1727255659446_ROI_RC_All_Adopts.jpg" alt="" />
+        </div>
+
+        <div class="banner-item">
+            <div class="banner-glass"></div>
+            <a href="#"></a>
+            <img src="https://img.freepik.com/premium-photo/makeup-collection-cosmetics-cosmetics-black-background_950347-1405.jpg" alt="" />
+        </div>
+    </div>
+</section>
+<!-- End Big Banner -->
+
+
+<section class="medicine-section">
+    <div class="container">
+        <div class="medicine-section-content">
+            <div class="medicine-section-main-content mySwiper">
+                <div class="main-title">
+                    <h2>Medicine <span>Products</span></h2>
+                </div>
+                <div class="medicine-section-products swiper-wrapper"></div>
+
+                <div class="swiper-button-next swip-btn medicine-swip-btn"></div>
+                <div class="swiper-button-prev swip-btn medicine-swip-btn"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- End Computer Section -->
+<!-- Start Mobile Section -->
+<section class="mobile-section">
+    <div class="container">
+        <div class="mobile-section-content">
+            <div class="mobile-section-main-content mySwiper">
+                <div class="main-title">
+                    <h2> <span>Products</span></h2>
+                </div>
+                <div class="mobile-section-products swiper-wrapper"></div>
+
+                <div class="swiper-button-next swip-btn"></div>
+                <div class="swiper-button-prev swip-btn"></div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- End mobile Section -->
+<!-- Start Banner -->
+<section class="banner">
+    <div class="container">
+        <div class="banner-item">
+            <div class="banner-glass"></div>
+            <a href="#"></a>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCmX8dGcP2YHXFMcKYkW1KiU89zU7to44qbQ&s" alt="" />
+        </div>
+
+        <div class="banner-item">
+            <div class="banner-glass"></div>
+            <a href="#"></a>
+            <img src="https://img.freepik.com/free-photo/black-white-medical-tools-hand-with-pills_23-2148439006.jpg" alt="" />
+        </div>
+
+        <div class="banner-item">
+            <div class="banner-glass"></div>
+            <a href="#"></a>
+            <img src="https://assets1.cbsnewsstatic.com/hub/i/r/2023/09/13/bf44e4ab-af60-4d01-ad19-e2d04f2af8e6/thumbnail/1280x720/a66361606a7a20955d26fdf6f890af1c/0913-cmo-fdacongestant-lapook-2286432-640x360.jpg?v=e3aa8b4a58817620ee227c79202c9709" alt="" />
+        </div>
+    </div>
+</section>
+<!-- End Banner -->
+<!-- Start News Letter -->
+
+<section class="newsletter">
+    <div class="container">
+        <div class="text">
+            <img src="./img/icon_email.png" alt="Email" />
+            <div class="content">
+                <h4>Sign Up To News Letter</h4>
+                <p>Lorem ipsum dolor sit amet consectetur.</p>
+                <h6>Lorem ipsum dolor sit amet.</h6>
+            </div>
+        </div>
+
+        <form action="">
+            <input type="email" placeholder="Enter Your Email" name="" id="" />
+            <button type="submit">Subscribe</button>
+        </form>
+    </div>
+</section>
+</body>
+

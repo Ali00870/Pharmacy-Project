@@ -1,0 +1,44 @@
+﻿@page
+@model Pharmacy_back.Pages.signinModel
+@{
+}
+
+<body>
+<!-- Start Sign In -->
+<section class="signin">
+    <div class="container">
+        <div class="main-content">
+            <h2 class="title">Welcome Back</h2>
+
+            <form action="">
+                <input type="email" placeholder="Email" />
+                <input type="password" placeholder="Password" />
+
+                <p class="forget-password">
+                    <a href="#">Forget Password</a>
+                </p>
+
+                <button class="login-btn">Login</button>
+            </form>
+
+            <p class="signup-link">
+                Don't Have an Account <a asp-page="/register">Sign Up</a>
+            </p>
+
+
+            <div class="login-btns">
+                <div class="apple-btn">
+                    <i class="fa-brands fa-apple"></i>
+                    <span>Login With Apple</span>
+                </div>
+
+                <div class="google-btn">
+                    <i class="fa-brands fa-google"></i>
+                    <span>Login With Google</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+<script src="./js/main.js"></script>

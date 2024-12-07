@@ -1,0 +1,134 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Pharmacy_back</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/all.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/swiper-bundle.min.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <div class="container top-nav">
+            <a asp-page="/Index" class="logo">
+                <img src="https://st4.depositphotos.com/27205200/39727/v/450/depositphotos_397279466-stock-illustration-creative-pharmacy-concept-logo-design.jpg" alt="logo" />
+            </a>
+
+            <form class="search">
+                <input type="search" placeholder="Search..." />
+                <button type="submit">Search</button>
+            </form>
+
+            <div class="top-nav-cart">
+                <div class="top-nav-cart-icon">
+                    <i class="fa-solid fa-bag-shopping"></i>
+                    <span class="total-count">0</span>
+                </div>
+
+                <div class="top-nav-cart-total-price">
+                    <p>My Cart:</p>
+                    <p class="total-price">$0</p>
+                </div>
+            </div>
+        </div>
+
+        <nav>
+            <div class="links container">
+                <div class="open-links-icon">
+                    <i class="fa-solid fa-bars"></i>
+                </div>
+
+                <ul>
+                    <div class="bg-overlay"></div>
+                    <div class="close-links-icon">
+                        <i class="fa-regular fa-circle-xmark"></i>
+                    </div>
+                    <div><img src="./img/logo-black.png" alt="logo" /></div>
+
+                    <li class="active"><a asp-page="/Index">Home</a></li>
+                    <li><a  asp-page="/allproducts">All Products</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a asp-page="/Statistics">Statistics</a></li> 
+                   <li><a asp-page="/Order_Details">Order Details</a></li>
+                    <li><a asp-page="/Add_item">Add item</a></li>
+                    <li><a asp-page="/work-on">Employees</a></li>
+                    <li><a asp-page="/Users">Users</a></li>
+                  
+                </ul>
+
+                <div class="login-signup">
+                    <a  asp-page="signin">Login <i class="fa-solid fa-right-to-bracket"></i></a>
+                    <a  asp-page="/register">Sign Up <i class="fa-solid fa-user-plus"></i></a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="big-row">
+                <img src="https://st4.depositphotos.com/27205200/39727/v/450/depositphotos_397279466-stock-illustration-creative-pharmacy-concept-logo-design.jpg" alt="Footer logo" />
+                <div class="hotline">
+                    <i class="fa-solid fa-headset"></i>
+                    <div class="text">
+                        <h5>Hotline Free 24/24:</h5>
+                        <h6>(+100) 123 456 789</h6>
+                    </div>
+                </div>
+
+                <p>
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore,
+                    ad.
+                </p>
+            </div>
+
+            <div class="row">
+                <h4>FAQ & Help</h4>
+
+                <div class="links">
+                    <a href="#">FAQ</a>
+                    <a href="#">Ordering Tracking</a>
+                    <a href="#">Contacts</a>
+                    <a href="#">Events</a>
+                    <a href="#">Help Center</a>
+                </div>
+            </div>
+
+           
+           
+        </div>
+
+        <div class="bottom-footer">
+            <div class="container">
+                <p>Copyrights &copy; <span>Sydality</span> All Rights Reserved</p>
+
+                <div class="payment-img">
+                    <img src="/img/payment-1.png" alt="" />
+                    <img src="/img/payment-2.png" alt="" />
+                    <img src="/img/payment-3.png" alt="" />
+                    <img src="/img/payment-4.png" alt="" />
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
+    <script src="~/js/all.min.js" asp-append-version="true"></script>
+    <script src="~/js/fetchProducts.js" asp-append-version="true"></script>
+    <script src="~/js/main.js" asp-append-version="true"></script>
+    <script src="~/js/swiper.js" asp-append-version="true"></script>
+    <script src="~/js/swiper-bundle.min.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

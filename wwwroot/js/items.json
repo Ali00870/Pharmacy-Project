@@ -1,0 +1,40 @@
+[
+  {
+    "id": 1,
+    "name": "Pain Reliever",
+    "price": 15.99,
+    "old_price": 20.99,
+    "img": "https://images.pexels.com/photos/3652092/pexels-photo-3652092.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    "img_hover": "https://images.pexels.com/photos/3652092/pexels-photo-3652092.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    "cat": "medicine"
+  },
+  {
+    "id": 2,
+    "name": "Daily Vitamin",
+    "price": 10.49,
+    "old_price": 12.99,
+    "img": "https://images.pexels.com/photos/9742746/pexels-photo-9742746.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    "img_hover": "https://images.pexels.com/photos/9742746/pexels-photo-9742746.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    "cat": "medicine"
+  },
+
+  {
+    "id": 4,
+    "name": "Cold & Flu Relief",
+    "price": 12.99,
+    "old_price": 15.49,
+    "img": "https://images.pexels.com/photos/10660624/pexels-photo-10660624.jpeg?auto=compress&cs=tinysrgb&w=600",
+    "img_hover": "https://images.pexels.com/photos/10660624/pexels-photo-10660624.jpeg?auto=compress&cs=tinysrgb&w=600",
+    "cat": "medicine"
+  },
+  {
+    "id": 5,
+    "name": "Skin Care Cream",
+    "price": 18.49,
+    "old_price": 22.99,
+    "img": "https://images.pexels.com/photos/7615543/pexels-photo-7615543.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    "img_hover": "https://images.pexels.com/photos/7615543/pexels-photo-7615543.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    "cat": "medicine"
+  }
+]
+

@@ -1,0 +1,39 @@
+﻿@page
+@model Pharmacy_back.Pages.registerModel
+@{
+}
+<body>
+<section class="register">
+    <div class="container">
+        <div class="main-content">
+            <h2 class="title">Welcome</h2>
+
+            <form action="">
+                <input type="text" placeholder="Username" />
+                <input type="text" placeholder="Name" />
+                <input type="email" placeholder="Email" />
+                <input type="password" placeholder="Password" />
+                <input type="password" placeholder="Repeat Password" />
+                <button class="register-btn">Register</button>
+            </form>
+
+            <p class="login-link">
+                Have an Account <a asp-page="/signin">Sign In</a>
+            </p>
+
+
+            <div class="register-btns">
+                <div class="apple-btn">
+                    <i class="fa-brands fa-apple"></i>
+                    <span>Sign Up With Apple</span>
+                </div>
+
+                <div class="google-btn">
+                    <i class="fa-brands fa-google"></i>
+                    <span>Sign Up With Google</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
