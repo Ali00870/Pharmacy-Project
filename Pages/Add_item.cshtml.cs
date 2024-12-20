@@ -31,7 +31,7 @@ namespace Pharmacy_back.Pages
 
         public IActionResult OnPost()
         {
-            PharmacyDB db = new PharmacyDB();
+            DB db = new DB();
 
             if (Category == "medicine")
             {
