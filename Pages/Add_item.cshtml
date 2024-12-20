@@ -5,7 +5,7 @@
 }
 
 <body>
-    <form method="post">
+    <form id="itemForm" method="post">
         <div class="mb-3">
             <label for="itemId" class="form-label">ID</label>
             <input type="text" class="form-control" id="itemId" name="Product_ID" placeholder="00000000" required>
@@ -70,16 +70,25 @@
 
         <div class="d-flex justify-content-between">
             <button type="submit" class="btn btn-primary">Save Item</button>
-            <button type="reset" class="btn btn-danger">Cancel</button>
+            <button type="button" id="cancelButton" class="btn btn-danger">Cancel</button>
         </div>
     </form>
 
-    <!-- Script to toggle fields based on category -->
+    <!-- Script to handle field visibility and reset -->
     <script>
         document.getElementById('itemCategory').addEventListener('change', function () {
             let category = this.value;
             document.getElementById('medicineFields').style.display = category === 'medicine' ? 'block' : 'none';
             document.getElementById('cosmeticFields').style.display = category === 'cosmetic' ? 'block' : 'none';
+        });
+
+        document.getElementById('cancelButton').addEventListener('click', function () {
+            // Clear all inputs in the form
+            document.getElementById('itemForm').reset();
+
+            // Reset visibility of category-specific fields
+            document.getElementById('medicineFields').style.display = 'none';
+            document.getElementById('cosmeticFields').style.display = 'none';
         });
     </script>
 </body>
