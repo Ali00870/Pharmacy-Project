@@ -195,5 +195,317 @@ namespace Pharmacy_back.Model
                 Connection.Close();
             }
         }
+        public int Getusers()
+{
+	int count = 0;
+	string query = "select count(*) from [dbo].[user]";
+	SqlCommand cmd = new SqlCommand(query, con);
+
+
+	try
+	{
+		con.Open();
+		count = (int)cmd.ExecuteScalar();
+	}
+	catch (Exception ex)
+	{
+		Console.WriteLine(ex);
+	}
+	finally
+	{
+		con.Close();
+	}
+
+
+	return count;
+}
+public int Getpharmacists()
+{
+	int count = 0;
+	string query = "select count(*) from [dbo].[pharmacist]";
+	SqlCommand cmd = new SqlCommand(query, con);
+
+
+	try
+	{
+		con.Open();
+		count = (int)cmd.ExecuteScalar();
+	}
+	catch (Exception ex)
+	{
+		Console.WriteLine(ex);
+	}
+	finally
+	{
+		con.Close();
+	}
+
+
+	return count;
+}
+public int Getcustomers()
+{
+	int count = 0;
+	string query = "select count(*) from [dbo].[customer]";
+	SqlCommand cmd = new SqlCommand(query, con);
+
+
+	try
+	{
+		con.Open();
+		count = (int)cmd.ExecuteScalar();
+	}
+	catch (Exception ex)
+	{
+		Console.WriteLine(ex);
+	}
+	finally
+	{
+		con.Close();
+	}
+
+
+	return count;
+}
+public int Getstocked()
+{
+	int count = 0;
+	string query = "select count(*) from [dbo].[products] where [quantity] >10";
+	SqlCommand cmd = new SqlCommand(query, con);
+
+
+	try
+	{
+		con.Open();
+		count = (int)cmd.ExecuteScalar();
+	}
+	catch (Exception ex)
+	{
+		Console.WriteLine(ex);
+	}
+	finally
+	{
+		con.Close();
+	}
+
+
+	return count;
+}
+public int Getsmallstock()
+{
+	int count = 0;
+	string query = "select count(*) from [dbo].[products] where [quantity] <10 and [quantity]>0";
+	SqlCommand cmd = new SqlCommand(query, con);
+
+
+	try
+	{
+		con.Open();
+		count = (int)cmd.ExecuteScalar();
+	}
+	catch (Exception ex)
+	{
+		Console.WriteLine(ex);
+	}
+	finally
+	{
+		con.Close();
+	}
+
+
+	return count;
+}
+public int Getoutofstock()
+{
+	int count = 0;
+	string query = "select count(*) from [dbo].[products] where [quantity] =0";
+	SqlCommand cmd = new SqlCommand(query, con);
+
+
+	try
+	{
+		con.Open();
+		count = (int)cmd.ExecuteScalar();
+	}
+	catch (Exception ex)
+	{
+		Console.WriteLine(ex);
+	}
+	finally
+	{
+		con.Close();
+	}
+
+
+	return count;
+}
+public int medicinesept()
+{
+	int count = 0;
+	string query = "SELECT sum(quantity) FROM [dbo].[Customer_order] INNER JOIN [dbo].[medicine] med ON [Product_id] = med.[id] WHERE [delivery_date] >= '2024-09-01 00:00:00'  AND [delivery_date] < '2024-10-01 00:00:00'";
+	SqlCommand cmd = new SqlCommand(query, con);
+
+
+	try
+	{
+		con.Open();
+		count = (int)cmd.ExecuteScalar();
+	}
+	catch (Exception ex)
+	{
+		Console.WriteLine(ex);
+	}
+	finally
+	{
+		con.Close();
+	}
+
+
+	return count;
+}
+public int medicineoct()
+{
+	int count = 0;
+	string query = "SELECT sum(quantity) FROM [dbo].[Customer_order] INNER JOIN [dbo].[medicine] med ON [Product_id] = med.[id] WHERE [delivery_date] >= '2024-10-01 00:00:00' AND [delivery_date] < '2024-11-01 00:00:00'";
+	SqlCommand cmd = new SqlCommand(query, con);
+
+
+	try
+	{
+		con.Open();
+		count = (int)cmd.ExecuteScalar();
+	}
+	catch (Exception ex)
+	{
+		Console.WriteLine(ex);
+	}
+	finally
+	{
+		con.Close();
+	}
+
+
+	return count;
+}
+public int medicinenov()
+{
+	int count = 0;
+	string query = "SELECT sum(quantity) FROM [dbo].[Customer_order] INNER JOIN [dbo].[medicine] med ON [Product_id] = med.[id] WHERE [delivery_date] >= '2024-11-01 00:00:00' AND [delivery_date] < '2024-12-01 00:00:00'";
+	SqlCommand cmd = new SqlCommand(query, con);
+
+
+	try
+	{
+		con.Open();
+		count = (int)cmd.ExecuteScalar();
+	}
+	catch (Exception ex)
+	{
+		Console.WriteLine(ex);
+	}
+	finally
+	{
+		con.Close();
+	}
+
+
+	return count;
+}
+public int cosmeticsnov()
+{
+	int count = 0;
+	string query = "SELECT sum(quantity) FROM [dbo].[Customer_order] INNER JOIN [dbo].[Cosmetics] cosm ON [Product_id] = cosm.[id] WHERE [delivery_date] >= '2024-11-01 00:00:00'  AND [delivery_date] < '2024-12-01 00:00:00'";         
+	SqlCommand cmd = new SqlCommand(query, con);
+
+
+	try
+	{
+		con.Open();
+		count = (int)cmd.ExecuteScalar();
+	}
+	catch (Exception ex)
+	{
+		Console.WriteLine(ex);
+	}
+	finally
+	{
+		con.Close();
+	}
+
+
+	return count;
+}
+public int cosmeticsoct()
+{
+	int count = 0;
+	string query = "SELECT sum(quantity) FROM [dbo].[Customer_order] INNER JOIN [dbo].[Cosmetics] cosm ON [Product_id] = cosm.[id] WHERE [delivery_date] >= '2024-10-01 00:00:00'  AND [delivery_date] < '2024-11-01 00:00:00'";
+	SqlCommand cmd = new SqlCommand(query, con);
+
+
+	try
+	{
+		con.Open();
+		count = (int)cmd.ExecuteScalar();
+	}
+	catch (Exception ex)
+	{
+		Console.WriteLine(ex);
+	}
+	finally
+	{
+		con.Close();
+	}
+
+
+	return count;
+}
+public int cosmeticssept()
+{
+	int count = 0;
+	string query = "SELECT sum(quantity) FROM [dbo].[Customer_order] INNER JOIN [dbo].[Cosmetics] cosm ON [Product_id] = cosm.[id] WHERE [delivery_date] >= '2024-09-01 00:00:00'  AND [delivery_date] < '2024-10-01 00:00:00'";
+	SqlCommand cmd = new SqlCommand(query, con);
+
+
+	try
+	{
+		con.Open();
+		count = (int)cmd.ExecuteScalar();
+	}
+	catch (Exception ex)
+	{
+		Console.WriteLine(ex);
+	}
+	finally
+	{
+		con.Close();
+	}
+
+
+	return count;
+}
+public DataTable Getuserdata()
+{
+    DataTable dt = new DataTable();
+    string query = "select username,email,CONCAT(house_number,', ',district, ', ', street ) AS address from [dbo].[user],[dbo].[customer] where c_username=username";
+    SqlCommand cmd = new SqlCommand(query, con);
+
+
+    try
+    {
+        con.Open();
+        dt.Load(cmd.ExecuteReader());
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex);
+    }
+    finally
+    {
+        con.Close();
+    }
+
+
+    return dt;
+}
     }
 }
