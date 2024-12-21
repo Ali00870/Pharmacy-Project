@@ -1,4 +1,5 @@
 ﻿@page
+@using Pharmacy_back.Pages.Models
 @model Pharmacy_back.Pages.Order_DetailsModel
 @{
     ViewData["Title"] = "Order_Details";
@@ -41,7 +42,7 @@
         <div class="order-summary">
             <h1>Order Summary</h1>
 
-            <div class="order-summary-items">
+            @* <div class="order-summary-items">
                 <div class="order-summary-item">
                     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsrR7Ag3A_mTMqSVbAwzGiBg-tjGlmFfwTAw&s" alt="Product">
 
@@ -52,23 +53,41 @@
 
                         <p class="order-summary-price">Price: <span>$100</span></p>
                     </div>
-                </div>
-
-                <div class="order-summary-item">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQm0CuX1dtuZrKY_gVMo8rzmMktR85hfy0JQ&s" alt="Product">
-
-                    <div class="content">
-                        <h4>
-                            Original Medicine
+                </div> *@
+                @foreach (var M in Model.Medicines)
+                {
+                    <div class="order-summary-item">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQm0CuX1dtuZrKY_gVMo8rzmMktR85hfy0JQ&s" alt="Product">
+                        
+                        
+                            <div class="content">
+                                <h4>
+                                @M.Name
                         </h4>
 
-                        <p class="order-summary-price">Price: <span>$150</span></p>
+                        <p class="order-summary-price">Price: <span>@M.Price</span></p>
                     </div>
-                </div>
+                </div>}
+                @foreach (var C in Model.Cosmetics)
+                {
+                    <div class="order-summary-item">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQm0CuX1dtuZrKY_gVMo8rzmMktR85hfy0JQ&s" alt="Product">
+
+
+                        <div class="content">
+                            <h4>
+                                @C.Name
+                            </h4>
+
+                            <p class="order-summary-price">Price: <span>@C.Price</span></p>
+                        </div>
+                    </div>
+                }
+
 
                 <div class="total">
                     <p>Total</p>
-                    <span>$250</span>
+                    <span>@Model.HttpContext.Session.GetString("totalPrice")</span>
                 </div>
 
                 <div class="order-btn">
@@ -79,6 +98,46 @@
     </div>
     </div>
 </section>
+
+
+
+
+@if (Model.Medicines != null && Model.Medicines.Any())
+{
+    <table border="1" style="width:100%; text-align:left;">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Manufacturer</th>
+                <th>Dosage</th>
+                <th>Quantity</th>
+                <th>Active Ingredient</th>
+                <th>Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var medicine in Model.Medicines)
+            {
+                <tr>
+                    <td>@medicine.Id</td>
+                    <td>@medicine.Name</td>
+                    <td>@medicine.Price</td>
+                    <td>@medicine.Manufacturer</td>
+                    <td>@medicine.Dosage</td>
+                    <td>@medicine.Quantity</td>
+                    <td>@medicine.Active_Ingredient</td>
+                    <td>@medicine.Type</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No medicines available.</p>
+}
 </body>
 <script src="./js/swiper-bundle.min.js"></script>
 <script src="./js/swiper.js"></script>

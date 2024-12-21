@@ -1857,3 +1857,62 @@ header .links ul .close-links-icon {
   background-color: #000;
   color: #fff;
 }
+
+
+/*New Card Layout*/
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: flex-start;
+    padding: 20px;
+}
+
+.card {
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 16px;
+    width: 220px;
+    text-align: left;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+    transition: transform 0.2s ease-in-out;
+}
+
+    .card:hover {
+        transform: scale(1.05);
+    }
+
+    .card button {
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        padding: 8px 12px;
+        cursor: pointer;
+    }
+
+        .product-card button:hover {
+            background-color: #218838;
+        }
+.product.card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px; /* Space between cards */
+}
+
+.product.card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.product-title {
+    text-align: left; /* Align text to the left */
+    font-size: 18px; /* Adjust font size */
+    color: #333; /* Darker color for better visibility */
+    margin-bottom: 8px; /* Add spacing below the title */
+    font-weight: bold; /* Make the text bold */
+}

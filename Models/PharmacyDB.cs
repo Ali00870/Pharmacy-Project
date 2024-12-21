@@ -1,14 +1,18 @@
-﻿using Microsoft.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Data;
 
 namespace Pharmacy_back.Models
 {
+
     public class DB
+
     {
         private string ConnectionString = "Data Source=DESKTOP-O1HOQTT\\SQLEXPRESS01; Initial Catalog=sydality; Integrated Security=True; Trust Server Certificate=True";
         public SqlConnection con { get; set; }
 
+
         public DB()
+
         {
             con = new SqlConnection(ConnectionString);
         }

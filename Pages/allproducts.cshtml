@@ -1,4 +1,5 @@
 ﻿@page
+@using System.Data
 @model Pharmacy_back.Pages.allproductsModel
 @{
 }
@@ -45,49 +46,52 @@
         <div class="filter-btn">
             Filter <i class="fa-solid fa-filter"></i>
         </div>
-
+           
+            
         <div class="filter">
             <h2>Filter</h2>
-
+            <form method="post">
             <div class="filter-items">
-                <h4>Categories</h4>
+                <h4> Medicine Categories</h4>
                 <div class="content">
-                    <div class="filter-item">
-                        <span>Hair Care</span>
-                        <input type="checkbox" />
-                    </div>
-
-                    <div class="filter-item">
-                        <span>Skin Care</span>
-                        <input type="checkbox" />
-                    </div>
-
-                    <div class="filter-item">
-                        <span>Vitamins & Supplements</span>
-                        <input type="checkbox" />
-                    </div>
-
-                    <div class="filter-item">
-                        <span>Pain Relief</span>
-                        <input type="checkbox" />
-                    </div>
-
-                    <div class="filter-item">
-                        <span>Cold & Flu</span>
-                        <input type="checkbox" />
-                    </div>
-
-                    <div class="filter-item">
-                        <span>First Aid</span>
-                        <input type="checkbox" />
-                    </div>
+                    
+                            @foreach (var category in Model.MCategories)
+                            {
+                                <div class="filter-item">
+                                    <span>@category</span>
+                                    <input type="checkbox" name="SelectedMCategories" value="@category"
+                                    @(Model.SelectedMCategories.Contains(category) ? "checked" : "") />
+                                </div>
+                            }
+                            
+                        
+                           
                 </div>
+                
+               
             </div>
 
-
-
             <div class="filter-items">
+                <h4>Cosmetics</h4>
+                <div class="content">
+                       
+                            @foreach (var category in Model.CCategories)
+                            {
+                                <div class="filter-item">
+                                    <span>@category</span>
+                                    <input type="checkbox" name="SelectedCCategories" value="@category"
+                                    @(Model.SelectedCCategories.Contains(category) ? "checked" : "") />
+                                </div>
+                            }
+                           
+                   
+                </div>
+
+                </div>
+
+            @* <div class="filter-items">
                 <h4>Form</h4>
+                
                 <div class="content">
                     <div class="filter-item">
                         <span>Tablets</span>
@@ -114,20 +118,63 @@
                         <input type="checkbox" />
                     </div>
                 </div>
-            </div>
-
+            </div> *@
+                
             <div class="filter-items">
                 <h4>Price Range</h4>
                 <div class="content">
-                    <input type="range" min="1" max="100" step="1" />
+                    <input type="range" min="1" max="100" step="1" />@*to be done later*@
                     <p>Price: $<span id="price-range">50</span></p>
                 </div>
             </div>
+                    <div class="filter-item">
+                        <button class="btn-change" type="submit">Apply Filter</button>
+                    </div>
+                </form>
+                    
+            </div>
+
+            <div class="product">
+                <h2 class="product-title">Medicine</h2>
+                <div class="card-container">
+                    @foreach (DataRow row in @Model.products.Rows)
+                    {
+                        <div class="card">
+                            <h3>@row["name"]</h3>
+                            <p class="price">$@row["price"]</p>
+                            <button style="padding: 10px 15px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                                Add to Cart
+                            </button>
+                        </div>
+                    }
+                </div>
+                <h2 class="product-title">Cosmetics</h2>
+                <div class="card-container">
+
+                    @foreach (DataRow row in @Model.products2.Rows)
+                    {
+                        <div class="card">
+                            <h3>@row["name"]</h3>
+                            <p class="price">$@row["price"]</p>
+                            <button style="padding: 10px 15px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                                Add to Cart
+                            </button>
+                        </div>
+                    }
+
+                </div>
+                <form method="post" asp-page-handler="ShowMore">
+                    <button type="submit" class="btn-cart" name="n" value="Next">Next></button>
+                    <button type="submit" class="btn-cart" name="n" value="Previous"> previous< </button>
+                </form>
+            </div>
+            
         </div>
 
-        <div class="products"></div>
+       
+       
     </div>
-</div>
+
 
 <div class="pagination">
     <span class="btn-change prev">
