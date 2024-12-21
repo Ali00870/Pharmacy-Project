@@ -1,10 +1,7 @@
-﻿
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
 using System.Data;
 
-
-
-namespace Pharmacy_back.Pages.Models
+namespace Pharmacy_back.Model
 {
     public class DB
     {
@@ -19,7 +16,7 @@ namespace Pharmacy_back.Pages.Models
         }
         public DataTable ProductsFiltered(string Category)
         {
-            DataTable d=new DataTable();
+            DataTable d = new DataTable();
             string query = $"--Filter by category medicine----\r\nSelect  p.[name],p.price \r\nfrom products p join medicine m on(p.id=m.id) \r\nwhere m.[type] like'%{Category}%'\r\norder by [type]\r\noffset 0 rows fetch next 5 rows only;\r\n";
             SqlCommand cmd = new SqlCommand(query, Connection);
             try
@@ -51,7 +48,7 @@ namespace Pharmacy_back.Pages.Models
             finally { Connection.Close(); }
             return d;
         }
-        public DataTable allproducts(int offset=0)
+        public DataTable allproducts(int offset = 0)
         {
             DataTable d = new DataTable();
             string query = $"Select  p.[name],p.price \r\nfrom products p join medicine m on(p.id=m.id) \r\norder by p.[name]\r\noffset {offset} rows fetch next 5 rows only;\r\n";
@@ -68,7 +65,7 @@ namespace Pharmacy_back.Pages.Models
             finally { Connection.Close(); }
             return d;
         }
-        public DataTable allproducts2(int offset=0)
+        public DataTable allproducts2(int offset = 0)
         {
             DataTable d = new DataTable();
             string query = $"Select  p.[name],p.price \r\nfrom products p join Cosmetics m on(p.id=m.id) \r\norder by p.[name]\r\noffset {offset} rows fetch next 6 rows only;\r\n";
@@ -122,7 +119,7 @@ namespace Pharmacy_back.Pages.Models
         public void InsertOrder()
         {
 
-            
+
 
         }
 
@@ -200,4 +197,3 @@ namespace Pharmacy_back.Pages.Models
         }
     }
 }
-
