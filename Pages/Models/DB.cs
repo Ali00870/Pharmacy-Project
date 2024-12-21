@@ -85,6 +85,47 @@ namespace Pharmacy_back.Pages.Models
             finally { Connection.Close(); }
             return d;
         }
+        public DataTable bestsellingMedicine()
+        {
+            DataTable d = new DataTable();
+            string query = "select top 10 c.Product_id,p.[name],p.[price] from products p join medicine m on(p.id=m.id) join Customer_order  c on(p.id=c.Product_id)\r\ngroup by Product_id,p.[name],p.price\r\norder by sum(c.quantity) desc\r\n";
+            SqlCommand cmd = new SqlCommand(query, Connection);
+            try
+            {
+                Connection.Open();
+                d.Load(cmd.ExecuteReader());
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally { Connection.Close(); }
+            return d;
+        }
+        public DataTable bestsellingCosmetics()
+        {
+            DataTable d = new DataTable();
+            string query = "select top 10 c.Product_id,p.[name],p.[price] from products p join Cosmetics m on(p.id=m.id) join Customer_order  c on(p.id=c.Product_id)\r\ngroup by Product_id,p.[name],p.price\r\norder by sum(c.quantity) desc\r\n";
+            SqlCommand cmd = new SqlCommand(query, Connection);
+            try
+            {
+                Connection.Open();
+                d.Load(cmd.ExecuteReader());
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally { Connection.Close(); }
+            return d;
+        }
+        public void InsertOrder()
+        {
+
+            
+
+        }
+
 
 
     }
