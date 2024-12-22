@@ -20,7 +20,7 @@
         </div>
 
         <div class="item-details">
-            <h1 class="name">Revitalize and nourish your hair with our advanced hair treatment medicine, designed to promote growth, reduce hair loss, and strengthen your strands for healthier, shinier hair</h1>
+            <h1 class="name">@Model.name</h1>
             <div class="stars">
                 <i class="fa-solid fa-star"></i>
                 <i class="fa-solid fa-star"></i>
@@ -30,19 +30,21 @@
             </div>
 
             <div class="price">
-                <p><span>$120</span></p>
-                <p class="old-price"><span>$200</span></p>
+                <p><span> $ @Model.Price</span></p>
+
             </div>
+          
 
-            <h5>Availability: <span>In Stock</span></h5>
-            <h5>SKU: <span>Lorem, ipsum dolor sit amet consectetur adipisicing.</span></h5>
 
-            <p class="text-details">Our Hair Revitalizing Medicine is specially formulated to combat hair thinning, promote healthy growth, and restore strength to damaged strands. Enriched with essential vitamins and nutrients, it nourishes the scalp, improves hair texture, and reduces hair fall, leaving your hair looking fuller, healthier, and more vibrant.</p>
-
-            <h4>Harry Up Only 5 Products Left in Stock</h4>
-
+            @if(Model.Description!= null){
+            <p class="text-details">@Model.Description</p>}
+            else{
+                <p class="text-details">@Model.Dosage </p> <p class="text-details">@Model.Form </p> <p class="text-details">@Model.Active_Ingredients </p>}
+           
+            <form method="post">
+            <label class="form-control">quantity u need : <input type="Quantity" asp asp-for=order_quantity /></label>
             <button>Add To Cart <i class="fa-solid fa-cart-arrow-down"></i></button>
-
+					</form>
             <div class="icons">
                 <span><i class="fa-regular fa-heart"></i></span>
                 <span><i class="fa-solid fa-sliders"></i></span>

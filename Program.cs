@@ -1,14 +1,14 @@
+using Pharmacy_back.Model;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddSession(options => {
     options.IdleTimeout = TimeSpan.FromHours(3);
-
+    
 });
-
-builder.Services.AddSingleton<Pharmacy_back.Models.DB>();
-
+builder.Services.AddSingleton<DB>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
