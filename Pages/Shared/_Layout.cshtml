@@ -10,7 +10,64 @@
     <link rel="stylesheet" href="~/css/swiper-bundle.min.css" asp-append-version="true" />
 </head>
 <body>
-    <header>
+
+    <style>
+        #navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: #f8f9fa;
+            transition: all 0.3s ease;
+            padding: 20px 0; /* Default padding */
+        }
+
+            #navbar.scrolled {
+                padding: 5px 0; /* Further reduced padding when scrolled */
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: shadow for effect */
+            }
+
+        .top-nav .logo img {
+            height: 90px; /* Default logo size */
+            transition: height 0.3s ease;
+        }
+
+        #navbar.scrolled .top-nav .logo img {
+            height: 30px; /* Much smaller logo size when scrolled */
+        }
+
+        nav .links ul li a {
+            font-size: 16px; /* Default font size */
+            transition: font-size 0.3s ease;
+        }
+
+        #navbar.scrolled nav .links ul li a {
+            font-size: 12px; /* Further reduced font size when scrolled */
+        }
+
+        .search input {
+            height: 30px; /* Adjust search bar height */
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        #navbar.scrolled .search input {
+            height: 20px; /* Smaller search bar height when scrolled */
+            font-size: 12px;
+        }
+
+        .top-nav-cart-icon i {
+            font-size: 18px; /* Default icon size */
+            transition: font-size 0.3s ease;
+        }
+
+        #navbar.scrolled .top-nav-cart-icon i {
+            font-size: 14px; /* Smaller icon size when scrolled */
+        }
+    </style>
+
+
+
+    <header id="navbar">
         <div class="container top-nav">
             <a asp-page="/Index" class="logo">
                 <img src="https://st4.depositphotos.com/27205200/39727/v/450/depositphotos_397279466-stock-illustration-creative-pharmacy-concept-logo-design.jpg" alt="logo" />
@@ -36,36 +93,36 @@
 
         <nav>
             <div class="links container">
-                <div class="open-links-icon">
-                    <i class="fa-solid fa-bars"></i>
-                </div>
-
                 <ul>
-                    <div class="bg-overlay"></div>
-                    <div class="close-links-icon">
-                        <i class="fa-regular fa-circle-xmark"></i>
-                    </div>
-                    <div><img src="./img/logo-black.png" alt="logo" /></div>
-
                     <li class="active"><a asp-page="/Index">Home</a></li>
-                    <li><a  asp-page="/allproducts">All Products</a></li>
+                    <li><a asp-page="/allproducts">All Products</a></li>
                     <li><a href="#">About Us</a></li>
                     <li><a href="#">Contact</a></li>
-                    <li><a asp-page="/Statistics">Statistics</a></li> 
-                   <li><a asp-page="/Order_Details">Order Details</a></li>
-                    <li><a asp-page="/Add_item">Add item</a></li>
-                    <li><a asp-page="/work-on">Employees</a></li>
-                    <li><a asp-page="/Users">Users</a></li>
-                  
                 </ul>
 
                 <div class="login-signup">
-                    <a  asp-page="signin">Login <i class="fa-solid fa-right-to-bracket"></i></a>
-                    <a  asp-page="/register">Sign Up <i class="fa-solid fa-user-plus"></i></a>
+                    <a asp-page="/signin">Login <i class="fa-solid fa-right-to-bracket"></i></a>
+                    <a asp-page="/register">Sign Up <i class="fa-solid fa-user-plus"></i></a>
                 </div>
             </div>
         </nav>
     </header>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const navbar = document.getElementById("navbar");
+
+            window.addEventListener("scroll", function () {
+                if (window.scrollY > 50) {
+                    navbar.classList.add("scrolled");
+                } else {
+                    navbar.classList.remove("scrolled");
+                }
+            });
+        });
+    </script>
+
+
+
 
     <div class="container">
         <main role="main" class="pb-3">
