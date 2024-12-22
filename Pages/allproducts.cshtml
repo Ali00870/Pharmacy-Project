@@ -105,10 +105,7 @@
                     
             </div>
            
-            @foreach(DataRow row in Model.products.Rows)
-            {
-                Console.WriteLine(row["id"]);
-            }
+           
 
            
 
@@ -117,7 +114,7 @@
               
                 
                     <div class="card-container">
-                        @foreach (DataRow row in @Model.products.Rows)
+                        @foreach (DataRow row in Model.products.Rows)
                         {
                             <div class="card">
                                 <h3>@row["name"]</h3>

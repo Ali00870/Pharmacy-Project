@@ -1,4 +1,4 @@
-using Pharmacy_back.Models;
+using Pharmacy_back.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 

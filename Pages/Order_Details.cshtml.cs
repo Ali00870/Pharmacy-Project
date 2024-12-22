@@ -2,7 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Identity.Client;
-using Pharmacy_back.Pages.Models;
+using Pharmacy_back.Model;
+
 using System.Data;
 using System.Text.Json;
 
@@ -91,13 +92,13 @@ namespace Pharmacy_back.Pages
         public Medicine M { get; set; } = new Medicine(); // Ensure initialized
 
         [BindProperty(SupportsGet = true)]
-        public Cosmetic C { get; set; } = new Cosmetic(); // Ensure initialized
+        public Cosmetics C { get; set; } = new Cosmetics(); // Ensure initialized
         [BindProperty]
         public string SelectedItem { get; set; } // Property to hold the selected value
 
         public List<SelectListItem> Items { get; set; } = new List<SelectListItem>(); // List for dropdown options
-        private readonly DB db;
-        public Order_DetailsModel(DB db)
+        private readonly Model.DB db;
+        public Order_DetailsModel(Model.DB db)
         {
             this.db = db;
         }
@@ -232,8 +233,8 @@ namespace Pharmacy_back.Pages
             // Load existing Cosmetics from the session
             var cosmeticsJson = HttpContext.Session.GetString(SessionKeyC);
             Cosmetics = !string.IsNullOrEmpty(cosmeticsJson)
-                ? JsonSerializer.Deserialize<List<Cosmetic>>(cosmeticsJson)
-                : new List<Cosmetic>();
+                ? JsonSerializer.Deserialize<List<Cosmetics>>(cosmeticsJson)
+                : new List<Cosmetics>();
             // Process Medicines
             foreach (var M in Medicines)
             {
