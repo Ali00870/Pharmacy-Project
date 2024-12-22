@@ -18,8 +18,17 @@
             <i class="fa-regular fa-circle-xmark"></i>
         </span>
     </div>
+        @{
+            bool showAddItemButton = !string.IsNullOrEmpty(Request.Query["showAddItem"]);
+        }
 
-    <div class="cart-items"></div>
+
+
+        <div class="login-signup">
+            <a asp-page="signin">Login <i class="fa-solid fa-right-to-bracket"></i></a>
+            <a asp-page="/register">Sign Up <i class="fa-solid fa-user-plus"></i></a>
+        </div>
+        <div class="cart-items"></div>
 
     <div class="bottom-cart">
         <div class="cart-total">
@@ -69,6 +78,12 @@
     </div>
 </section>
 <!-- End Slider -->
+    @if (showAddItemButton)
+    {
+        <form method="post">
+            <button type="submit" class="btn btn-success btn-lg btn-block shadow-lg">AddItem</button>
+        </form>
+    }
 <!-- Start Features -->
 <div class="features">
     <div class="container">
@@ -80,7 +95,7 @@
                 <p>Free Shipping In All Orders</p>
             </div>
         </div>
-
+           
         <div class="feature">
             <img src="/img/features2.png" alt="Feature" />
 

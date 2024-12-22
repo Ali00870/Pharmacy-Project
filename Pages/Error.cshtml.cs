@@ -13,15 +13,18 @@ namespace Pharmacy_back.Pages
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
 
         private readonly ILogger<ErrorModel> _logger;
-
-        public ErrorModel(ILogger<ErrorModel> logger)
+        public Models.DB db { set; get; } 
+        public int count {  get; set; }
+        public ErrorModel(ILogger<ErrorModel> logger,Models.DB dB)
         {
             _logger = logger;
+            this.db = dB;
         }
 
         public void OnGet()
         {
             RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
+           
         }
     }
 

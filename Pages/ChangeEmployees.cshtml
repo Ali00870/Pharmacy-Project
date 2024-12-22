@@ -1,0 +1,63 @@
+﻿@page
+@model Pharmacy_back.Pages.ChangeEmployeesModel
+@{
+}
+<div class="container mt-4">
+    @if (Model.IsEditMode)
+    {
+        <h3 class="text-center">Edit Employee</h3>
+        <form method="post" asp-page-handler="EditEmployee">
+            
+            <div class="form-group">
+                <label for="ID">Employee ID</label>
+                <input type="number" id="ID" name="ID" class="form-control" asp-for="ID" readonly />
+            </div>
+
+            
+            <div class="form-group">
+                <label for="EmployeeName">Employee Name</label>
+                <input type="text" id="EmployeeName" name="EmployeeName" class="form-control" asp-for="employeename" required />
+            </div>
+            <div class="form-group">
+                <label for="ShiftHours">Shift Hours</label>
+                <input type="number" id="ShiftHours" name="ShiftHours" class="form-control" asp-for="shiftemployee" required />
+            </div>
+            <div class="form-group">
+                <label for="Salary">Salary</label>
+                <input type="number" id="Salary" name="Salary" class="form-control" asp-for="salaryEmployee" required />
+            </div>
+
+            
+            <div class="text-center mt-3">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+            </div>
+        </form>
+    }
+    else
+    {
+        <h3 class="text-center">Add an Employee</h3>
+        <form method="post" asp-page-handler="AddEmployee">
+            <div class="form-group">
+                <label for="EmployeeName">Employee Name</label>
+                <input type="text" id="EmployeeName" name="EmployeeName" class="form-control" asp-for="employeename" placeholder="Enter name" required />
+            </div>
+            <div class="form-group">
+                <label for="ID">Employee ID</label>
+                <input type="number" id="ID" name="ID" class="form-control" asp-for="id"  />
+            </div>
+            <div class="form-group">
+                <label for="ShiftHours">Shift Hours</label>
+                <input type="number" id="ShiftHours" name="ShiftHours" class="form-control" asp-for="shiftemployee" placeholder="Enter shift hours" required />
+            </div>
+            <div class="form-group">
+                <label for="Salary">Salary</label>
+                <input type="number" id="Salary" name="Salary" class="form-control" asp-for="salaryEmployee" placeholder="Enter salary" required />
+            </div>
+
+            <!-- Submit Button -->
+            <div class="text-center mt-3">
+                <button type="submit" class="btn btn-primary">Add Employee</button>
+            </div>
+        </form>
+    }
+</div>

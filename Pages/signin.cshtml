@@ -10,15 +10,19 @@
         <div class="main-content">
             <h2 class="title">Welcome Back</h2>
 
-            <form action="">
-                <input type="email" placeholder="Email" />
-                <input type="password" placeholder="Password" />
+            <form method="post">
+                    @if (!string.IsNullOrEmpty(Request.Query["message"]))
+                    {
+                        <div class="error-message">@Request.Query["message"]</div>
+                    }
+                <input type="text" placeholder="Username"asp-for="Username" />
+                <input type="password" placeholder="Password" asp-for="Password" />
 
                 <p class="forget-password">
                     <a href="#">Forget Password</a>
                 </p>
 
-                <button class="login-btn">Login</button>
+                <button class="login-btn" >Login</button>
             </form>
 
             <p class="signup-link">

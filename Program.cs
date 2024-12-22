@@ -2,6 +2,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+builder.Services.AddSession(options => {
+    options.IdleTimeout = TimeSpan.FromHours(3);
+
+});
+
+builder.Services.AddSingleton<Pharmacy_back.Models.DB>();
 
 var app = builder.Build();
 
@@ -15,7 +21,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
+app.UseSession();
 app.UseRouting();
 
 app.UseAuthorization();

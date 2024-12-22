@@ -16,5 +16,10 @@ namespace Pharmacy_back.Pages
         {
 
         }
+        public IActionResult OnPost() {
+
+            return RedirectToPage("/Add_item");
+        
+        }
     }
 }
