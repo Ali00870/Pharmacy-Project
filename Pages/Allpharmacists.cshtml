@@ -1,0 +1,41 @@
+﻿@page
+@model Pharmacy_back.Pages.AllpharmacistsModel
+@{
+}
+<table class="table">
+    <thead>
+        <tr>
+
+            <th scope="col">P_username</th>
+            <th scope="col">Shift_hours</th>
+            <th scope="col">Salary</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.table.Rows.Count; i++)
+        {
+            <tr>
+                @for (int j = 0; j < Model.table.Columns.Count; j++)
+                {
+                    <td>@Model.table.Rows[i][j]</td>
+                }
+
+               
+                <td>
+                    <a asp-page="works_on" asp-route-pusername="@Model.table.Rows[i]["p_username"]" class="btn btn-primary">Edit</a>
+                </td>
+
+               
+                <td>
+                    <form method="post" asp-page-handler="Delete">
+                        <input type="hidden" name="p_username" value="@Model.table.Rows[i]["p_username"]" />
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+
+
+</table>

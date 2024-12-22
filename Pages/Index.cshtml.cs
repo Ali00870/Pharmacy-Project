@@ -27,5 +27,10 @@ namespace Pharmacy_back.Pages
         {
             return RedirectToPage("/View_Items", new { id = id });
         }
+        public IActionResult OnPost() {
+
+            return RedirectToPage("/Add_item");
+        
+        }
     }
 }

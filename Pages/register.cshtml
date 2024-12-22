@@ -8,13 +8,17 @@
         <div class="main-content">
             <h2 class="title">Welcome</h2>
 
-            <form action="">
-                <input type="text" placeholder="Username" />
-                <input type="text" placeholder="Name" />
-                <input type="email" placeholder="Email" />
-                <input type="password" placeholder="Password" />
-                <input type="password" placeholder="Repeat Password" />
-                <button class="register-btn">Register</button>
+            <form method="post">
+                    @if (!string.IsNullOrEmpty(Request.Query["message"]))
+                    {
+                        <div class="error-message">@Request.Query["message"]</div>
+                    }
+                <input type="text" placeholder="Username" asp-for="username" />
+                <input type="text" placeholder="Name" asp-for="name" />
+                <input type="email" placeholder="Email" asp-for="email"/>
+                <input type="password" placeholder="Password" asp-for="password"/>
+                <input type="password" placeholder="Repeat Password" asp-for="repeatpassword"/>
+                <button class="register-btn" asp-page-handler="register">Register</button>
             </form>
 
             <p class="login-link">
@@ -23,15 +27,15 @@
 
 
             <div class="register-btns">
-                <div class="apple-btn">
+                @* <div class="apple-btn">
                     <i class="fa-brands fa-apple"></i>
                     <span>Sign Up With Apple</span>
-                </div>
+                </div> *@
 
-                <div class="google-btn">
+               @*  <div class="google-btn">
                     <i class="fa-brands fa-google"></i>
                     <span>Sign Up With Google</span>
-                </div>
+                </div> *@
             </div>
         </div>
     </div>
