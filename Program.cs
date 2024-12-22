@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddSession(options => {
     options.IdleTimeout = TimeSpan.FromHours(3);
-
+    
 });
 builder.Services.AddSingleton<DB>();
 var app = builder.Build();

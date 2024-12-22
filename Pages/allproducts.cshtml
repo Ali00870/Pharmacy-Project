@@ -89,36 +89,7 @@
 
                 </div>
 
-            @* <div class="filter-items">
-                <h4>Form</h4>
-                
-                <div class="content">
-                    <div class="filter-item">
-                        <span>Tablets</span>
-                        <input type="checkbox" />
-                    </div>
-
-                    <div class="filter-item">
-                        <span>Capsules</span>
-                        <input type="checkbox" />
-                    </div>
-
-                    <div class="filter-item">
-                        <span>Ointments</span>
-                        <input type="checkbox" />
-                    </div>
-
-                    <div class="filter-item">
-                        <span>Liquids</span>
-                        <input type="checkbox" />
-                    </div>
-
-                    <div class="filter-item">
-                        <span>Patches</span>
-                        <input type="checkbox" />
-                    </div>
-                </div>
-            </div> *@
+          
                 
             <div class="filter-items">
                 <h4>Price Range</h4>
@@ -133,36 +104,48 @@
                 </form>
                     
             </div>
+           
+           
+
+           
 
             <div class="product">
                 <h2 class="product-title">Medicine</h2>
-                <div class="card-container">
-                    @foreach (DataRow row in @Model.products.Rows)
-                    {
-                        <div class="card">
-                            <h3>@row["name"]</h3>
-                            <p class="price">$@row["price"]</p>
-                            <button style="padding: 10px 15px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">
-                                Add to Cart
-                            </button>
-                        </div>
-                    }
-                </div>
-                <h2 class="product-title">Cosmetics</h2>
-                <div class="card-container">
+              
+                
+                    <div class="card-container">
+                        @foreach (DataRow row in Model.products.Rows)
+                        {
+                            <div class="card">
+                                <h3>@row["name"]</h3>
+                                <p class="price">$@row["price"]</p>
+                                <form method="post" asp-page-handler="AddToCart">
+                                    <input type="hidden" name="id" value="@row["id"]" />
+                                    <button type="submit" style="padding: 10px 15px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                                        Add to Cart
+                                    </button>
+                                </form>
+                            </div>
+                        }
+                    </div>
+                    <h2 class="product-title">Cosmetics</h2>
+                    <div class="card-container">
+                        @foreach (DataRow row in @Model.products2.Rows)
+                        {
+                            <div class="card">
+                                <h3>@row["name"]</h3>
+                                <p class="price">$@row["price"]</p>
+                                <form method="post" asp-page-handler="AddToCart">
+                                    <input type="hidden" name="id" value="@row["id"].ToString()" />
+                                    <button type="submit" style="padding: 10px 15px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                                        Add to Cart
+                                    </button>
+                                </form>
+                            </div>
+                        }
+                    </div>
+               
 
-                    @foreach (DataRow row in @Model.products2.Rows)
-                    {
-                        <div class="card">
-                            <h3>@row["name"]</h3>
-                            <p class="price">$@row["price"]</p>
-                            <button style="padding: 10px 15px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">
-                                Add to Cart
-                            </button>
-                        </div>
-                    }
-
-                </div>
                 <form method="post" asp-page-handler="ShowMore">
                     <button type="submit" class="btn-cart" name="n" value="Next">Next></button>
                     <button type="submit" class="btn-cart" name="n" value="Previous"> previous< </button>

@@ -9,6 +9,7 @@ namespace Pharmacy_back.Pages
 
     public class View_ItemsModel : PageModel
     {
+
         public DB db { get; set; }
         public View_ItemsModel(DB db)
         {
