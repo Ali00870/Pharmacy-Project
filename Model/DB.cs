@@ -633,5 +633,81 @@ public DataTable Getuserdata()
             finally { Connection.Close(); }
             return Convert.ToInt32(dt.Rows[0]["quantity"]);
         }
+        public DataTable ViewMedicine(int id)
+        {
+            string q = @"
+               select * from products p join medicine m on p.id = m.id and p.id=@id;";
+            DataTable dt = new DataTable();
+            try
+            {
+                Connection.Open();
+                SqlCommand cmd = new SqlCommand(q, Connection);
+
+                cmd.Parameters.AddWithValue("@id", id);
+                dt.Load(cmd.ExecuteReader());
+            }
+            catch (SqlException e)
+            {
+                // Log exception or handle errors here
+                Console.WriteLine($"Error inserting medicine : {e.Message}");
+            }
+            finally
+            {
+                Connection.Close();
+            }
+
+            return dt;
+        }
+        public DataTable Viewcosmetics(int id)
+        {
+            string q = @"
+               select * from products p join cosmetics c on p.id = c.id and p.id=@id;
+                ";
+            DataTable dt = new DataTable();
+
+            try
+            {
+                Connection.Open();
+                SqlCommand cmd = new SqlCommand(q, Connection);
+                cmd.Parameters.AddWithValue("@id", id);
+                dt.Load(cmd.ExecuteReader());
+            }
+            catch (SqlException e)
+            {
+                // Log exception or handle errors here
+                Console.WriteLine($"Error inserting cosmetics : {e.Message}");
+            }
+            finally
+            {
+                Connection.Close();
+            }
+            return dt;
+        }
+        public int check(int id)
+        {
+            string q = @"
+             select count(*)from products p join cosmetics c on p.id = c.id and p.id= @id;";
+            int count = 0;
+
+            try
+            {
+                Connection.Open();
+                SqlCommand cmd = new SqlCommand(q, Connection);
+                cmd.Parameters.AddWithValue("@id", id);
+                count = (int)cmd.ExecuteScalar();
+            }
+            catch (SqlException e)
+            {
+                // Log exception or handle errors here
+                Console.WriteLine($"Error inserting cosmetics : {e.Message}");
+            }
+            finally
+            {
+                Connection.Close();
+            }
+            return count;
+
+        }
+
     }
 }
