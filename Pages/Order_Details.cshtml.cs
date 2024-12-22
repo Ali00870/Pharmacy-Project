@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Identity.Client;
 using Pharmacy_back.Pages.Models;
+using System.Data;
 using System.Text.Json;
 
 namespace Pharmacy_back.Pages
@@ -89,13 +92,31 @@ namespace Pharmacy_back.Pages
 
         [BindProperty(SupportsGet = true)]
         public Cosmetic C { get; set; } = new Cosmetic(); // Ensure initialized
+        [BindProperty]
+        public string SelectedItem { get; set; } // Property to hold the selected value
 
+        public List<SelectListItem> Items { get; set; } = new List<SelectListItem>(); // List for dropdown options
+        private readonly DB db;
+        public Order_DetailsModel(DB db)
+        {
+            this.db = db;
+        }
         public List<Medicine> Medicines { get; set; } = new List<Medicine>();
         public List<Cosmetic> Cosmetics { get; set; } = new List<Cosmetic>();
         public float TotalPrice { get; set; } = 0;
-
+        public string orderMessage {  get; set; }
+        [BindProperty(SupportsGet =true)]
+        public string username {  get; set; }
         public void OnGet()
         {
+            DataTable d = db.pharmacies();
+            for(int i = 0; i < d.Rows.Count; i++)
+            {
+                SelectListItem li = new SelectListItem() { Value = d.Rows[i]["pharmacyname"].ToString(), Text = d.Rows[i]["pharmacyname"].ToString() };
+                Items.Add(li);
+            }
+     
+
             // Load existing Medicines from the session
             var medicineJson = HttpContext.Session.GetString(SessionKey);
             Medicines = !string.IsNullOrEmpty(medicineJson)
@@ -116,10 +137,12 @@ namespace Pharmacy_back.Pages
             M.Id = 23;
             M.Price = 25;
             M.Name = "Ahmed";
+            M.Quantity = 3;
 
-            C.Id = 23;
+            C.Id = 10;
             C.Price = 30;
             C.Name = "Hamada";
+            C.Quantity = 2;
 
             // Add new Medicine
             if (M != null && !string.IsNullOrEmpty(M.Name))
@@ -135,7 +158,7 @@ namespace Pharmacy_back.Pages
                     Active_Ingredient = M.Active_Ingredient,
                     Type = M.Type
                 });
-                TotalPrice += M.Price;
+                TotalPrice += M.Price*M.Quantity;
             }
 
             // Add new Cosmetic
@@ -151,7 +174,7 @@ namespace Pharmacy_back.Pages
                     Type = C.Type,
                     Description = C.Description
                 });
-                TotalPrice += C.Price;
+                TotalPrice += C.Price*C.Quantity;
             }
 
             // Save updated lists and total price back to the session
@@ -160,10 +183,121 @@ namespace Pharmacy_back.Pages
             HttpContext.Session.SetString("totalPrice", TotalPrice.ToString());
         }
 
+        //public void OnPost()
+        //{
+
+        //    foreach(var M in Medicines) {
+        //        int pid = M.Id;
+        //        int quantity=M.Quantity;
+        //        int done=db.InsertOrder(username, pid, quantity,SelectedItem);
+        //        if (done == 1) {
+        //            orderMessage+= "1";
+
+        //        }
+        //        else
+        //        {
+
+        //            //FailedList
+        //        }
+
+        //    }
+        //    foreach(var M in Cosmetics)
+        //    {
+        //        int pid = M.Id;
+        //        int quantity=M.Quantity;
+        //        int done = db.InsertOrder(username, pid, quantity, SelectedItem);
+
+        //        if (done == 1)
+        //        {
+        //            orderMessage+= "1";
+
+        //        }
+        //        else
+        //        {
+
+        //            //FailedList
+        //        }
+        //    }
+
+        //}
         public void OnPost()
         {
-            // Handle POST requests if needed
+            var failedOrders = new List<string>();
+            var successfulOrders = 0;
+            var medicineJson = HttpContext.Session.GetString(SessionKey);
+            Medicines = !string.IsNullOrEmpty(medicineJson)
+                ? JsonSerializer.Deserialize<List<Medicine>>(medicineJson)
+                : new List<Medicine>();
+            
+            // Load existing Cosmetics from the session
+            var cosmeticsJson = HttpContext.Session.GetString(SessionKeyC);
+            Cosmetics = !string.IsNullOrEmpty(cosmeticsJson)
+                ? JsonSerializer.Deserialize<List<Cosmetic>>(cosmeticsJson)
+                : new List<Cosmetic>();
+            // Process Medicines
+            foreach (var M in Medicines)
+            {
+                
+                int pid = M.Id;
+                int quantity = M.Quantity;
+
+                try
+                {
+                    string msg = "f";
+                    int done = db.InsertOrder(username, pid, quantity, SelectedItem,ref msg);
+                    if (done == 1)
+                    {
+                        successfulOrders++;
+                    }
+                    else
+                    {
+                        failedOrders.Add($"Medicine ID: {pid}");
+                        
+                    }
+                }
+                catch (Exception ex)
+                {
+                    
+                    failedOrders.Add($"Medicine ID: {pid}, Error: {ex.Message}");
+                }
+            }
+
+            // Process Cosmetics
+            foreach ( var M in Cosmetics)
+            {
+                int pid = M.Id;
+                int quantity = M.Quantity;
+
+                try
+                {
+                    string msg = "f";
+                    int done = db.InsertOrder(username, pid, quantity, SelectedItem,ref msg);
+                    if (done == 1)
+                    {
+                        successfulOrders++;
+                    }
+                    else
+                    {
+                        failedOrders.Add($"Cosmetic ID: {pid}");
+                    }
+                    
+                }
+                catch (Exception ex)
+                {
+                    failedOrders.Add($"Cosmetic ID: {pid}, Error: {ex.Message}");
+                }
+            }
+
+            // Provide feedback
+            orderMessage = $"Orders successful: {successfulOrders}.";
+            
+            if (failedOrders.Any())
+            {
+                orderMessage += $" Failed orders: {string.Join(", ", failedOrders)}.";
+                
+            }
         }
+
     }
 
 }

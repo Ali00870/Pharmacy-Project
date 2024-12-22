@@ -128,5 +128,10 @@ namespace Pharmacy_back.Pages
 
 
         }
+        public IActionResult OnPostAddToCart(int id)
+        {
+            
+            return RedirectToPage("/View_Items", new { id =  id });
+        }
     }
 }

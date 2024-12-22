@@ -7,7 +7,8 @@ namespace Pharmacy_back.Pages
 {
     public class View_ItemsModel : PageModel
     {
-        
+        [BindProperty(SupportsGet =true)]
+        public int id { get; set; }
         public void OnGet()
         {
         }
