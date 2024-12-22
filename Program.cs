@@ -1,5 +1,4 @@
-using Pharmacy_back.Pages.Models;
-
+using Pharmacy_back.Model;
 
 var builder = WebApplication.CreateBuilder(args);
 

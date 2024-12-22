@@ -102,7 +102,7 @@ namespace Pharmacy_back.Pages
             this.db = db;
         }
         public List<Medicine> Medicines { get; set; } = new List<Medicine>();
-        public List<Cosmetic> Cosmetics { get; set; } = new List<Cosmetic>();
+        public List<Cosmetics> Cosmetics { get; set; } = new List<Cosmetics>();
         public float TotalPrice { get; set; } = 0;
         public string orderMessage {  get; set; }
         [BindProperty(SupportsGet =true)]
@@ -126,8 +126,8 @@ namespace Pharmacy_back.Pages
             // Load existing Cosmetics from the session
             var cosmeticsJson = HttpContext.Session.GetString(SessionKeyC);
             Cosmetics = !string.IsNullOrEmpty(cosmeticsJson)
-                ? JsonSerializer.Deserialize<List<Cosmetic>>(cosmeticsJson)
-                : new List<Cosmetic>();
+                ? JsonSerializer.Deserialize<List<Cosmetics>>(cosmeticsJson)
+                : new List<Cosmetics>();
 
             // Load total price from the session
             var priceString = HttpContext.Session.GetString("totalPrice");
@@ -164,7 +164,7 @@ namespace Pharmacy_back.Pages
             // Add new Cosmetic
             if (C != null && !string.IsNullOrEmpty(C.Name))
             {
-                Cosmetics.Add(new Cosmetic
+                Cosmetics.Add(new Cosmetics
                 {
                     Id = C.Id,
                     Name = C.Name,
