@@ -1,12 +1,14 @@
 ﻿using Microsoft.Data.SqlClient;
+using Pharmacy_back.Pages;
 using System.Data;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Pharmacy_back.Model
 {
     public class DB
     {
-        public string ConnectionString = "  Data Source=DESKTOP-MINNO8Q; Initial Catalog=master;Integrated Security=True; Trust Server Certificate=True ";
-        //public string ConnectionString="Data Source =DESKTOP-O1HOQTT\\SQLEXPRESS01 ; Initial Catalog= sydality ; Integrated Security = True ; Trust Server Certificate = True  ";
+        //public string ConnectionString = "  Data Source=DESKTOP-MINNO8Q; Initial Catalog=master;Integrated Security=True; Trust Server Certificate=True ";
+        public string ConnectionString = "Data Source =DESKTOP-O1HOQTT\\SQLEXPRESS01 ; Initial Catalog= sydality ; Integrated Security = True ; Trust Server Certificate = True  ";
         public SqlConnection Connection;
         public DB()
         {
@@ -163,7 +165,7 @@ namespace Pharmacy_back.Model
             INSERT INTO products (id, name, price, quantity, manufacturer) 
             VALUES (@ProductID, @Name, @Price, @Quantity, @Manufacturer);
 
-            INSERT INTO medicine (id, dosage, form, active_ingredients) 
+            INSERT INTO medicine (id, dosage, form, active_ingredient) 
             VALUES (@ProductID, @Dosage, @Form, @ActiveIngredients);
         ";
 
@@ -229,6 +231,7 @@ namespace Pharmacy_back.Model
                 Connection.Close();
             }
         }
+
         public int Getusers()
 {
 	int count = 0;
@@ -633,6 +636,7 @@ public DataTable Getuserdata()
             finally { Connection.Close(); }
             return Convert.ToInt32(dt.Rows[0]["quantity"]);
         }
+
         public DataTable ViewMedicine(int id)
         {
             string q = @"
@@ -643,8 +647,10 @@ public DataTable Getuserdata()
                 Connection.Open();
                 SqlCommand cmd = new SqlCommand(q, Connection);
 
+
                 cmd.Parameters.AddWithValue("@id", id);
                 dt.Load(cmd.ExecuteReader());
+
             }
             catch (SqlException e)
             {
@@ -682,19 +688,23 @@ public DataTable Getuserdata()
                 Connection.Close();
             }
             return dt;
-        }
+
+        } 
         public int check(int id)
         {
             string q = @"
              select count(*)from products p join cosmetics c on p.id = c.id and p.id= @id;";
             int count = 0;
-
             try
             {
                 Connection.Open();
                 SqlCommand cmd = new SqlCommand(q, Connection);
                 cmd.Parameters.AddWithValue("@id", id);
+
+            
+
                 count = (int)cmd.ExecuteScalar();
+
             }
             catch (SqlException e)
             {
@@ -707,7 +717,6 @@ public DataTable Getuserdata()
             }
             return count;
 
-        }
 
     }
 }
