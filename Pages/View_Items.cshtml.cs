@@ -17,8 +17,8 @@ namespace Pharmacy_back.Pages
         }
 
 
-
-        [BindProperty]
+        public string a = "a7a";
+        //[BindProperty]
         public string name { get; set; }
         [BindProperty]
         public float Price { get; set; }
@@ -68,31 +68,41 @@ namespace Pharmacy_back.Pages
 
 
             }
+            name = name;
+            Price = Price;
 
+            HttpContext.Session.SetString("prod_name", name);
+            HttpContext.Session.SetString("prod_price", Price.ToString());
         }
         public IActionResult OnPost()
         {
-
+            string namee = HttpContext.Session.GetString("prod_name");
+            float pricee = !string.IsNullOrEmpty(HttpContext.Session.GetString("prod_price")) ? float.Parse(HttpContext.Session.GetString("prod_price")) : 0;
             Medicine medicine = new Medicine();
             medicine.Id = id;
-            medicine.Price = Price;
-            medicine.Name = name;
+
+            medicine.Price = pricee;
+            medicine.Name = namee;
 
             Cosmetics cosmetics = new Cosmetics();
-            cosmetics.Id = id; cosmetics.Price = Price; cosmetics.Name = name;
-
+            cosmetics.Id = id; cosmetics.Price = pricee; cosmetics.Name = namee;
+            string n = a;
             int count = db.check(id);
+            string jsonstring;
+          
             if (count == 1)
             {
-                string jsonstring = JsonSerializer.Serialize(medicine);
-                return RedirectToPage("/Order_details", new { order_quantity = order_quantity, jsonstring = jsonstring });
+               
+                 jsonstring = JsonSerializer.Serialize(cosmetics);
+                
             }
             else
             {
-
-                string jsonstring = JsonSerializer.Serialize(cosmetics);
-                return RedirectToPage("/Order_details", new { order_quantity = order_quantity, jsonstring = jsonstring });
+                
+                jsonstring = JsonSerializer.Serialize(medicine);
+                //return RedirectToPage("/Order_details", new { order_quantity = order_quantity, jsonstring = jsonstring,type=type });
             }
+            return RedirectToPage("/Order_details", new { order_quantity = order_quantity, jsonstring = jsonstring, type = count });
         }
     }
 }

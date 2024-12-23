@@ -8,7 +8,7 @@ namespace Pharmacy_back.Model
     public class DB
     {
         //public string ConnectionString = "  Data Source=DESKTOP-MINNO8Q; Initial Catalog=master;Integrated Security=True; Trust Server Certificate=True ";
-        public string ConnectionString = "Data Source =DESKTOP-MINNO8Q; Initial Catalog= master ; Integrated Security = True ; Trust Server Certificate = True  ";
+        public string ConnectionString = "Data Source =DESKTOP-MINNO8Q; Initial Catalog= master ; Integrated Security = True ; Trust Server Certificate = True ";
         public SqlConnection Connection;
         public DB()
         {

@@ -108,6 +108,12 @@ namespace Pharmacy_back.Pages
         public string orderMessage {  get; set; }
         [BindProperty(SupportsGet =true)]
         public string username {  get; set; }
+        [BindProperty(SupportsGet = true)]
+        public  int order_quantity { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public int type { get; set; } = -1;
+        [BindProperty(SupportsGet = true)]
+        public string jsonstring {  get; set; }
         public void OnGet()
         {
             DataTable d = db.pharmacies();
@@ -135,46 +141,65 @@ namespace Pharmacy_back.Pages
             TotalPrice = !string.IsNullOrEmpty(priceString) ? float.Parse(priceString) : 0;
 
             // Initialize M and C with some default values for testing (Optional)
-            M.Id = 23;
-            M.Price = 25;
-            M.Name = "Ahmed";
-            M.Quantity = 3;
+            //M.Id = 23;
+            //M.Price = 25;
+            //M.Name = "Ahmed";
+            //M.Quantity = 3;
 
-            C.Id = 10;
-            C.Price = 30;
-            C.Name = "Hamada";
-            C.Quantity = 2;
+            //C.Id = 10;
+            //C.Price = 30;
+            //C.Name = "Hamada";
+            //C.Quantity = 2;
+            if (type == 0)
+            {
+                var MedObj = !string.IsNullOrEmpty(jsonstring) ?
+                            JsonSerializer.Deserialize<Medicine>(jsonstring) : new Medicine();
+                M = MedObj;
+            }
+            else if(type == 1) 
+            {
+                var CosmObj = !string.IsNullOrEmpty(jsonstring) ?
+                            JsonSerializer.Deserialize<Cosmetics>(jsonstring) : new Cosmetics();
+                C = CosmObj;
+            }
+            
+
+
 
             // Add new Medicine
-            if (M != null && !string.IsNullOrEmpty(M.Name))
+            if (type==0&&M != null && !string.IsNullOrEmpty(M.Name))
             {
-                Medicines.Add(new Medicine
-                {
-                    Id = M.Id,
-                    Name = M.Name,
-                    Price = M.Price,
-                    Manufacturer = M.Manufacturer,
-                    Dosage = M.Dosage,
-                    Quantity = M.Quantity,
-                    Active_Ingredient = M.Active_Ingredient,
-                    Type = M.Type
-                });
+                //Medicines.Add(new Medicine
+                //{
+                //    Id = M.Id,
+                //    Name = M.Name,
+                //    Price = M.Price,
+                //    Manufacturer = M.Manufacturer,
+                //    Dosage = M.Dosage,
+                //    Quantity = M.Quantity,
+                //    Active_Ingredient = M.Active_Ingredient,
+                //    Type = M.Type
+                //});
+                M.Quantity = order_quantity;
+                Medicines.Add(M);
                 TotalPrice += M.Price*M.Quantity;
             }
 
             // Add new Cosmetic
-            if (C != null && !string.IsNullOrEmpty(C.Name))
+            if (type==1&&C != null && !string.IsNullOrEmpty(C.Name))
             {
-                Cosmetics.Add(new Cosmetics
-                {
-                    Id = C.Id,
-                    Name = C.Name,
-                    Price = C.Price,
-                    Manufacturer = C.Manufacturer,
-                    Quantity = C.Quantity,
-                    Type = C.Type,
-                    Description = C.Description
-                });
+                //Cosmetics.Add(new Cosmetics
+                //{
+                //    Id = C.Id,
+                //    Name = C.Name,
+                //    Price = C.Price,
+                //    Manufacturer = C.Manufacturer,
+                //    Quantity = C.Quantity,
+                //    Type = C.Type,
+                //    Description = C.Description
+                //});
+                C.Quantity = order_quantity;
+                Cosmetics.Add(C);
                 TotalPrice += C.Price*C.Quantity;
             }
 
@@ -182,7 +207,9 @@ namespace Pharmacy_back.Pages
             HttpContext.Session.SetString(SessionKey, JsonSerializer.Serialize(Medicines));
             HttpContext.Session.SetString(SessionKeyC, JsonSerializer.Serialize(Cosmetics));
             HttpContext.Session.SetString("totalPrice", TotalPrice.ToString());
+            type = -1;
         }
+        
 
         //public void OnPost()
         //{
@@ -221,6 +248,10 @@ namespace Pharmacy_back.Pages
         //    }
 
         //}
+        public IActionResult OnPostAnotherItem()
+        {
+            return RedirectToPage("/allproducts");
+        }
         public void OnPost()
         {
             var failedOrders = new List<string>();
@@ -290,13 +321,16 @@ namespace Pharmacy_back.Pages
             }
 
             // Provide feedback
-            orderMessage = $"Orders successful: {successfulOrders}.";
+            orderMessage = $"Orders successful: {successfulOrders}. Our delivery man will call you soon!";
+
             
+                        
             if (failedOrders.Any())
             {
                 orderMessage += $" Failed orders: {string.Join(", ", failedOrders)}.";
                 
             }
+
         }
 
     }

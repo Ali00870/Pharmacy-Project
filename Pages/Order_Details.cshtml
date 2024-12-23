@@ -74,6 +74,7 @@
                         </h4>
 
                         <p class="order-summary-price">Price: <span>@M.Price</span></p>
+                        <p class="order-summary-price">Quantity: <span>@M.Quantity</span></p>
                     </div>
                 </div>}
                 @foreach (var C in Model.Cosmetics)
@@ -88,6 +89,7 @@
                             </h4>
 
                             <p class="order-summary-price">Price: <span>@C.Price</span></p>
+                            <p class="order-summary-price">Quantity: <span>@C.Quantity</span></p>
                         </div>
                     </div>
                 }
@@ -103,12 +105,15 @@
         </div>
     </div>
     </div>
+    <form method="post" asp-page-handler="AnotherItem">
+        <button type="submit">Add Another Item</button>
+    </form>
 </section>
 <h2>@Model.orderMessage</h2>
 
 
 
-
+@* 
 @if (Model.Medicines != null && Model.Medicines.Any())
 {
     <table border="1" style="width:100%; text-align:left;">
@@ -144,7 +149,7 @@
 else
 {
     <p>No medicines available.</p>
-}
+} *@
 </body>
 <script src="./js/swiper-bundle.min.js"></script>
 <script src="./js/swiper.js"></script>
