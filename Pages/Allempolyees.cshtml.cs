@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Pharmacy_back.Models;
+using Pharmacy_back.Model;
 using System.Data;
 using System.Reflection;
 
@@ -18,7 +18,7 @@ namespace Pharmacy_back.Pages
          {
             table=Db.Getemployees();
          }
-        public IActionResult OnPostEdit(string ID)
+        public IActionResult OnPostEdit(int ID)
         {
             return RedirectToPage("/ChangeEmployees", new {ID=ID});
 

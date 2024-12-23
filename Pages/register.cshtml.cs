@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Pharmacy_back.Models;
+using Pharmacy_back.Model;
 namespace Pharmacy_back.Pages
 {
     public class registerModel : PageModel

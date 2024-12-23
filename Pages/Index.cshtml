@@ -78,7 +78,7 @@
 <!-- End Slider -->
     @if (showAddItemButton)
     {
-        <form method="post">
+        <form method="post" asp-page-handler="AddItem">
             <button type="submit" class="btn btn-success btn-lg btn-block shadow-lg">AddItem</button>
         </form>
     }

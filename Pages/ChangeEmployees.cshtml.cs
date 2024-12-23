@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Pharmacy_back.Models;
+using Pharmacy_back.Model;
 
 
 
@@ -26,7 +26,7 @@ namespace Pharmacy_back.Pages
         public string employeename { get; set; }
 
         [BindProperty]
-        public int salaryEmployee { get; set; }
+        public float salaryEmployee { get; set; }
 
         [BindProperty]
         public int shiftemployee { get; set; }

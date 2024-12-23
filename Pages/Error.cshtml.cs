@@ -13,9 +13,9 @@ namespace Pharmacy_back.Pages
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
 
         private readonly ILogger<ErrorModel> _logger;
-        public Models.DB db { set; get; } 
+        public Model.DB db { set; get; } 
         public int count {  get; set; }
-        public ErrorModel(ILogger<ErrorModel> logger,Models.DB dB)
+        public ErrorModel(ILogger<ErrorModel> logger,Model.DB dB)
         {
             _logger = logger;
             this.db = dB;
