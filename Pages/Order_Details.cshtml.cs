@@ -9,80 +9,8 @@ using System.Text.Json;
 
 namespace Pharmacy_back.Pages
 {
-    //public class Order_DetailsModel : PageModel
-    //{
-    //    private const string SessionKey = "MedicineList";
-    //    private const string SessionKeyC = "CosmeticsList";
-    //    [BindProperty(SupportsGet = true)]
-    //    public Medicine M { get; set; } = new Medicine();//add a copy constructor
-    //    [BindProperty(SupportsGet = true)]
-    //    public Cosmetic C { get; set; }//add a copy constructor
-    //    public List<Medicine> Medicines {  get; set; }=new List<Medicine>();
-    //    public List<Cosmetic> Cosmetics { get; set; }=new List<Cosmetic>() ;
-    //    public float totalPrice { get; set; } = 0;
-
-    //    public void OnGet()
-    //    {
-    //        M.Id = 23;M.Price= 25;M.Name = "Ahmed";
-    //        C.Id = 23;C.Price = 30;C.Name = "Hamada";
-    //        //HttpContext.Session.SetString("totalPrice", totalPrice.ToString());
-    //        HttpContext.Session.SetString(SessionKey, JsonSerializer.Serialize(Medicines));
-    //        HttpContext.Session.SetString(SessionKeyC, JsonSerializer.Serialize(Cosmetics));
-    //        //HttpContext.Session.SetString("totalPrice",totalPrice.ToString());
-    //        var medicineJson = HttpContext.Session.GetString(SessionKey);
-    //            var medicines = !string.IsNullOrEmpty(medicineJson)
-    //                ? JsonSerializer.Deserialize<List<Medicine>>(medicineJson)
-    //                : new List<Medicine>();
-    //        // var ObJson = HttpContext.Session.GetString("MedObj");
-    //        // M = !string.IsNullOrEmpty(ObJson) ? JsonSerializer.Deserialize<Medicine>(ObJson) : new Medicine();
-    //        // Add a new product
-
-    //        medicines!.Add(new Medicine { Id = M.Id, Name = M.Name, Price = M.Price, Manufacturer = M.Manufacturer, Dosage = M.Dosage, Quantity = M.Quantity, Active_Ingredient = M.Active_Ingredient, Type = M.Type }); 
-    //            string p=HttpContext.Session.GetString("totalPrice")!;
-    //        if (p != null)
-    //        { totalPrice = float.Parse(p) + M.Price; }
-    //            // Save the updated list back to the session
-    //            HttpContext.Session.SetString(SessionKey, JsonSerializer.Serialize(medicines));
-    //            HttpContext.Session.SetString("totalPrice", totalPrice.ToString());
-
-
-    //        var cosmeticsJson = HttpContext.Session.GetString(SessionKeyC);
-    //        var cosmetics = !string.IsNullOrEmpty(cosmeticsJson)
-    //            ? JsonSerializer.Deserialize<List<Cosmetic>>(cosmeticsJson)
-    //            : new List<Cosmetic>();
-    //        //totalPrice += C.Price;
-
-    //        // Add a new product
-    //        if(cosmetics != null) {
-    //            cosmetics.Add(new Cosmetic { Id = C.Id, Name = C.Name, Price = C.Price, Manufacturer = C.Manufacturer, Quantity = C.Quantity, Type = C.Type, Description = C.Description });
-
-
-
-    //        }
-    //         p = HttpContext.Session.GetString("totalPrice")!;
-
-    //            totalPrice=float.Parse(p)+C.Price;
-    //            HttpContext.Session.SetString(SessionKeyC, JsonSerializer.Serialize(cosmetics));
-    //            HttpContext.Session.SetString("totalPrice", totalPrice.ToString());
-
-
-
-    //        //// Save the updated list back to the session
-    //        //HttpContext.Session.SetString(SessionKey, JsonSerializer.Serialize(cosmetics));
-
-
-
-
-    //    }
-    //    public void OnPost()
-    //    {
-
-
-
-    //    }
-
-
-    //}
+   
+   //        //HttpContext.Session.SetString(SessionKey, JsonSeri
     public class Order_DetailsModel : PageModel
     {
         private const string SessionKey = "MedicineList";
@@ -250,10 +178,35 @@ namespace Pharmacy_back.Pages
         //}
         public IActionResult OnPostAnotherItem()
         {
+            var username = HttpContext.Session.GetString("username");
+            if (string.IsNullOrEmpty(username))
+            {
+                // Redirect to the sign-in page if not logged in
+                return RedirectToPage("/signin", new { message = "Please sign in to place an order." });
+            }
+
+            // Existing order placement logic here
+            var failedOrders = new List<string>();
+            var successfulOrders = 0;
+
+            // Load items from session and process orders
+            // ... (existing logic)
+
+            orderMessage = $"Orders successful: {successfulOrders}. Our delivery man will call you soon!";
+            if (failedOrders.Any())
+            {
+                orderMessage += $" Failed orders: {string.Join(", ", failedOrders)}.";
+            }
+
+            return Page(); // Stay on the same page after successful order
+        
             return RedirectToPage("/allproducts");
+
         }
         public void OnPost()
         {
+
+
             var failedOrders = new List<string>();
             var successfulOrders = 0;
             var medicineJson = HttpContext.Session.GetString(SessionKey);

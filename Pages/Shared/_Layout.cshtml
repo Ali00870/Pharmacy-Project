@@ -44,11 +44,23 @@
                 </ul>
 
                 <div class="login-signup">
-                    <a asp-page="/signin">Login <i class="fa-solid fa-right-to-bracket"></i></a>
-                    <a asp-page="/register">Sign Up <i class="fa-solid fa-user-plus"></i></a>
+                    @{
+                        var username = Context.Session.GetString("username");
+                        if (!string.IsNullOrEmpty(username))
+                        {
+                            <p>Welcome, @username!</p>
+                            // <a href="/logout">Log Out <i class="fa-solid fa-right-from-bracket"></i></a>
+                        }
+                        else
+                        {
+                            <a asp-page="/signin">Login <i class="fa-solid fa-right-to-bracket"></i></a>
+                            <a asp-page="/register">Sign Up <i class="fa-solid fa-user-plus"></i></a>
+                        }
+                    }
                 </div>
             </div>
         </nav>
+
     </header>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -131,4 +143,5 @@
     <script src="~/js/swiper-bundle.min.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+
 </html>

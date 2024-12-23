@@ -42,7 +42,7 @@
                 <p class="text-details">@Model.Dosage </p> <p class="text-details">@Model.Form </p> <p class="text-details">@Model.Active_Ingredients </p>}
            
             <form method="post">
-            <label class="form-control">quantity u need : <input type="Quantity" asp asp-for=order_quantity /></label>
+					<label class="form-control">quantity u need : <input type="Quantity" asp asp-for=order_quantity /></label> <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <button>Add To Cart <i class="fa-solid fa-cart-arrow-down"></i></button>
 					</form>
             <div class="icons">
@@ -52,6 +52,8 @@
                 <span><i class="fa-solid fa-share-nodes"></i></span>
 
             </div>
+               
+
         </div>
     </div>
 </div>
