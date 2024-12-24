@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Pharmacy_back.Model;
 using System.Diagnostics;
 
 namespace Pharmacy_back.Pages
@@ -13,9 +14,9 @@ namespace Pharmacy_back.Pages
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
 
         private readonly ILogger<ErrorModel> _logger;
-        public Model.DB db { set; get; } 
+        public DB db { set; get; } 
         public int count {  get; set; }
-        public ErrorModel(ILogger<ErrorModel> logger,Model.DB dB)
+        public ErrorModel(ILogger<ErrorModel> logger,DB dB)
         {
             _logger = logger;
             this.db = dB;

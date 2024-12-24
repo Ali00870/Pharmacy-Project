@@ -17,8 +17,7 @@ namespace Pharmacy_back.Pages
         }
 
 
-        public string a = "a7a";
-        //[BindProperty]
+        [BindProperty]
         public string name { get; set; }
         [BindProperty]
         public float Price { get; set; }
@@ -38,6 +37,8 @@ namespace Pharmacy_back.Pages
         [BindProperty] public int order_quantity { get; set; }
         [BindProperty(SupportsGet = true)]
         public int id { get; set; }
+        [BindProperty]
+        public string img { get; set; }
         public void OnGet()
         {
             int count = db.check(id);
@@ -51,7 +52,7 @@ namespace Pharmacy_back.Pages
                 Manufacturer = dt.Rows[0]["manufacturer"].ToString();
                 Type = dt.Rows[0]["type"].ToString();
                 Description = dt.Rows[0]["Description"].ToString();
-
+                img = dt.Rows[0]["img"].ToString();
 
             }
             else
@@ -65,12 +66,12 @@ namespace Pharmacy_back.Pages
                 Dosage = dt.Rows[0]["dosage"].ToString();
                 Active_Ingredients = dt.Rows[0]["Active_Ingredient"].ToString();
                 Form = dt.Rows[0]["form"].ToString();
-
+                img = dt.Rows[0]["img"].ToString();
 
             }
             name = name;
             Price = Price;
-
+            HttpContext.Session.SetString("img", img);
             HttpContext.Session.SetString("prod_name", name);
             HttpContext.Session.SetString("prod_price", Price.ToString());
         }
@@ -80,13 +81,14 @@ namespace Pharmacy_back.Pages
             float pricee = !string.IsNullOrEmpty(HttpContext.Session.GetString("prod_price")) ? float.Parse(HttpContext.Session.GetString("prod_price")) : 0;
             Medicine medicine = new Medicine();
             medicine.Id = id;
-
+            string imgg = HttpContext.Session.GetString("img");
+            medicine.img= imgg;
             medicine.Price = pricee;
             medicine.Name = namee;
-
+            
             Cosmetics cosmetics = new Cosmetics();
             cosmetics.Id = id; cosmetics.Price = pricee; cosmetics.Name = namee;
-            string n = a;
+            cosmetics.img = imgg;
             int count = db.check(id);
             string jsonstring;
           
@@ -102,6 +104,8 @@ namespace Pharmacy_back.Pages
                 jsonstring = JsonSerializer.Serialize(medicine);
                 //return RedirectToPage("/Order_details", new { order_quantity = order_quantity, jsonstring = jsonstring,type=type });
             }
+            //HttpContext.Session.Remove("img");
+
             return RedirectToPage("/Order_details", new { order_quantity = order_quantity, jsonstring = jsonstring, type = count });
         }
     }

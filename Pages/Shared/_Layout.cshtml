@@ -16,22 +16,7 @@
                 <img src="https://st4.depositphotos.com/27205200/39727/v/450/depositphotos_397279466-stock-illustration-creative-pharmacy-concept-logo-design.jpg" alt="logo" />
             </a>
 
-            <form class="search">
-                <input type="search" placeholder="Search..." />
-                <button type="submit">Search</button>
-            </form>
-
-            <div class="top-nav-cart">
-                <div class="top-nav-cart-icon">
-                    <i class="fa-solid fa-bag-shopping"></i>
-                    <span class="total-count">0</span>
-                </div>
-
-                <div class="top-nav-cart-total-price">
-                    <p>My Cart:</p>
-                    <p class="total-price">$0</p>
-                </div>
-            </div>
+           
         </div>
 
         <nav>
@@ -39,16 +24,28 @@
                 <ul>
                     <li class="active"><a asp-page="/Index">Home</a></li>
                     <li><a asp-page="/allproducts">All Products</a></li>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Contact</a></li>
+                    <li><a href="#footer">About Us</a></li>
+                    <li><a href="#footer">Contact</a></li>
                 </ul>
 
                 <div class="login-signup">
-                    <a asp-page="/signin">Login <i class="fa-solid fa-right-to-bracket"></i></a>
-                    <a asp-page="/register">Sign Up <i class="fa-solid fa-user-plus"></i></a>
+                    @{
+                        var username = Context.Session.GetString("username");
+                        if (!string.IsNullOrEmpty(username))
+                        {
+                            <p>Welcome, @username!</p>
+                            // <a href="/logout">Log Out <i class="fa-solid fa-right-from-bracket"></i></a>
+                        }
+                        else
+                        {
+                            <a asp-page="/signin">Login <i class="fa-solid fa-right-to-bracket"></i></a>
+                            <a asp-page="/register">Sign Up <i class="fa-solid fa-user-plus"></i></a>
+                        }
+                    }
                 </div>
             </div>
         </nav>
+
     </header>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -74,7 +71,7 @@
     </div>
 
     <footer>
-        <div class="container">
+        <div class="container" id="footer">
             <div class="big-row">
                 <img src="https://st4.depositphotos.com/27205200/39727/v/450/depositphotos_397279466-stock-illustration-creative-pharmacy-concept-logo-design.jpg" alt="Footer logo" />
                 <div class="hotline">
@@ -85,9 +82,8 @@
                     </div>
                 </div>
 
-                <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore,
-                    ad.
+                <p class="text-lg-start">
+                 At Sydality, we are committed to delivering trusted healthcare solutions with personalized care. From prescriptions to wellness products, our team ensures your health and well-being are our top priorities.
                 </p>
             </div>
 
@@ -103,8 +99,8 @@
                 </div>
             </div>
 
-           
-           
+
+
         </div>
 
         <div class="bottom-footer">

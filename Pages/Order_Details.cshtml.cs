@@ -97,8 +97,9 @@ namespace Pharmacy_back.Pages
         public string SelectedItem { get; set; } // Property to hold the selected value
 
         public List<SelectListItem> Items { get; set; } = new List<SelectListItem>(); // List for dropdown options
-        private readonly Model.DB db;
-        public Order_DetailsModel(Model.DB db)
+        private readonly DB db;
+        public DateTime OrderDate {  get; set; }
+        public Order_DetailsModel(DB db)
         {
             this.db = db;
         }
@@ -114,8 +115,11 @@ namespace Pharmacy_back.Pages
         public int type { get; set; } = -1;
         [BindProperty(SupportsGet = true)]
         public string jsonstring {  get; set; }
+        
+
         public void OnGet()
         {
+            
             DataTable d = db.pharmacies();
             for(int i = 0; i < d.Rows.Count; i++)
             {
@@ -169,17 +173,7 @@ namespace Pharmacy_back.Pages
             // Add new Medicine
             if (type==0&&M != null && !string.IsNullOrEmpty(M.Name))
             {
-                //Medicines.Add(new Medicine
-                //{
-                //    Id = M.Id,
-                //    Name = M.Name,
-                //    Price = M.Price,
-                //    Manufacturer = M.Manufacturer,
-                //    Dosage = M.Dosage,
-                //    Quantity = M.Quantity,
-                //    Active_Ingredient = M.Active_Ingredient,
-                //    Type = M.Type
-                //});
+                
                 M.Quantity = order_quantity;
                 Medicines.Add(M);
                 TotalPrice += M.Price*M.Quantity;
@@ -207,53 +201,20 @@ namespace Pharmacy_back.Pages
             HttpContext.Session.SetString(SessionKey, JsonSerializer.Serialize(Medicines));
             HttpContext.Session.SetString(SessionKeyC, JsonSerializer.Serialize(Cosmetics));
             HttpContext.Session.SetString("totalPrice", TotalPrice.ToString());
-            type = -1;
+            
         }
         
 
-        //public void OnPost()
-        //{
-
-        //    foreach(var M in Medicines) {
-        //        int pid = M.Id;
-        //        int quantity=M.Quantity;
-        //        int done=db.InsertOrder(username, pid, quantity,SelectedItem);
-        //        if (done == 1) {
-        //            orderMessage+= "1";
-
-        //        }
-        //        else
-        //        {
-
-        //            //FailedList
-        //        }
-
-        //    }
-        //    foreach(var M in Cosmetics)
-        //    {
-        //        int pid = M.Id;
-        //        int quantity=M.Quantity;
-        //        int done = db.InsertOrder(username, pid, quantity, SelectedItem);
-
-        //        if (done == 1)
-        //        {
-        //            orderMessage+= "1";
-
-        //        }
-        //        else
-        //        {
-
-        //            //FailedList
-        //        }
-        //    }
-
-        //}
+       
         public IActionResult OnPostAnotherItem()
         {
             return RedirectToPage("/allproducts");
         }
-        public void OnPost()
+        public IActionResult OnPost()
         {
+            string username=HttpContext.Session.GetString("username");
+            if(string.IsNullOrEmpty(username)) { return RedirectToPage("/signin"); }
+
             var failedOrders = new List<string>();
             var successfulOrders = 0;
             var medicineJson = HttpContext.Session.GetString(SessionKey);
@@ -266,17 +227,18 @@ namespace Pharmacy_back.Pages
             Cosmetics = !string.IsNullOrEmpty(cosmeticsJson)
                 ? JsonSerializer.Deserialize<List<Cosmetics>>(cosmeticsJson)
                 : new List<Cosmetics>();
+            OrderDate = DateTime.Now;
             // Process Medicines
             foreach (var M in Medicines)
             {
                 
                 int pid = M.Id;
                 int quantity = M.Quantity;
-
+                
                 try
                 {
                     string msg = "f";
-                    int done = db.InsertOrder(username, pid, quantity, SelectedItem,ref msg);
+                    int done = db.InsertOrder(username, pid, quantity, SelectedItem,ref msg,OrderDate);
                     if (done == 1)
                     {
                         successfulOrders++;
@@ -302,8 +264,9 @@ namespace Pharmacy_back.Pages
 
                 try
                 {
+
                     string msg = "f";
-                    int done = db.InsertOrder(username, pid, quantity, SelectedItem,ref msg);
+                    int done = db.InsertOrder(username, pid, quantity, SelectedItem,ref msg,OrderDate);
                     if (done == 1)
                     {
                         successfulOrders++;
@@ -330,6 +293,10 @@ namespace Pharmacy_back.Pages
                 orderMessage += $" Failed orders: {string.Join(", ", failedOrders)}.";
                 
             }
+            HttpContext.Session.Remove(SessionKey);
+            HttpContext.Session.Remove(SessionKeyC);
+            HttpContext.Session.Remove("totalPrice");
+            return RedirectToPage("/follow_order", new {c_username=username});
 
         }
 

@@ -4,9 +4,17 @@ using Pharmacy_back.Model;
 namespace Pharmacy_back.Pages
 {
     public class registerModel : PageModel
-    {  public  DB db {  get; set; }
+    {
+        public DB db { get; set; }
         [BindProperty]
-        public string username {  get; set; }
+        public string username { get; set; }
+        [BindProperty]
+        public string district { get; set; }
+        [BindProperty]
+        public string street { get; set; }
+        [BindProperty]
+        public string phone_number { get; set; }
+
         [BindProperty]
         public string password { get; set; }
         [BindProperty]
@@ -45,7 +53,7 @@ namespace Pharmacy_back.Pages
                 {
 
                     HttpContext.Session.SetString(username, password);
-                    db.InsertNewUsers(username, email, name, password);
+                    db.InsertNewUsers(username, email, name, password, district, street, phone_number);
                     return RedirectToPage("/Index");
                 }
                 else
@@ -57,4 +65,3 @@ namespace Pharmacy_back.Pages
         }
     }
 }
-

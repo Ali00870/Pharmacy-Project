@@ -186,9 +186,10 @@
                         {
                             <div class="card">
                                     
-                                    <form class="card" method="post" asp-route-id="@row["Product_id"]">
+                                    <form  method="post" asp-route-id="@row["Product_id"]">
                                 <h3>@row["name"]</h3>
                                 <p class="price">$@row["price"]</p>
+                                <img src="@row["img"]" alt="img"/>
 
                                     <button type="submit" style="padding: 10px 15px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">
                                     Add to Cart
@@ -231,7 +232,7 @@
                                     
                                         <h3>@row["name"]</h3>
                                         <p class="price">$@row["price"]</p>
-
+                                        <img src="@row["img"]" alt="img"/>
                                         <button type="submit" style="padding: 10px 15px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">
                                             Add to Cart
                                         </button>
@@ -242,10 +243,7 @@
                         </div>
                         </div>
                 </div>
-                @* <div class="mobile-section-products swiper-wrapper"></div>
-
-                <div class="swiper-button-next swip-btn"></div>
-                <div class="swiper-button-prev swip-btn"></div> *@
+               
             </div>
         </div>
     </div>
@@ -277,23 +275,4 @@
 <!-- End Banner -->
 <!-- Start News Letter -->
 
-@* <section class="newsletter">
-    <div class="container">
-        <div class="text">
-            <img src="./img/icon_email.png" alt="Email" />
-            <div class="content">
-                <h4>Sign Up To News Letter</h4>
-                <p>Lorem ipsum dolor sit amet consectetur.</p>
-                <h6>Lorem ipsum dolor sit amet.</h6>
-            </div>
-        </div>
-
-        <form action="">
-            <input type="email" placeholder="Enter Your Email" name="" id="" />
-            <button type="submit">Subscribe</button>
-        </form>
-    </div>
-</section>
-
- *@
 </body>

@@ -91,15 +91,15 @@
 
           
                 
-            <div class="filter-items">
+            @* <div class="filter-items">
                 <h4>Price Range</h4>
                 <div class="content">
-                    <input type="range" min="1" max="100" step="1" />@*to be done later*@
-                    <p>Price: $<span id="price-range">50</span></p>
+                    <input type="range" min="1" max="100" step="1" />@*to be done later
+                   @  <p>Price: $<span id="price-range">50</span></p>
                 </div>
-            </div>
+            </div> *@ 
                     <div class="filter-item">
-                        <button class="btn-change" type="submit">Apply Filter</button>
+                        <button class="btn btn-next btn-small" type="submit">Apply Filter</button>
                     </div>
                 </form>
                     
@@ -119,10 +119,11 @@
                             <div class="card">
                                 <h3>@row["name"]</h3>
                                 <p class="price">$@row["price"]</p>
+                                <img src="@row["img"]" alt="img" />
                                 <form method="post" asp-page-handler="AddToCart">
                                     <input type="hidden" name="id" value="@row["id"]" />
                                     <button type="submit" style="padding: 10px 15px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">
-                                        Add to Cart
+                                        View Item
                                     </button>
                                 </form>
                             </div>
@@ -135,10 +136,11 @@
                             <div class="card">
                                 <h3>@row["name"]</h3>
                                 <p class="price">$@row["price"]</p>
+                                <img src="@row["img"]" alt="img" />     
                                 <form method="post" asp-page-handler="AddToCart">
                                     <input type="hidden" name="id" value="@row["id"].ToString()" />
                                     <button type="submit" style="padding: 10px 15px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">
-                                        Add to Cart
+                                        View Item
                                     </button>
                                 </form>
                             </div>
@@ -146,10 +148,83 @@
                     </div>
                
 
-                <form method="post" asp-page-handler="ShowMore">
-                    <button type="submit" class="btn-cart" name="n" value="Next">Next></button>
-                    <button type="submit" class="btn-cart" name="n" value="Previous"> previous< </button>
+                <form method="post" class="button-group" asp-page-handler="ShowMore">
+                    <button type="submit" class="btn btn-next" name="n" value="Next">Next &gt;</button>
+                    <button type="submit" class="btn btn-prev" name="n" value="Previous">&lt; Previous</button>
                 </form>
+
+                <style>
+                    .button-group {
+                        display: flex;
+                        justify-content: center;
+                        gap: 12px;
+                        margin-top: 20px;
+                    }
+
+                    .btn {
+                        background-color: #007bff;
+                        color: #fff;
+                        font-size: 16px;
+                        font-weight: bold;
+                        padding: 10px 20px;
+                        border: none;
+                        border-radius: 4px;
+                        cursor: pointer;
+                        transition: background-color 0.3s ease, transform 0.2s ease;
+                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                    }
+
+                        .btn:hover {
+                            background-color: #0056b3;
+                            transform: translateY(-2px);
+                        }
+
+                        .btn:active {
+                            background-color: #004080;
+                            transform: translateY(0);
+                        }
+
+                    .btn-next {
+                        background-color: #28a745;
+                    }
+
+                        .btn-next:hover {
+                            background-color: #218838;
+                        }
+
+                        .btn-next:active {
+                            background-color: #1e7e34;
+                        }
+
+                    .btn-prev {
+                        background-color: #dc3545;
+                    }
+
+                        .btn-prev:hover {
+                            background-color: #c82333;
+                        }
+
+                        .btn-prev:active {
+                            background-color: #bd2130;
+                        }
+
+                    .btn-small {
+                        font-size: 15px; /* Smaller font size */
+                        padding: 12px 16px; /* Smaller padding */
+                        border-radius: 3px; /* Adjusted border radius */
+                        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Subtle shadow for a smaller button */
+                    }
+
+                        .btn-small:hover {
+                            background-color: #218838; /* Maintain hover state for consistency */
+                            transform: translateY(-1px);
+                        }
+
+                        .btn-small:active {
+                            background-color: #1e7e34;
+                            transform: translateY(0);
+                        }
+                </style>
             </div>
             
         </div>
