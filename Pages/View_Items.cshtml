@@ -33,25 +33,29 @@
                 <p><span> $ @Model.Price</span></p>
 
             </div>
-          
 
 
-            @if(Model.Description!= null){
-            <p class="text-details">@Model.Description</p>}
-            else{
-                <p class="text-details">@Model.Dosage </p> <p class="text-details">@Model.Form </p> <p class="text-details">@Model.Active_Ingredients </p>}
-           
-            <form method="post">
-            <label class="form-control">quantity u need : <input type="Quantity" asp asp-for=order_quantity /></label>
-            <button>Add To Cart <i class="fa-solid fa-cart-arrow-down"></i></button>
-					</form>
-            <div class="icons">
-                <span><i class="fa-regular fa-heart"></i></span>
-                <span><i class="fa-solid fa-sliders"></i></span>
-                <span><i class="fa-solid fa-print"></i></span>
-                <span><i class="fa-solid fa-share-nodes"></i></span>
 
-            </div>
+                @if (Model.Description != null)
+                {
+                    <p class="text-details">@Model.Description</p>
+                }
+                else
+                {
+                    <p class="text-details">@Model.Dosage </p> <p class="text-details">@Model.Form </p> <p class="text-details">@Model.Active_Ingredients </p>
+                }
+
+                <form method="post">
+                    <label class="form-control">quantity u need : <input type="Quantity" asp asp-for=order_quantity /></label> <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <button>Add To Cart <i class="fa-solid fa-cart-arrow-down"></i></button>
+                </form>
+                <div class="icons">
+                    <span><i class="fa-regular fa-heart"></i></span>
+                    <span><i class="fa-solid fa-sliders"></i></span>
+                    <span><i class="fa-solid fa-print"></i></span>
+                    <span><i class="fa-solid fa-share-nodes"></i></span>
+
+                </div>
         </div>
     </div>
 </div>
