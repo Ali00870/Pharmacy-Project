@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.IdentityModel.Tokens;
 using Pharmacy_back.Model;
 using System.Data;
 
@@ -31,15 +32,21 @@ namespace Pharmacy_back.Pages
         public void OnGet()
         {
             DataTable dt;
-            dt = db.showdetailssorder(c_username);
-            pharmacyname = dt.Rows[0]["pharmacy_name"].ToString();
-            pharmacylocation = dt.Rows[0]["pharmacy_location"].ToString();
-            orderstatus = dt.Rows[0]["status"].ToString();
+            c_username = HttpContext.Session.GetString("username");
+            if (!c_username.IsNullOrEmpty())
+            {
+                dt = db.showdetailssorder(c_username);
 
-            var pricestring = dt.Rows[0]["totalPrice"].ToString();
-            totalprice = !string.IsNullOrEmpty(pricestring) ? float.Parse(pricestring) : 0;
-            orderdate = dt.Rows[0]["order_date"].ToString();
-            //deliverynumber = dt.Rows[0]["delivery_pnum"].ToString();
+                pharmacyname = dt.Rows[0]["pharmacy_name"].ToString();
+                pharmacylocation = dt.Rows[0]["pharmacy_location"].ToString();
+                orderstatus = dt.Rows[0]["status"].ToString();
+
+                var pricestring = dt.Rows[0]["totalPrice"].ToString();
+                totalprice = !string.IsNullOrEmpty(pricestring) ? float.Parse(pricestring) : 0;
+                orderdate = dt.Rows[0]["order_date"].ToString();
+                //deliverynumber = dt.Rows[0]["delivery_pnum"].ToString();}
+            }
+            
         }
     }
 

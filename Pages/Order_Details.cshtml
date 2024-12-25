@@ -138,7 +138,7 @@
     <!-- Start Checkout -->
     <section class="checkout">
         <div class="container">
-            <form method="post">
+           @*  <form method="post">
                 <div class="address">
                     <h2>Delivery Address</h2>
 
@@ -148,21 +148,53 @@
                             <input type="text" asp-for="@Model.username" placeholder="Enter Your Name" />
                         </div> *@
 
-                        <div>
+                       @*  <div>
                             <label for="Pharmacy">Pharmacy</label>
-                            <select asp-for="@Model.SelectedItem" asp-items="@Model.Items">
+                            <select asp-for="SelectedItem" asp-items="Model.Items">
                                 <option value="">Select an option</option>
                             </select>
-                            @* <span asp-validation-for="@Model.SelectedItem" class="text-danger"></span> *@
+                            <span class="text-danger">@Model.SelectMsg</span>
 
-                            
+
+
                         </div>
                     </div>
                     <div class="order-btn">
                         <button type="submit">Order</button>
                     </div>
                 </div>
+            </form> *@
+            <form method="post" id="orderForm">
+                <div class="address">
+                    <div class="inputs">
+                        <div>
+                            <label for="Pharmacy">Pharmacy</label>
+                            <select asp-for="SelectedItem" asp-items="Model.Items">
+                                <option value="">Select an option</option>
+                            </select>
+                            <span class="text-danger">@Model.SelectMsg</span>
+                        </div>
+                    </div>
+                    <div class="order-btn">
+                        <button type="button" id="confirmOrderBtn">Order</button>
+                    </div>
+                </div>
             </form>
+
+            <!-- Confirmation Modal -->
+            <div id="confirmationModal" style="display: none;">
+                <div class="modal-content">
+                    <h2>Confirm Order</h2>
+                    <p>Are you sure you want to place this order?</p>
+                    <div class="modal-buttons">
+                        <button type="button" id="confirmYes">Yes</button>
+                        <button type="button" id="confirmNo">No</button>
+                    </div>
+                </div>
+            </div>
+
+           
+
 
             <div class="order-summary">
                 <h1>Order Summary</h1>
@@ -175,8 +207,13 @@
                             <p class="order-summary-price">Price: <span>@M.Price</span></p>
                             <p class="order-summary-price">Quantity: <span>@M.Quantity</span></p>
                         </div>
+                        <form method="post" asp-page-handler="DeleteMedicine">
+                            <input type="hidden" name="id" value="@M.Id" />
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
                     </div>
                 }
+
                 @foreach (var C in Model.Cosmetics)
                 {
                     <div class="order-summary-item">
@@ -186,13 +223,19 @@
                             <p class="order-summary-price">Price: <span>@C.Price</span></p>
                             <p class="order-summary-price">Quantity: <span>@C.Quantity</span></p>
                         </div>
+                        <form method="post" asp-page-handler="DeleteCosmetic">
+                            <input type="hidden" name="id" value="@C.Id" />
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
                     </div>
                 }
+
                 <div class="total">
                     <p>Total</p>
                     <span>@Model.HttpContext.Session.GetString("totalPrice")</span>
                 </div>
             </div>
+
         </div>
 
         <div class="add-item-btn">
@@ -200,8 +243,66 @@
                 <button type="submit">Add Another Item</button>
             </form>
         </div>
+        
     </section>
     <h2>@Model.orderMessage</h2>
+    <style>
+        /* Simple styling for the modal */
+        #confirmationModal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .modal-buttons button {
+            margin: 10px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+            .modal-buttons button#confirmYes {
+                background-color: green;
+                color: white;
+            }
+
+            .modal-buttons button#confirmNo {
+                background-color: red;
+                color: white;
+            }
+    </style>
+
+    <script>
+        // JavaScript to handle confirmation
+        document.getElementById("confirmOrderBtn").addEventListener("click", function () {
+            document.getElementById("confirmationModal").style.display = "flex";
+        });
+
+        document.getElementById("confirmYes").addEventListener("click", function () {
+            // Submit the form
+            document.getElementById("orderForm").submit();
+        });
+
+        document.getElementById("confirmNo").addEventListener("click", function () {
+            // Hide the confirmation modal
+            document.getElementById("confirmationModal").style.display = "none";
+        });
+    </script>
     <script src="./js/swiper-bundle.min.js"></script>
     <script src="./js/swiper.js"></script>
     <script src="./js/fetchProducts.js"></script>

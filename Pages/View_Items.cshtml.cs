@@ -104,8 +104,10 @@ namespace Pharmacy_back.Pages
                 jsonstring = JsonSerializer.Serialize(medicine);
                 //return RedirectToPage("/Order_details", new { order_quantity = order_quantity, jsonstring = jsonstring,type=type });
             }
-            //HttpContext.Session.Remove("img");
-
+            HttpContext.Session.Remove("img");
+            HttpContext.Session.Remove("prod_name");
+            HttpContext.Session.Remove("prod_price");
+            HttpContext.Session.SetString("SourcePage", "View_Items");
             return RedirectToPage("/Order_details", new { order_quantity = order_quantity, jsonstring = jsonstring, type = count });
         }
     }
