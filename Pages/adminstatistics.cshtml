@@ -2,6 +2,9 @@
 @model Pharmacy_back.Pages.adminstatisticsModel
 @{
 }
+
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -48,19 +51,19 @@
             <div class="col-md-4">
                 <div class="summary-box">
                     <p>All Users</p>
-                    <h2>300</h2>
+                    <h2>@Model.users</h2>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="summary-box">
                     <p>Customers</p>
-                    <h2>280</h2>
+                    <h2>@Model.customers</h2>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="summary-box">
                     <p>Pharmacists</p>
-                    <h2>20</h2>
+                    <h2>@Model.pharmacists</h2>
                 </div>
             </div>
         </div>
@@ -80,15 +83,6 @@
                 </div>
             </div>
         </div>
-
-        <div class="row mt-4">
-            <div class="col-md-12">
-                <div class="card p-3">
-                    <h5 class="card-title">Total Units by Month and Manufacturer</h5>
-                    <canvas id="unitsChart"></canvas>
-                </div>
-            </div>
-        </div>
     </div>
 
     <!-- Bootstrap JS -->
@@ -104,13 +98,13 @@
                 labels: ['Sept 2024', 'Oct 2024', 'Nov 2024'],
                 datasets: [
                     {
-                        label: 'HealthCare',
-                        data: [300, 400, 350],
+                        label: 'Cosmetics',
+                        data: [@Model.cosmsept, @Model.cosmoct, @Model.cosmnov],
                         backgroundColor: 'rgba(33, 150, 243, 0.6)',
                     },
                     {
                         label: 'Medicine',
-                        data: [250, 300, 270],
+                        data: [@Model.medsept, @Model.medoct, @Model.mednov],
                         backgroundColor: 'rgba(255, 193, 7, 0.6)',
                     },
                 ],
@@ -128,10 +122,10 @@
         new Chart(inventoryCtx, {
             type: 'pie',
             data: {
-                labels: ['Expired', 'Out of Stock', 'Total Stock'],
+                labels: ['Nearly out of stock', 'Out of Stock', 'Stocked'],
                 datasets: [
                     {
-                        data: [10, 25, 65],
+                        data: [@Model.almostempty, @Model.empty, @Model.stocked],
                         backgroundColor: ['#ff5252', '#ffca28', '#66bb6a'],
                     },
                 ],
@@ -144,58 +138,6 @@
             },
         });
 
-        // Total Units by Month and Manufacturer Line Chart
-        const unitsCtx = document.getElementById('unitsChart').getContext('2d');
-        new Chart(unitsCtx, {
-            type: 'line',
-            data: {
-                labels: [
-                    'Jan 14',
-                    'Feb 14',
-                    'Mar 14',
-                    'Apr 14',
-                    'May 14',
-                    'Jun 14',
-                    'Jul 14',
-                    'Aug 14',
-                    'Sep 14',
-                    'Oct 14',
-                    'Nov 14',
-                    'Dec 14',
-                ],
-                datasets: [
-                    {
-                        label: 'Aliqui',
-                        data: [500, 600, 700, 800, 900, 1100, 1200, 1000, 950, 850, 750, 650],
-                        borderColor: '#1e88e5',
-                        backgroundColor: 'rgba(33, 150, 243, 0.3)',
-                    },
-                    {
-                        label: 'Natura',
-                        data: [300, 400, 450, 550, 600, 700, 800, 850, 950, 1000, 1100, 1200],
-                        borderColor: '#ffca28',
-                        backgroundColor: 'rgba(255, 193, 7, 0.3)',
-                    },
-                    {
-                        label: 'Plum',
-                        data: [200, 250, 300, 350, 400, 450, 500, 600, 700, 750, 850, 950],
-                        borderColor: '#66bb6a',
-                        backgroundColor: 'rgba(102, 187, 106, 0.3)',
-                    },
-                    {
-                        label: 'VanArdel',
-                        data: [400, 500, 550, 600, 650, 700, 750, 800, 850, 900, 1000, 1100],
-                        borderColor: '#ab47bc',
-                        backgroundColor: 'rgba(171, 71, 188, 0.3)',
-                    },
-                ],
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: { display: true, position: 'top' },
-                },
-            },
-        });
     </script>
 </body>
+</html>

@@ -29,20 +29,33 @@ namespace Pharmacy_back.Pages
             this.db = db;
         }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
-            users = db.Getusers();
-            pharmacists = db.Getpharmacists();
-            customers = db.Getcustomers();
-            stocked = db.Getstocked();
-            empty = db.Getoutofstock();
-            almostempty = db.Getsmallstock();
-            medsept = db.medicinesept();
-            medoct = db.medicineoct();
-            mednov = db.medicinenov();
-            cosmsept = db.cosmeticssept();
-            cosmoct = db.cosmeticsoct();
-            cosmnov = db.cosmeticsnov();
+            if (HttpContext.Session.GetString("username") == "pharmacist10")
+            {
+                users = db.Getusers();
+                pharmacists = db.Getpharmacists();
+                customers = db.Getcustomers();
+                stocked = db.Getstocked();
+                empty = db.Getoutofstock();
+                almostempty = db.Getsmallstock();
+                medsept = db.medicinesept();
+                medoct = db.medicineoct();
+                mednov = db.medicinenov();
+                cosmsept = db.cosmeticssept();
+                cosmoct = db.cosmeticsoct();
+                cosmnov = db.cosmeticsnov();
+                return Page();
+            }
+            else
+            {
+                return RedirectToPage("/Index");
+            }
+        }
+        public IActionResult OnPostLogout()
+        {
+            HttpContext.Session.Remove("username");
+            return RedirectToPage("/signin");
         }
 
     }

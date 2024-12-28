@@ -26,7 +26,13 @@ namespace Pharmacy_back.Pages
         {
             RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
            
-        }
+        } 
+        public IActionResult OnPostLogout()
+    {
+        HttpContext.Session.Remove("username");
+        return RedirectToPage("/signin");
     }
+    }
+   
 
 }

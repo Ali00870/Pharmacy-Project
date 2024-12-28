@@ -11,6 +11,10 @@
 
 
 
+
+
+
+
 <body>
 <div class="cart">
     <div class="top-cart">
@@ -76,12 +80,74 @@
     </div>
 </section>
 <!-- End Slider -->
-    @if (showAddItemButton)
+    <div class="container my-4">
+        <div class="row text-center">
+            @if (Model.AddItems)
+            {
+                <div class="col-md-3 my-2">
+                    <form method="post" asp-page-handler="AddItem">
+                        <button type="submit" class="btn btn-lg btn-block shadow-lg custom-button">Add Item</button>
+                    </form>
+                </div>
+            }
+            @if (Model.statistcs)
+            {
+                <div class="col-md-3 my-2">
+                    <form method="post" asp-page-handler="Statistics">
+                        <button type="submit" class="btn btn-lg btn-block shadow-lg custom-button">Statistics</button>
+                    </form>
+                </div>
+            }
+            @if (Model.Allemployeees)
+            {
+                <div class="col-md-3 my-2">
+                    <form method="post" asp-page-handler="AllEmployees">
+                        <button type="submit" class="btn btn-lg btn-block shadow-lg custom-button">All Employees</button>
+                    </form>
+                </div>
+            }
+            @if (Model.Allpharmacists)
+            {
+                <div class="col-md-3 my-2">
+                    <form method="post" asp-page-handler="AllPharmacists">
+                        <button type="submit" class="btn btn-lg btn-block shadow-lg custom-button">All Pharmacists</button>
+                    </form>
+                </div>
+            }
+            @if (Model.Handle)
+            {
+                <form method="post" asp-page-handler="HandleOrders">
+
+                    <button type="submit" class="btn btn-success btn-lg btn-block shadow-lg">Handle Orders</button>
+                </form>
+
+            }
+        </div>
+    </div>
+
+    <style>
+        .custom-button {
+            background-color: #FF4500;
+            color: #fff;
+            border: none;
+            transition: all 0.3s ease-in-out;
+        }
+
+            .custom-button:hover {
+                background-color: #e03e00;
+                transform: scale(1.05);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            }
+    </style>
+   
+    @*  @if (Model.Edit)
     {
-        <form method="post" asp-page-handler="AddItem">
+        <form method="post" asp-page-handler="">
             <button type="submit" class="btn btn-success btn-lg btn-block shadow-lg">AddItem</button>
         </form>
     }
+ *@
+
 <!-- Start Features -->
 <div class="features">
     <div class="container">

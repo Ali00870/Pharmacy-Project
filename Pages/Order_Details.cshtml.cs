@@ -198,16 +198,7 @@ namespace Pharmacy_back.Pages
                 }
 
 
-                // Provide feedback
-                //orderMessage = $"Orders successful: {successfulOrders}. Our delivery man will call you soon!";
-
-
-
-                //if (failedOrders.Any())
-                //{
-                //    orderMessage += $" Failed orders: {string.Join(", ", failedOrders)}.";
-
-                //}
+               
                 if( successfulOrders == 0) { return RedirectToPage("/Order_Details", new { SelectMsg = "Please Order at least one Item" }); }
                 HttpContext.Session.Remove(SessionKey);
                 HttpContext.Session.Remove(SessionKeyC);
@@ -273,7 +264,11 @@ namespace Pharmacy_back.Pages
             return RedirectToPage("/Order_Details"); // Refresh the page to update the UI
         }
 
-
+        public IActionResult OnPostLogout()
+        {
+            HttpContext.Session.Remove("username");
+            return RedirectToPage("/signin");
+        }
     }
 
 }

@@ -13,7 +13,7 @@
     <header>
         <div class="container top-nav">
             <a asp-page="/Index" class="logo">
-                <img src="https://st4.depositphotos.com/27205200/39727/v/450/depositphotos_397279466-stock-illustration-creative-pharmacy-concept-logo-design.jpg" alt="logo" />
+                <img src="/img/WhatsApp Image 2024-12-26 at 12.40.22 PM.jpeg" alt="logo" width="125" height="100" />
             </a>
 
            
@@ -34,14 +34,21 @@
                         if (!string.IsNullOrEmpty(username))
                         {
                             <p>Welcome, @username!</p>
-                            // <a href="/logout">Log Out <i class="fa-solid fa-right-from-bracket"></i></a>
+                            <form method="post" asp-page-handler="Logout" style="display:inline;">
+                                <button type="submit" class="btn btn-outline-warning" >
+                                    Log Out <i class="fa-solid fa-right-from-bracket"></i>
+                                </button>
+                            </form>
                         }
                         else
                         {
-                            <a asp-page="/signin">Login <i class="fa-solid fa-right-to-bracket"></i></a>
-                            <a asp-page="/register">Sign Up <i class="fa-solid fa-user-plus"></i></a>
+                            <a class="btn btn-primary" asp-page="/signin">Login <i class="fa-solid fa-right-to-bracket"></i></a>
+                            <a class="btn btn-primary" asp-page="/register">Sign Up <i class="fa-solid fa-user-plus"></i></a>
                         }
                     }
+                </div>
+
+
                 </div>
                 <a href="/Order_Details" class="cart-link">
                     <i class="fas fa-shopping-cart"></i>
@@ -130,5 +137,6 @@
     <script src="~/js/swiper.js" asp-append-version="true"></script>
     <script src="~/js/swiper-bundle.min.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+   
 </body>
 </html>

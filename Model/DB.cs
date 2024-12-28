@@ -8,7 +8,7 @@ namespace Pharmacy_back.Model
     public class DB
     {
         //public string ConnectionString = "  Data Source=DESKTOP-MINNO8Q; Initial Catalog=master;Integrated Security=True; Trust Server Certificate=True ";
-        public string ConnectionString = "Data Source =DESKTOP-MINNO8Q; Initial Catalog= master ; Integrated Security = True ; Trust Server Certificate = True ";
+        public string ConnectionString = "Data Source =DESKTOP-O1HOQTT\\SQLEXPRESS01; Initial Catalog= master ; Integrated Security = True ; Trust Server Certificate = True ";
         public SqlConnection Connection;
         public DB()
         {
@@ -374,7 +374,7 @@ namespace Pharmacy_back.Model
         public int medicinesept()
         {
             int count = 0;
-            string query = "SELECT sum(quantity) FROM [dbo].[Customer_order] INNER JOIN [dbo].[medicine] med ON [Product_id] = med.[id] WHERE [delivery_date] >= '2024-09-01 00:00:00'  AND [delivery_date] < '2024-10-01 00:00:00'";
+            string query = "SELECT sum(quantity) FROM [dbo].[Customer_order] INNER JOIN [dbo].[medicine] med ON [Product_id] = med.[id] WHERE [delivery_date] >= '2023-09-01 00:00:00'  AND [delivery_date] < '2023-10-01 00:00:00'";
             SqlCommand cmd = new SqlCommand(query, Connection);
 
 
@@ -398,7 +398,7 @@ namespace Pharmacy_back.Model
         public int medicineoct()
         {
             int count = 0;
-            string query = "SELECT sum(quantity) FROM [dbo].[Customer_order] INNER JOIN [dbo].[medicine] med ON [Product_id] = med.[id] WHERE [delivery_date] >= '2024-10-01 00:00:00' AND [delivery_date] < '2024-11-01 00:00:00'";
+            string query = "SELECT sum(quantity) FROM [dbo].[Customer_order] INNER JOIN [dbo].[medicine] med ON [Product_id] = med.[id] WHERE [delivery_date] >= '2023-10-01 00:00:00' AND [delivery_date] < '2023-11-01 00:00:00'";
             SqlCommand cmd = new SqlCommand(query, Connection);
 
 
@@ -422,7 +422,7 @@ namespace Pharmacy_back.Model
         public int medicinenov()
         {
             int count = 0;
-            string query = "SELECT sum(quantity) FROM [dbo].[Customer_order] INNER JOIN [dbo].[medicine] med ON [Product_id] = med.[id] WHERE [delivery_date] >= '2024-11-01 00:00:00' AND [delivery_date] < '2024-12-01 00:00:00'";
+            string query = "SELECT sum(quantity) FROM [dbo].[Customer_order] INNER JOIN [dbo].[medicine] med ON [Product_id] = med.[id] WHERE [delivery_date] >= '2023-11-01 00:00:00' AND [delivery_date] < '2023-12-01 00:00:00'";
             SqlCommand cmd = new SqlCommand(query, Connection);
 
 
@@ -446,7 +446,7 @@ namespace Pharmacy_back.Model
         public int cosmeticsnov()
         {
             int count = 0;
-            string query = "SELECT sum(quantity) FROM [dbo].[Customer_order] INNER JOIN [dbo].[Cosmetics] cosm ON [Product_id] = cosm.[id] WHERE [delivery_date] >= '2024-11-01 00:00:00'  AND [delivery_date] < '2024-12-01 00:00:00'";
+            string query = "SELECT sum(quantity) FROM [dbo].[Customer_order] INNER JOIN [dbo].[Cosmetics] cosm ON [Product_id] = cosm.[id] WHERE [delivery_date] >= '2023-11-01 00:00:00'  AND [delivery_date] < '2023-12-01 00:00:00'";
             SqlCommand cmd = new SqlCommand(query, Connection);
 
 
@@ -470,7 +470,7 @@ namespace Pharmacy_back.Model
         public int cosmeticsoct()
         {
             int count = 0;
-            string query = "SELECT sum(quantity) FROM [dbo].[Customer_order] INNER JOIN [dbo].[Cosmetics] cosm ON [Product_id] = cosm.[id] WHERE [delivery_date] >= '2024-10-01 00:00:00'  AND [delivery_date] < '2024-11-01 00:00:00'";
+            string query = "SELECT sum(quantity) FROM [dbo].[Customer_order] INNER JOIN [dbo].[Cosmetics] cosm ON [Product_id] = cosm.[id] WHERE [delivery_date] >= '2023-10-01 00:00:00'  AND [delivery_date] < '2023-11-01 00:00:00'";
             SqlCommand cmd = new SqlCommand(query, Connection);
 
 
@@ -494,7 +494,7 @@ namespace Pharmacy_back.Model
         public int cosmeticssept()
         {
             int count = 0;
-            string query = "SELECT sum(quantity) FROM [dbo].[Customer_order] INNER JOIN [dbo].[Cosmetics] cosm ON [Product_id] = cosm.[id] WHERE [delivery_date] >= '2024-09-01 00:00:00'  AND [delivery_date] < '2024-10-01 00:00:00'";
+            string query = "SELECT sum(quantity) FROM [dbo].[Customer_order] INNER JOIN [dbo].[Cosmetics] cosm ON [Product_id] = cosm.[id] WHERE [delivery_date] >= '2023-09-01 00:00:00'  AND [delivery_date] < '2023-10-01 00:00:00'";
             SqlCommand cmd = new SqlCommand(query, Connection);
 
 
@@ -765,6 +765,88 @@ namespace Pharmacy_back.Model
 
 
         }
+       public DataTable getPharmacy(string username)
+        {
+            DataTable dt=new DataTable();
+            string query = @"select* from pharmacist_works_on where p_username=@username";
+            SqlCommand cmd= new SqlCommand(query, Connection);
+            try
+            {
+                cmd.Parameters.AddWithValue("@username", username);
+                Connection.Open();
+                dt.Load(cmd.ExecuteReader());
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                Connection.Close();
+            }
+            return dt;
+        }
+        
+        public DataTable GetOrders(string pharmacy) {
+            DataTable dt = new DataTable();
+            string query = "select* from Customer_order o join products p on(o.Product_id=p.id) " +
+                $"\r\nwhere pharmacy_name='{pharmacy}' and status='pending' " +
+                "and order_date is not null\r\norder by order_date asc";
+            SqlCommand cmd= new SqlCommand(query, Connection);
+            try
+            {
+                Connection.Open();
+                dt.Load(cmd.ExecuteReader());
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally { Connection.Close(); }
+            return dt;
+
+
+        }
+        public void DeliverOrder(int id)
+        {
+            string query = $"update customer_order set status='Delivered' where id={id}";
+            SqlCommand cmd= new SqlCommand(query, Connection);
+            try
+            {
+                Connection.Open();
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                Connection.Close();
+            }
+
+        }
+        public void DeleteOrder(int id)
+        {
+            string query = $"delete from customer_order where id={id}";
+            SqlCommand cmd = new SqlCommand(query, Connection);
+            try
+            {
+                Connection.Open();
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                Connection.Close();
+            }
+
+        }
+
 
         public int checkPharmacistUsers(string username, string password)
         {
@@ -1050,9 +1132,9 @@ namespace Pharmacy_back.Model
         {
             string q = @"select top 1 [order_date],sum(o.quantity*p.Price) as totalPrice,pharmacy_name,pharmacy_location,status,delivery_date,delivery_name,delivery_pnum
 from Customer_order o join products p on o.Product_id=p.id
-where o.C_username=@c_username
+where o.C_username=@c_username AND order_date is not null
 group by o.[order_date],pharmacy_name,pharmacy_location,status,delivery_date,delivery_name,delivery_pnum
-order by [order_date]";
+order by [order_date] desc";
             DataTable dt = new DataTable();
 
             try
@@ -1107,6 +1189,56 @@ order by [order_date]";
 
 
         }
+        public void UpdateProductsQuantity(int pid, int quantity)
+        {
+
+            int prevQuantity = getQuantity(pid);
+            string query = $"Update products set quantity={prevQuantity + quantity} where id={pid}";
+
+            try
+            {
+                SqlCommand cmd = new SqlCommand(query, Connection);
+
+
+                Connection.Open();
+                cmd.ExecuteNonQuery();
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+
+            }
+            finally { Connection.Close(); }
+
+
+        }
+        public bool isidexist(int pid)
+        {
+            bool b = false;
+            string q = @"select Count(*) from products where id=@id;";
+            int count;
+            try
+            {
+                SqlCommand cmd = new SqlCommand(q, Connection);
+                Connection.Open(); cmd.Parameters.AddWithValue("@id", pid);
+                count = (int)cmd.ExecuteScalar();
+                if (count > 0) { b = true; }
+                else { b = false; }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+
+            }
+            finally { Connection.Close(); }
+
+
+
+            return b;
+        }
+
 
 
     }

@@ -17,10 +17,23 @@ namespace Pharmacy_back.Pages
             _logger = logger;
             this.db = db;
         }
-        public void OnGet()
+        public IActionResult OnGet()
         {
-            customers = db.Getcustomers();
-            userdata= db.Getuserdata();
+            if (HttpContext.Session.GetString("username") == "pharmacist10")
+            {
+                customers = db.Getcustomers();
+                userdata = db.Getuserdata();
+                return Page();
+            }
+            else
+            {
+                return RedirectToPage("/Index");
+            }
+        }
+        public IActionResult OnPostLogout()
+        {
+            HttpContext.Session.Remove("username");
+            return RedirectToPage("/signin");
         }
     }
 }
