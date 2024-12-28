@@ -152,7 +152,7 @@ namespace Pharmacy_back.Model
             finally { Connection.Close(); }
             return d;
         }
-        
+
 
         public void AddMedicine(int product_ID, string name, float price, int quantity, string manufacturer, string dosage, string active_ingredients, string form)
         {
@@ -765,11 +765,11 @@ namespace Pharmacy_back.Model
 
 
         }
-       public DataTable getPharmacy(string username)
+        public DataTable getPharmacy(string username)
         {
-            DataTable dt=new DataTable();
+            DataTable dt = new DataTable();
             string query = @"select* from pharmacist_works_on where p_username=@username";
-            SqlCommand cmd= new SqlCommand(query, Connection);
+            SqlCommand cmd = new SqlCommand(query, Connection);
             try
             {
                 cmd.Parameters.AddWithValue("@username", username);
@@ -787,13 +787,14 @@ namespace Pharmacy_back.Model
             }
             return dt;
         }
-        
-        public DataTable GetOrders(string pharmacy) {
+
+        public DataTable GetOrders(string pharmacy)
+        {
             DataTable dt = new DataTable();
             string query = "select* from Customer_order o join products p on(o.Product_id=p.id) " +
                 $"\r\nwhere pharmacy_name='{pharmacy}' and status='pending' " +
                 "and order_date is not null\r\norder by order_date asc";
-            SqlCommand cmd= new SqlCommand(query, Connection);
+            SqlCommand cmd = new SqlCommand(query, Connection);
             try
             {
                 Connection.Open();
@@ -811,7 +812,7 @@ namespace Pharmacy_back.Model
         public void DeliverOrder(int id)
         {
             string query = $"update customer_order set status='Delivered' where id={id}";
-            SqlCommand cmd= new SqlCommand(query, Connection);
+            SqlCommand cmd = new SqlCommand(query, Connection);
             try
             {
                 Connection.Open();
@@ -1238,8 +1239,32 @@ order by [order_date] desc";
 
             return b;
         }
+        public void UpdateAccounts(string username, string district, string street, int housenum, string email, string password)
+        {
+            string query = "update customerr set [district]=@shift,[street]=@street,[house_number]=@housenum where c_username=@username;" +
+                "update user set [email]=@email,password=@password where [username]=@username;";
+            SqlCommand cmd = new SqlCommand(query, Connection);
+            cmd.Parameters.AddWithValue("@username", username);
+            cmd.Parameters.AddWithValue("@district", district);
+            cmd.Parameters.AddWithValue("@housenum", housenum);
+            cmd.Parameters.AddWithValue("@email", email);
+            cmd.Parameters.AddWithValue("@password", password);
+            try
+            {
+                Connection.Open();
+                cmd.ExecuteNonQuery();
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                Connection.Close();
+
+            }
 
 
-
+        }
     }
 }
