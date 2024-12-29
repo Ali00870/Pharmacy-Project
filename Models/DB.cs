@@ -3,13 +3,13 @@ using Pharmacy_back.Pages;
 using System.Data;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
-namespace Pharmacy_back.Model
+namespace Pharmacy_back.Models
 {
     public class DB
     {
 
-        //public string ConnectionString = "  Data Source=DESKTOP-MINNO8Q; Initial Catalog=master;Integrated Security=True; Trust Server Certificate=True ";
-        public string ConnectionString = "Data Source =DESKTOP-O1HOQTT\\SQLEXPRESS01; Initial Catalog= master ; Integrated Security = True ; Trust Server Certificate = True ";
+        public string ConnectionString = "  Data Source=DESKTOP-MINNO8Q; Initial Catalog=master;Integrated Security=True; Trust Server Certificate=True ";
+        //public string ConnectionString = "Data Source =DESKTOP-O1HOQTT\\SQLEXPRESS01; Initial Catalog= master ; Integrated Security = True ; Trust Server Certificate = True ";
         public SqlConnection Connection;
 
         public DB()
@@ -867,7 +867,7 @@ namespace Pharmacy_back.Model
             catch (Exception ex)
             {
 
-
+                Console.WriteLine(ex.Message);
             }
             finally { Connection.Close(); };
 
@@ -1133,11 +1133,11 @@ namespace Pharmacy_back.Model
         }
         public DataTable showdetailssorder(string customerusername)
         {
-            string q = @"select top 1 [order_date],sum(o.quantity*p.Price) as totalPrice,pharmacy_name,pharmacy_location,status,delivery_date,delivery_name,delivery_pnum
-from Customer_order o join products p on o.Product_id=p.id
-where o.C_username=@c_username AND order_date is not null
-group by o.[order_date],pharmacy_name,pharmacy_location,status,delivery_date,delivery_name,delivery_pnum
-order by [order_date] desc";
+            string q = @"select top 5 [order_date],sum(o.quantity*p.Price) as totalPrice,pharmacy_name,pharmacy_location,status,delivery_date
+                        from Customer_order o join products p on o.Product_id=p.id
+                        where o.C_username=@c_username AND order_date is not null
+                        group by o.[order_date],pharmacy_name,pharmacy_location,status,delivery_date,delivery_name,delivery_pnum
+                        order by [order_date] desc";
             DataTable dt = new DataTable();
 
             try
@@ -1243,7 +1243,7 @@ order by [order_date] desc";
         }
         public void UpdateAccounts(string username, string district, string street, int housenum, string email, string password)
         {
-            string query = "update customerr set [district]=@shift,[street]=@street,[house_number]=@housenum where c_username=@username;" +
+            string query = "update customerr set [district]=@district,[street]=@street,[house_number]=@housenum where c_username=@username;" +
                 "update user set [email]=@email,password=@password where [username]=@username;";
             SqlCommand cmd = new SqlCommand(query, Connection);
             cmd.Parameters.AddWithValue("@username", username);
@@ -1268,5 +1268,26 @@ order by [order_date] desc";
 
 
         }
+        public DataTable pharmPhones(string pharmacyName)
+        {
+            DataTable pharmPhones = new DataTable();
+            string query = $"select top 2 p_phone_num from pharmacy_number\r\nwhere pharmacyname='{pharmacyName}'\r\n";
+            SqlCommand cmd = new SqlCommand(query, Connection);
+            try
+            {
+                Connection.Open();
+                pharmPhones.Load(cmd.ExecuteReader());
+                
+            }
+            catch(Exception ex) {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                 Connection.Close();
+            }
+            return pharmPhones;
+        }
+
     }
 }

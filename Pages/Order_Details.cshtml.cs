@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Identity.Client;
 using Microsoft.IdentityModel.Tokens;
-using Pharmacy_back.Model;
+using Pharmacy_back.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Diagnostics.Eventing.Reader;
@@ -231,7 +231,7 @@ namespace Pharmacy_back.Pages
                 HttpContext.Session.Remove("totalPrice");
                 return RedirectToPage("/follow_order", new { c_username = username });
                 
-            }}
+            }
             else
             {
                // HttpContext.Session.SetString("SourcePage", "View_Items");

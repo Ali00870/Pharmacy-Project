@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Pharmacy_back.Model;
+using Pharmacy_back.Models;
 using System.Data;
 
 namespace Pharmacy_back.Pages
@@ -40,7 +40,7 @@ namespace Pharmacy_back.Pages
 
                         string pharmName = dt.Rows[0]["pharmacyname"].ToString();
                         HttpContext.Session.SetString("pharmacy", pharmName);
-                        return RedirectToPage("Index", new { showAddItem = true });
+                        return RedirectToPage("Index", new { AddItems = true, Handle = true }) ;
                     }
                 }
                 else

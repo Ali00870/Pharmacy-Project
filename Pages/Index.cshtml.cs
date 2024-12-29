@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Pharmacy_back.Model;
+using Pharmacy_back.Models;
 using System.Data;
 
 namespace Pharmacy_back.Pages
@@ -43,8 +43,13 @@ namespace Pharmacy_back.Pages
                     Allemployeees = true;
                     Edit = true;
                 }
+                else if(!string.IsNullOrEmpty(HttpContext.Session.GetString("pharmacy")))
+                {
+                    AddItems = true;
+                    Handle = true;
+                }
 
-                BestCosm = d.bestsellingCosmetics();
+            BestCosm = d.bestsellingCosmetics();
                 BestMed = d.bestsellingMedicine();
             }
         
