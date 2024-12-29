@@ -1075,7 +1075,60 @@ namespace Pharmacy_back.Models
                 Connection.Close();
             }
         }
+public void DeleteCustomer(string username)
+{
+    // Query to delete related records in the customer order table
+    string deleteCustomerOrderQuery = "DELETE FROM Customer_order WHERE C_username = @username";
+    // Query to delete the customer record
+    string deletecustomerQuery = "DELETE FROM customer WHERE c_username = @username";
+    //query to delete number records
+    string deletecustomernumQuery = "DELETE FROM customer_phone_num WHERE c_username = @username";
+    // Query to delete the user record
+    string deleteUserQuery = "DELETE FROM [User] WHERE username = @username";
 
+    try
+    {
+        Connection.Open();
+
+        using (SqlCommand numCmd = new SqlCommand(deletecustomernumQuery, Connection))
+        {
+            numCmd.Parameters.AddWithValue("@username", username);
+            numCmd.ExecuteNonQuery();
+        }
+        // Delete records in pharmacist_works_on table
+        using (SqlCommand worksOnCmd = new SqlCommand(deleteCustomerOrderQuery, Connection))
+        {
+            worksOnCmd.Parameters.AddWithValue("@username", username);
+            worksOnCmd.ExecuteNonQuery();
+        }
+
+        // Delete pharmacist record
+        using (SqlCommand customercmd = new SqlCommand(deletecustomerQuery, Connection))
+        {
+            customercmd.Parameters.AddWithValue("@username", username);
+            customercmd.ExecuteNonQuery();
+        }
+
+        // Delete user record
+        using (SqlCommand userCmd = new SqlCommand(deleteUserQuery, Connection))
+        {
+            userCmd.Parameters.AddWithValue("@username", username);
+            userCmd.ExecuteNonQuery();
+        }
+
+        Console.WriteLine($"Customer and corresponding user with username '{username}' have been deleted.");
+    }
+    catch (SqlException ex)
+    {
+        // Log any SQL errors
+        Console.WriteLine($"SQL Error: {ex.Message}");
+    }
+    finally
+    {
+        // Ensure the database connection is closed
+        Connection.Close();
+    }
+}
 
         public void deletEemployee(int id)
         {

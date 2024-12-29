@@ -10,30 +10,43 @@ namespace Pharmacy_back.Pages
         private readonly ILogger<UsersModel> _logger;
 
         public DB db { get; set; }
-        public int customers { get; set; }
         public DataTable userdata { get; set; }
         public UsersModel(ILogger<UsersModel> logger, DB db)
         {
             _logger = logger;
             this.db = db;
         }
-        public IActionResult OnGet()
+        public void OnGet()
         {
-            if (HttpContext.Session.GetString("username") == "pharmacist10")
+            userdata= db.Getuserdata();
+            if (userdata == null)
             {
-                customers = db.Getcustomers();
-                userdata = db.Getuserdata();
-                return Page();
-            }
-            else
-            {
-                return RedirectToPage("/Index");
+                userdata = new DataTable(); // Initialize to avoid null reference
             }
         }
-        public IActionResult OnPostLogout()
+        public void OnPost(string c_username)
         {
-            HttpContext.Session.Remove("username");
-            return RedirectToPage("/signin");
+            try
+            {
+                if (!string.IsNullOrEmpty(c_username))
+                {
+                    db.DeleteCustomer(c_username);
+                    Console.WriteLine($"Customer with username '{c_username}' has been deleted.");
+                }
+                else
+                {
+                    Console.WriteLine("No username provided for deletion.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error during deletion: {ex.Message}");
+            }
+            finally
+            {
+
+                userdata = db.Getuserdata();
+            }
         }
     }
 }
