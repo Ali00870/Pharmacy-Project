@@ -77,6 +77,7 @@ namespace Pharmacy_back.Pages
             HttpContext.Session.SetString("prod_name", name);
             HttpContext.Session.SetString("prod_price", Price.ToString());
         }
+
         public IActionResult OnPost()
         {
 
@@ -154,4 +155,5 @@ namespace Pharmacy_back.Pages
             return RedirectToPage("/signin");
         }
     }
+
 }

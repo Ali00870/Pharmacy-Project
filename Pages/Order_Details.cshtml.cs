@@ -11,7 +11,7 @@ using System.Text.Json;
 
 namespace Pharmacy_back.Pages
 {
-    
+
     public class Order_DetailsModel : PageModel
     {
         private const string SessionKey = "MedicineList";
@@ -120,11 +120,37 @@ namespace Pharmacy_back.Pages
 
         public IActionResult OnPostAnotherItem()
         {
+            var username = HttpContext.Session.GetString("username");
+            if (string.IsNullOrEmpty(username))
+            {
+                // Redirect to the sign-in page if not logged in
+                return RedirectToPage("/signin", new { message = "Please sign in to place an order." });
+            }
+
+            // Existing order placement logic here
+            var failedOrders = new List<string>();
+            var successfulOrders = 0;
+
+            // Load items from session and process orders
+            // ... (existing logic)
+
+            orderMessage = $"Orders successful: {successfulOrders}. Our delivery man will call you soon!";
+            if (failedOrders.Any())
+            {
+                orderMessage += $" Failed orders: {string.Join(", ", failedOrders)}.";
+            }
+
+            return Page(); // Stay on the same page after successful order
+        
             return RedirectToPage("/allproducts");
+
         }
         public IActionResult OnPost()
         {
+
             if (!SelectedItem.IsNullOrEmpty())
+
+
             {
                 string username = HttpContext.Session.GetString("username");
                 if (string.IsNullOrEmpty(username)) { return RedirectToPage("/signin"); }
@@ -205,7 +231,7 @@ namespace Pharmacy_back.Pages
                 HttpContext.Session.Remove("totalPrice");
                 return RedirectToPage("/follow_order", new { c_username = username });
                 
-            }
+            }}
             else
             {
                // HttpContext.Session.SetString("SourcePage", "View_Items");

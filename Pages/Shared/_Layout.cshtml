@@ -32,6 +32,7 @@
                         if (!string.IsNullOrEmpty(username))
                         {
                             <p>Welcome, @username!</p>
+
                             <form method="post" asp-page-handler="Logout" style="display:inline;">
                                 <button type="submit" class="btn btn-outline-warning small-btn">
                                     Log Out <i class="fa-solid fa-right-from-bracket"></i>
@@ -48,6 +49,7 @@
                         {
                             <a class="btn btn-primary small-btn" asp-page="/signin">Login <i class="fa-solid fa-right-to-bracket"></i></a>
                             <a class="btn btn-primary small-btn" asp-page="/register">Sign Up <i class="fa-solid fa-user-plus"></i></a>
+
                         }
                     }
                 </div>
@@ -76,6 +78,7 @@
                 </a>
             </div>
         </nav>
+
     </header>
 
     <script>
@@ -149,4 +152,5 @@
     <script src="~/js/swiper-bundle.min.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
+
 </html>
