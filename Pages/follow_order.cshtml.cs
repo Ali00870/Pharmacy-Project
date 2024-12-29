@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.IdentityModel.Tokens;
-using Pharmacy_back.Model;
+using Pharmacy_back.Models;
 using System.Data;
 
 namespace Pharmacy_back.Pages
@@ -24,33 +24,38 @@ namespace Pharmacy_back.Pages
 
 
 
-        [BindProperty] public string orderdate { get; set; }
+        [BindProperty] public string? orderdate { get; set; }
+        public string? deliverydate {  get; set; }
+        public string? pharmacyphone {  get; set; }
+        [BindProperty] public string? deliverynumber { get; set; }
 
-        [BindProperty] public string deliverynumber { get; set; }
-
-
+        public DataTable dp { get; set; }
+        public DataTable dt { get; set; }
         public void OnGet()
         {
-            DataTable dt;
+            
             c_username = HttpContext.Session.GetString("username");
             if (!c_username.IsNullOrEmpty())
             {
                 dt = db.showdetailssorder(c_username);
 
-                pharmacyname = dt.Rows[0]["pharmacy_name"].ToString();
-                pharmacylocation = dt.Rows[0]["pharmacy_location"].ToString();
-                orderstatus = dt.Rows[0]["status"].ToString();
+                //pharmacyname = dt.Rows[0]["pharmacy_name"].ToString();
+                //dp = db.pharmPhones(pharmacyname);
 
-                var pricestring = dt.Rows[0]["totalPrice"].ToString();
-                totalprice = !string.IsNullOrEmpty(pricestring) ? float.Parse(pricestring) : 0;
-                orderdate = dt.Rows[0]["order_date"].ToString();
-                //deliverynumber = dt.Rows[0]["delivery_pnum"].ToString();}
+                //pharmacylocation = dt.Rows[0]["pharmacy_location"].ToString();
+                //orderstatus = dt.Rows[0]["status"].ToString();
+
+                //var pricestring = dt.Rows[0]["totalPrice"].ToString();
+                //totalprice = !string.IsNullOrEmpty(pricestring) ? float.Parse(pricestring) : 0;
+                //orderdate = dt.Rows[0]["order_date"].ToString();
+                //deliverydate = dt.Rows[0]["delivery_date"].ToString();
+                
             }
             
         }
         public IActionResult OnPostLogout()
         {
-            HttpContext.Session.Remove("username");
+            HttpContext.Session.Clear();
             return RedirectToPage("/signin");
         }
     }

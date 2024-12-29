@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Pharmacy_back.Model;
+using Pharmacy_back.Models;
 using System.Data;
 
 namespace Pharmacy_back.Pages

@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Pharmacy_back.Model;
+using Pharmacy_back.Models;
 
 namespace Pharmacy_back.Pages
 {
@@ -72,7 +72,8 @@ namespace Pharmacy_back.Pages
         }
         public IActionResult OnPostLogout()
         {
-            HttpContext.Session.Remove("username");
+            //HttpContext.Session.Remove("username");
+            HttpContext.Session.Clear();
             return RedirectToPage("/signin");
         }
     }

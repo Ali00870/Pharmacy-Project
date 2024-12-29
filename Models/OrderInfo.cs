@@ -1,4 +1,4 @@
-﻿namespace Pharmacy_back.Model
+﻿namespace Pharmacy_back.Models
 {
     
         public class ProductInfo
