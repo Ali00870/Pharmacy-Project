@@ -34,16 +34,24 @@ namespace Pharmacy_back.Pages
         // Property to check if the page is in "Edit" mode
         public bool IsEditMode { get; set; }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
-            if (ID > 0)
+            if (HttpContext.Session.GetString("username").ToString() == "pharmacist10")
             {
-                
-                IsEditMode = true;
+                if (ID > 0)
+                {
+
+                    IsEditMode = true;
+                }
+                else
+                {
+                    IsEditMode = false;
+                }
+                return Page();
             }
             else
             {
-                IsEditMode = false;
+                return RedirectToPage("/Index");
             }
         }
 
@@ -82,6 +90,11 @@ namespace Pharmacy_back.Pages
         {
             db.deletEemployee(ID);
             return RedirectToPage("/Allempolyees");
+        }
+        public IActionResult OnPostLogout()
+        {
+            HttpContext.Session.Remove("username");
+            return RedirectToPage("/signin");
         }
     }
 }

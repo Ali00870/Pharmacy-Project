@@ -9,7 +9,7 @@
     <div class="container">
         <div class="item-img">
             <div class="big-img">
-                <img id="big-img" src="https://5.imimg.com/data5/SELLER/Default/2023/6/315922994/UI/ND/OY/121030754/herbal-hair-regrowth-medicine-500x500.png" alt="product img" />
+                <img id="big-img" src="@Model.img" alt="product img" />
             </div>
             <div class="small-imgs">
                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfsswdyRP4RZjAMwODIB5rLLjWjQ8Kr_NtziTgO67pLJl1xrOSuyhxqEcqGFNhQA4p4H0&usqp=CAU" alt="product img" />
@@ -33,26 +33,30 @@
                 <p><span> $ @Model.Price</span></p>
 
             </div>
-          
 
 
-            @if(Model.Description!= null){
-            <p class="text-details">@Model.Description</p>}
-            else{
-                <p class="text-details">@Model.Dosage </p> <p class="text-details">@Model.Form </p> <p class="text-details">@Model.Active_Ingredients </p>}
-           
-            <form method="post">
-					<label class="form-control">quantity u need : <input type="Quantity" asp asp-for=order_quantity /></label> <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <button>Add To Cart <i class="fa-solid fa-cart-arrow-down"></i></button>
-					</form>
-            <div class="icons">
-                <span><i class="fa-regular fa-heart"></i></span>
-                <span><i class="fa-solid fa-sliders"></i></span>
-                <span><i class="fa-solid fa-print"></i></span>
-                <span><i class="fa-solid fa-share-nodes"></i></span>
 
-            </div>
-               
+
+                @if (Model.Description != null)
+                {
+                    <p class="text-details">@Model.Description</p>
+                }
+                else
+                {
+                    <p class="text-details">@Model.Dosage </p> <p class="text-details">@Model.Form </p> <p class="text-details">@Model.Active_Ingredients </p>
+                }
+
+                <form method="post">
+                    <label class="form-control">quantity u need : <input type="Quantity" asp asp-for=order_quantity /></label> <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <button>Add To Cart <i class="fa-solid fa-cart-arrow-down"></i></button>
+                </form>
+                <div class="icons">
+                    <span><i class="fa-regular fa-heart"></i></span>
+                    <span><i class="fa-solid fa-sliders"></i></span>
+                    <span><i class="fa-solid fa-print"></i></span>
+                    <span><i class="fa-solid fa-share-nodes"></i></span>
+
+                </div>
 
         </div>
     </div>

@@ -4,6 +4,7 @@ using Pharmacy_back.Model;
 using System.Data;
 using System.Text.Json;
 
+
 namespace Pharmacy_back.Pages
 {
 
@@ -17,8 +18,7 @@ namespace Pharmacy_back.Pages
         }
 
 
-        public string a = "a7a";
-        //[BindProperty]
+        [BindProperty]
         public string name { get; set; }
         [BindProperty]
         public float Price { get; set; }
@@ -38,8 +38,11 @@ namespace Pharmacy_back.Pages
         [BindProperty] public int order_quantity { get; set; }
         [BindProperty(SupportsGet = true)]
         public int id { get; set; }
+        [BindProperty]
+        public string img { get; set; }
         public void OnGet()
         {
+           
             int count = db.check(id);
             if (count == 1)
             {
@@ -51,7 +54,7 @@ namespace Pharmacy_back.Pages
                 Manufacturer = dt.Rows[0]["manufacturer"].ToString();
                 Type = dt.Rows[0]["type"].ToString();
                 Description = dt.Rows[0]["Description"].ToString();
-
+                img = dt.Rows[0]["img"].ToString();
 
             }
             else
@@ -65,84 +68,92 @@ namespace Pharmacy_back.Pages
                 Dosage = dt.Rows[0]["dosage"].ToString();
                 Active_Ingredients = dt.Rows[0]["Active_Ingredient"].ToString();
                 Form = dt.Rows[0]["form"].ToString();
-
+                img = dt.Rows[0]["img"].ToString();
 
             }
             name = name;
             Price = Price;
-
+            HttpContext.Session.SetString("img", img);
             HttpContext.Session.SetString("prod_name", name);
             HttpContext.Session.SetString("prod_price", Price.ToString());
         }
-		public IActionResult OnPost()
-		{
-			// Ensure the quantity is at least 1
-			if (order_quantity < 1)
-			{
-				ModelState.AddModelError(string.Empty, "Quantity must be at least 1.");
 
-				// Reload item data to retain details on the page
-				LoadItemDetails();
+        public IActionResult OnPost()
+        {
 
-				return Page(); // Stay on the same page
-			}
+            if (order_quantity < 1)
+            {
+                ModelState.AddModelError(string.Empty, "Quantity must be at least 1.");
 
-			string namee = HttpContext.Session.GetString("prod_name");
-			float pricee = !string.IsNullOrEmpty(HttpContext.Session.GetString("prod_price")) ? float.Parse(HttpContext.Session.GetString("prod_price")) : 0;
+                // Reload item data to retain details on the page
+                LoadItemDetails();
 
-			Medicine medicine = new Medicine
-			{
-				Id = id,
-				Price = pricee,
-				Name = namee
-			};
+                return Page(); // Stay on the same page
+            }
+            string namee = HttpContext.Session.GetString("prod_name");
+            float pricee = !string.IsNullOrEmpty(HttpContext.Session.GetString("prod_price")) ? float.Parse(HttpContext.Session.GetString("prod_price")) : 0;
+            Medicine medicine = new Medicine();
+            medicine.Id = id;
+            string imgg = HttpContext.Session.GetString("img");
+            medicine.img= imgg;
+            medicine.Price = pricee;
+            medicine.Name = namee;
+            
+            Cosmetics cosmetics = new Cosmetics();
+            cosmetics.Id = id; cosmetics.Price = pricee; cosmetics.Name = namee;
+            cosmetics.img = imgg;
+            int count = db.check(id);
+            string jsonstring;
+          
+            if (count == 1)
+            {
+               
+                 jsonstring = JsonSerializer.Serialize(cosmetics);
+                
+            }
+            else
+            {
+                
+                jsonstring = JsonSerializer.Serialize(medicine);
+                //return RedirectToPage("/Order_details", new { order_quantity = order_quantity, jsonstring = jsonstring,type=type });
+            }
+            HttpContext.Session.Remove("img");
+            HttpContext.Session.Remove("prod_name");
+            HttpContext.Session.Remove("prod_price");
+            HttpContext.Session.SetString("SourcePage", "View_Items");
+            return RedirectToPage("/Order_details", new { order_quantity = order_quantity, jsonstring = jsonstring, type = count });
+        }
+        private void LoadItemDetails()
+        {
+            int count = db.check(id);
+            if (count == 1)
+            {
+                DataTable dt = db.Viewcosmetics(id);
+                Price = float.Parse(dt.Rows[0]["price"].ToString() ?? "0");
+                name = dt.Rows[0]["name"].ToString();
+                Manufacturer = dt.Rows[0]["manufacturer"].ToString();
+                Type = dt.Rows[0]["type"].ToString();
+                Description = dt.Rows[0]["Description"].ToString();
+                img = dt.Rows[0]["img"].ToString();
+            }
+            else
+            {
+                DataTable dt = db.ViewMedicine(id);
+                Price = float.Parse(dt.Rows[0]["price"].ToString() ?? "0");
+                name = dt.Rows[0]["name"].ToString();
+                Manufacturer = dt.Rows[0]["manufacturer"].ToString();
+                Dosage = dt.Rows[0]["dosage"].ToString();
+                Active_Ingredients = dt.Rows[0]["Active_Ingredient"].ToString();
+                Form = dt.Rows[0]["form"].ToString();
+                img = dt.Rows[0]["img"].ToString();
 
-			Cosmetics cosmetics = new Cosmetics
-			{
-				Id = id,
-				Price = pricee,
-				Name = namee
-			};
+            }
+        }
+        public IActionResult OnPostLogout()
+        {
+            HttpContext.Session.Remove("username");
+            return RedirectToPage("/signin");
+        }
+    }
 
-			int count = db.check(id);
-			string jsonstring;
-
-			if (count == 1)
-			{
-				jsonstring = JsonSerializer.Serialize(cosmetics);
-			}
-			else
-			{
-				jsonstring = JsonSerializer.Serialize(medicine);
-			}
-
-			return RedirectToPage("/Order_details", new { order_quantity = order_quantity, jsonstring = jsonstring, type = count });
-		}
-
-		// Helper method to reload item data
-		private void LoadItemDetails()
-		{
-			int count = db.check(id);
-			if (count == 1)
-			{
-				DataTable dt = db.Viewcosmetics(id);
-				Price = float.Parse(dt.Rows[0]["price"].ToString() ?? "0");
-				name = dt.Rows[0]["name"].ToString();
-				Manufacturer = dt.Rows[0]["manufacturer"].ToString();
-				Type = dt.Rows[0]["type"].ToString();
-				Description = dt.Rows[0]["Description"].ToString();
-			}
-			else
-			{
-				DataTable dt = db.ViewMedicine(id);
-				Price = float.Parse(dt.Rows[0]["price"].ToString() ?? "0");
-				name = dt.Rows[0]["name"].ToString();
-				Manufacturer = dt.Rows[0]["manufacturer"].ToString();
-				Dosage = dt.Rows[0]["dosage"].ToString();
-				Active_Ingredients = dt.Rows[0]["Active_Ingredient"].ToString();
-				Form = dt.Rows[0]["form"].ToString();
-			}
-		}
-
-	}
 }

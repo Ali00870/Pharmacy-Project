@@ -28,21 +28,52 @@ namespace Pharmacy_back.Pages
         public string Type { get; set; } // Cosmetics only
         [BindProperty]
         public string Description { get; set; } // Cosmetics only
-
         public IActionResult OnPost()
         {
             DB db = new DB();
 
             if (Category == "medicine")
             {
-                db.AddMedicine(Product_ID, Name, Price, Quantity, Manufacturer, Dosage, Active_Ingredients, Form);
+                if (db.isidexist(Product_ID))
+                {
+                    db.UpdateProductsQuantity(Product_ID, Quantity);
+                }
+                else
+                {
+                    db.AddMedicine(Product_ID, Name, Price, Quantity, Manufacturer, Dosage, Active_Ingredients, Form);
+                }
             }
             else if (Category == "cosmetic")
             {
-                db.AddCosmetic(Product_ID, Name, Price, Quantity, Manufacturer, Type, Description);
+                if (db.isidexist(Product_ID))
+                {
+
+                    db.UpdateProductsQuantity(Product_ID, Quantity);
+                }
+                else
+                {
+                    db.AddCosmetic(Product_ID, Name, Price, Quantity, Manufacturer, Type, Description);
+                }
             }
 
-            return RedirectToPage("Index"); 
+            return RedirectToPage("Index");
+        }
+        public IActionResult OnGet()
+        {
+            if (!string.IsNullOrEmpty(HttpContext.Session.GetString("pharmacy"))||HttpContext.Session.GetString("username")=="pharmacist10")
+            {
+                return Page();
+            }
+
+            else
+            {
+                return RedirectToPage("Index");
+            }
+        }
+        public IActionResult OnPostLogout()
+        {
+            HttpContext.Session.Remove("username");
+            return RedirectToPage("/signin");
         }
     }
 }

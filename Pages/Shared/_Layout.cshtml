@@ -13,25 +13,8 @@
     <header>
         <div class="container top-nav">
             <a asp-page="/Index" class="logo">
-                <img src="https://st4.depositphotos.com/27205200/39727/v/450/depositphotos_397279466-stock-illustration-creative-pharmacy-concept-logo-design.jpg" alt="logo" />
+                <img src="/img/WhatsApp Image 2024-12-26 at 12.40.22 PM.jpeg" alt="logo" width="125" height="100" />
             </a>
-
-            <form class="search">
-                <input type="search" placeholder="Search..." />
-                <button type="submit">Search</button>
-            </form>
-
-            <div class="top-nav-cart">
-                <div class="top-nav-cart-icon">
-                    <i class="fa-solid fa-bag-shopping"></i>
-                    <span class="total-count">0</span>
-                </div>
-
-                <div class="top-nav-cart-total-price">
-                    <p>My Cart:</p>
-                    <p class="total-price">$0</p>
-                </div>
-            </div>
         </div>
 
         <nav>
@@ -39,8 +22,8 @@
                 <ul>
                     <li class="active"><a asp-page="/Index">Home</a></li>
                     <li><a asp-page="/allproducts">All Products</a></li>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Contact</a></li>
+                    <li><a href="#footer">About Us</a></li>
+                    <li><a href="#footer">Contact</a></li>
                 </ul>
 
                 <div class="login-signup">
@@ -49,19 +32,55 @@
                         if (!string.IsNullOrEmpty(username))
                         {
                             <p>Welcome, @username!</p>
-                            // <a href="/logout">Log Out <i class="fa-solid fa-right-from-bracket"></i></a>
+
+                            <form method="post" asp-page-handler="Logout" style="display:inline;">
+                                <button type="submit" class="btn btn-outline-warning small-btn">
+                                    Log Out <i class="fa-solid fa-right-from-bracket"></i>
+                                </button>
+                            </form>
+
+                            <!-- Show Edit Profile button if the username contains "customer" -->
+                            @if (username.Contains("customer"))
+                            {
+                                <a class="btn btn-warning small-btn" asp-page="/edit_profile">Edit Profile <i class="fa-solid fa-user-edit"></i></a>
+                            }
                         }
                         else
                         {
-                            <a asp-page="/signin">Login <i class="fa-solid fa-right-to-bracket"></i></a>
-                            <a asp-page="/register">Sign Up <i class="fa-solid fa-user-plus"></i></a>
+                            <a class="btn btn-primary small-btn" asp-page="/signin">Login <i class="fa-solid fa-right-to-bracket"></i></a>
+                            <a class="btn btn-primary small-btn" asp-page="/register">Sign Up <i class="fa-solid fa-user-plus"></i></a>
+
                         }
                     }
                 </div>
+
+                <style>
+                    .login-signup {
+                        display: flex;
+                        justify-content: flex-end;
+                        align-items: center;
+                        gap: 10px;
+                        padding-right: 50px;
+                    }
+
+                    .small-btn {
+                        font-size: 14px; /* Smaller text */
+                        padding: 6px 12px; /* Reduced padding */
+                        height: auto; /* Allow height to adjust based on content */
+                        line-height: 1.4; /* Adjust line height for better alignment */
+                    }
+                </style>
+
+
+
+                <a href="/Order_Details" class="cart-link">
+                    <i class="fas fa-shopping-cart"></i>
+                </a>
             </div>
         </nav>
 
     </header>
+
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const navbar = document.getElementById("navbar");
@@ -76,9 +95,6 @@
         });
     </script>
 
-
-
-
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -86,7 +102,7 @@
     </div>
 
     <footer>
-        <div class="container">
+        <div class="container" id="footer">
             <div class="big-row">
                 <img src="https://st4.depositphotos.com/27205200/39727/v/450/depositphotos_397279466-stock-illustration-creative-pharmacy-concept-logo-design.jpg" alt="Footer logo" />
                 <div class="hotline">
@@ -97,32 +113,26 @@
                     </div>
                 </div>
 
-                <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore,
-                    ad.
+                <p class="text-lg-start">
+                    At Sydality, we are committed to delivering trusted healthcare solutions with personalized care. From prescriptions to wellness products, our team ensures your health and well-being are our top priorities.
                 </p>
             </div>
 
             <div class="row">
                 <h4>FAQ & Help</h4>
-
                 <div class="links">
                     <a href="#">FAQ</a>
-                    <a href="#">Ordering Tracking</a>
+                    <a href="/follow_order">Ordering Tracking</a>
                     <a href="#">Contacts</a>
                     <a href="#">Events</a>
                     <a href="#">Help Center</a>
                 </div>
             </div>
-
-           
-           
         </div>
 
         <div class="bottom-footer">
             <div class="container">
                 <p>Copyrights &copy; <span>Sydality</span> All Rights Reserved</p>
-
                 <div class="payment-img">
                     <img src="/img/payment-1.png" alt="" />
                     <img src="/img/payment-2.png" alt="" />
@@ -132,7 +142,6 @@
             </div>
         </div>
     </footer>
-
 
     <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" asp-append-version="true"></script>

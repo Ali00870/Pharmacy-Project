@@ -51,7 +51,13 @@ namespace Pharmacy_back.Pages
                 table = db.GetPharmacist(); 
             }
         }
+        public IActionResult OnPostLogout()
+        {
+            HttpContext.Session.Remove("username");
+            return RedirectToPage("/signin");
+        }
 
 
     }
+
 }

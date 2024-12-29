@@ -133,5 +133,11 @@ namespace Pharmacy_back.Pages
             
             return RedirectToPage("/View_Items", new { id =  id });
         }
+ public IActionResult OnPostLogout()
+    {
+        HttpContext.Session.Remove("username");
+        return RedirectToPage("/signin");
     }
+    }
+   
 }
