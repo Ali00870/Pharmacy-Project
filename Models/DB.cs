@@ -1,4 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
+using Microsoft.Identity.Client;
 using Pharmacy_back.Pages;
 using System.Data;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
@@ -8,7 +9,7 @@ namespace Pharmacy_back.Models
     public class DB
     {
 
-        public string ConnectionString = "  Data Source=DESKTOP-MINNO8Q; Initial Catalog=master;Integrated Security=True; Trust Server Certificate=True ";
+        public string ConnectionString = "Data Source=DESKTOP-MINNO8Q; Initial Catalog=master;Integrated Security=True; Trust Server Certificate=True ";
         //public string ConnectionString = "Data Source =DESKTOP-O1HOQTT\\SQLEXPRESS01; Initial Catalog= master ; Integrated Security = True ; Trust Server Certificate = True ";
         public SqlConnection Connection;
 
@@ -155,77 +156,122 @@ namespace Pharmacy_back.Models
             return d;
         }
 
-
-        public void AddMedicine(int product_ID, string name, float price, int quantity, string manufacturer, string dosage, string active_ingredients, string form)
+        public int newId()
         {
-            string query = @"
+            int maxid = 0;
+            string query = "select max(id) from products";
+            SqlCommand cmd = new SqlCommand(query, Connection);
+            try
+            {
+                Connection.Open();
+                maxid = (int)cmd.ExecuteScalar();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                Connection.Close();
+            }
+            return maxid + 1;
+        }
+        public bool AddMedicine(string name, float price, int quantity, string manufacturer, string dosage, string active_ingredients, string form)
+        {
+            int newid = newId();
+            bool isInserted = true;
+            int count = checkName(name);
+            if (count == 0)
+            {
+                string query = @"
             INSERT INTO products (id, name, price, quantity, manufacturer) 
-            VALUES (@ProductID, @Name, @Price, @Quantity, @Manufacturer);
+            VALUES (@newid, @Name, @Price, @Quantity, @Manufacturer);
 
             INSERT INTO medicine (id, dosage, form, active_ingredient) 
-            VALUES (@ProductID, @Dosage, @Form, @ActiveIngredients);
-        ";
+            VALUES (@newid, @Dosage, @Form, @ActiveIngredients);
+            ";
 
-            try
-            {
-                Connection.Open();
-                SqlCommand cmd = new SqlCommand(query, Connection);
+                try
+                {
+                    Connection.Open();
+                    SqlCommand cmd = new SqlCommand(query, Connection);
 
-                cmd.Parameters.AddWithValue("@ProductID", product_ID);
-                cmd.Parameters.AddWithValue("@Name", name);
-                cmd.Parameters.AddWithValue("@Price", price);
-                cmd.Parameters.AddWithValue("@Quantity", quantity);
-                cmd.Parameters.AddWithValue("@Manufacturer", manufacturer);
-                cmd.Parameters.AddWithValue("@Dosage", dosage);
-                cmd.Parameters.AddWithValue("@Form", form);
-                cmd.Parameters.AddWithValue("@ActiveIngredients", active_ingredients);
+                    cmd.Parameters.AddWithValue("@newid", newid);
+                    cmd.Parameters.AddWithValue("@Name", name);
+                    cmd.Parameters.AddWithValue("@Price", price);
+                    cmd.Parameters.AddWithValue("@Quantity", quantity);
+                    cmd.Parameters.AddWithValue("@Manufacturer", manufacturer);
+                    cmd.Parameters.AddWithValue("@Dosage", dosage);
+                    cmd.Parameters.AddWithValue("@Form", form);
+                    cmd.Parameters.AddWithValue("@ActiveIngredients", active_ingredients);
 
-                cmd.ExecuteNonQuery();
+                    cmd.ExecuteNonQuery();
+                }
+                catch (SqlException e)
+                {
+                    // Log exception or handle errors here
+                    Console.WriteLine($"Error inserting medicine: {e.Message}");
+                }
+                finally
+                {
+                    Connection.Close();
+                }
+                return isInserted;
             }
-            catch (SqlException e)
+
+            else
             {
-                // Log exception or handle errors here
-                Console.WriteLine($"Error inserting medicine: {e.Message}");
+
+                UpdateItemsQuantity(name, quantity);
+                return false;
             }
-            finally
-            {
-                Connection.Close();
-            }
+
         }
 
-        public void AddCosmetic(int product_ID, string name, float price, int quantity, string manufacturer, string type, string description)
+        public bool AddCosmetic(string name, float price, int quantity, string manufacturer, string type, string description)
         {
-            string query = @"
+            int newid = newId();
+            bool isInserted = true;
+            int count = checkName(name);
+
+            if (count == 0)
+            {
+                string query = @"
             INSERT INTO products (id, name, price, quantity, manufacturer) 
-            VALUES (@ProductID, @Name, @Price, @Quantity, @Manufacturer);
+            VALUES (@newid, @Name, @Price, @Quantity, @Manufacturer);
 
             INSERT INTO cosmetics (id, type, description) 
-            VALUES (@ProductID, @Type, @Description);
+            VALUES (@newid, @Type, @Description);
         ";
+                try
+                {
+                    Connection.Open();
+                    SqlCommand cmd = new SqlCommand(query, Connection);
 
-            try
-            {
-                Connection.Open();
-                SqlCommand cmd = new SqlCommand(query, Connection);
-
-                cmd.Parameters.AddWithValue("@ProductID", product_ID);
-                cmd.Parameters.AddWithValue("@Name", name);
-                cmd.Parameters.AddWithValue("@Price", price);
-                cmd.Parameters.AddWithValue("@Quantity", quantity);
-                cmd.Parameters.AddWithValue("@Manufacturer", manufacturer);
-                cmd.Parameters.AddWithValue("@Type", type);
-                cmd.Parameters.AddWithValue("@Description", description);
-
-                cmd.ExecuteNonQuery();
+                    cmd.Parameters.AddWithValue("@newid", newid);
+                    cmd.Parameters.AddWithValue("@Name", name);
+                    cmd.Parameters.AddWithValue("@Price", price);
+                    cmd.Parameters.AddWithValue("@Quantity", quantity);
+                    cmd.Parameters.AddWithValue("@Manufacturer", manufacturer);
+                    cmd.Parameters.AddWithValue("@Type", type);
+                    cmd.Parameters.AddWithValue("@Description", description);
+                    cmd.ExecuteNonQuery();
+                }
+                catch (SqlException e)
+                {
+                    // Log exception or handle errors here
+                    Console.WriteLine($"Error inserting cosmetic: {e.Message}");
+                }
+                finally
+                {
+                    Connection.Close();
+                }
+                return isInserted;
             }
-            catch (SqlException e)
+            else
             {
-                // Log exception or handle errors here
-                Console.WriteLine($"Error inserting cosmetic: {e.Message}");
-            }
-            finally
-            {
-                Connection.Close();
+                UpdateItemsQuantity(name, quantity);
+                return false;
             }
         }
 
@@ -854,10 +900,10 @@ namespace Pharmacy_back.Models
         public int checkPharmacistUsers(string username, string password)
         {
             int count = 0;
-            String query = "select count(*) from pharmacist join [User] u on pharmacist.p_username=u.username and u.username=@username and [password]=@password ";
+            String query = "select count(*) from pharmacist join [User] u on pharmacist.p_username=u.username where u.username=@username";
             SqlCommand cmd = new SqlCommand(query, Connection);
             cmd.Parameters.AddWithValue("@username", username);
-            cmd.Parameters.AddWithValue("@password", password);
+           // cmd.Parameters.AddWithValue("@password", password);
             try
             {
                 Connection.Open();
@@ -1075,60 +1121,60 @@ namespace Pharmacy_back.Models
                 Connection.Close();
             }
         }
-public void DeleteCustomer(string username)
-{
-    // Query to delete related records in the customer order table
-    string deleteCustomerOrderQuery = "DELETE FROM Customer_order WHERE C_username = @username";
-    // Query to delete the customer record
-    string deletecustomerQuery = "DELETE FROM customer WHERE c_username = @username";
-    //query to delete number records
-    string deletecustomernumQuery = "DELETE FROM customer_phone_num WHERE c_username = @username";
-    // Query to delete the user record
-    string deleteUserQuery = "DELETE FROM [User] WHERE username = @username";
-
-    try
-    {
-        Connection.Open();
-
-        using (SqlCommand numCmd = new SqlCommand(deletecustomernumQuery, Connection))
+        public void DeleteCustomer(string username)
         {
-            numCmd.Parameters.AddWithValue("@username", username);
-            numCmd.ExecuteNonQuery();
-        }
-        // Delete records in pharmacist_works_on table
-        using (SqlCommand worksOnCmd = new SqlCommand(deleteCustomerOrderQuery, Connection))
-        {
-            worksOnCmd.Parameters.AddWithValue("@username", username);
-            worksOnCmd.ExecuteNonQuery();
-        }
+            // Query to delete related records in the customer order table
+            string deleteCustomerOrderQuery = "DELETE FROM Customer_order WHERE C_username = @username";
+            // Query to delete the customer record
+            string deletecustomerQuery = "DELETE FROM customer WHERE c_username = @username";
+            //query to delete number records
+            string deletecustomernumQuery = "DELETE FROM customer_phone_num WHERE c_username = @username";
+            // Query to delete the user record
+            string deleteUserQuery = "DELETE FROM [User] WHERE username = @username";
 
-        // Delete pharmacist record
-        using (SqlCommand customercmd = new SqlCommand(deletecustomerQuery, Connection))
-        {
-            customercmd.Parameters.AddWithValue("@username", username);
-            customercmd.ExecuteNonQuery();
-        }
+            try
+            {
+                Connection.Open();
 
-        // Delete user record
-        using (SqlCommand userCmd = new SqlCommand(deleteUserQuery, Connection))
-        {
-            userCmd.Parameters.AddWithValue("@username", username);
-            userCmd.ExecuteNonQuery();
-        }
+                using (SqlCommand numCmd = new SqlCommand(deletecustomernumQuery, Connection))
+                {
+                    numCmd.Parameters.AddWithValue("@username", username);
+                    numCmd.ExecuteNonQuery();
+                }
+                // Delete records in pharmacist_works_on table
+                using (SqlCommand worksOnCmd = new SqlCommand(deleteCustomerOrderQuery, Connection))
+                {
+                    worksOnCmd.Parameters.AddWithValue("@username", username);
+                    worksOnCmd.ExecuteNonQuery();
+                }
 
-        Console.WriteLine($"Customer and corresponding user with username '{username}' have been deleted.");
-    }
-    catch (SqlException ex)
-    {
-        // Log any SQL errors
-        Console.WriteLine($"SQL Error: {ex.Message}");
-    }
-    finally
-    {
-        // Ensure the database connection is closed
-        Connection.Close();
-    }
-}
+                // Delete pharmacist record
+                using (SqlCommand customercmd = new SqlCommand(deletecustomerQuery, Connection))
+                {
+                    customercmd.Parameters.AddWithValue("@username", username);
+                    customercmd.ExecuteNonQuery();
+                }
+
+                // Delete user record
+                using (SqlCommand userCmd = new SqlCommand(deleteUserQuery, Connection))
+                {
+                    userCmd.Parameters.AddWithValue("@username", username);
+                    userCmd.ExecuteNonQuery();
+                }
+
+                Console.WriteLine($"Customer and corresponding user with username '{username}' have been deleted.");
+            }
+            catch (SqlException ex)
+            {
+                // Log any SQL errors
+                Console.WriteLine($"SQL Error: {ex.Message}");
+            }
+            finally
+            {
+                // Ensure the database connection is closed
+                Connection.Close();
+            }
+        }
 
         public void deletEemployee(int id)
         {
@@ -1294,16 +1340,20 @@ public void DeleteCustomer(string username)
 
             return b;
         }
-        public void UpdateAccounts(string username, string district, string street, int housenum, string email, string password)
+        public void UpdateAccounts(string username, string name, string district, string street, int housenum, string email, string password, string phone)
         {
-            string query = "update customerr set [district]=@district,[street]=@street,[house_number]=@housenum where c_username=@username;" +
-                "update user set [email]=@email,password=@password where [username]=@username;";
+            string query = "update customer set [district]=@district,[street]=@street,[house_number]=@housenum where c_username=@username;" +
+                "update [user] set [name]=@name,[email]=@email,password=@password,mainphone=@mainphone where [username]=@username;";
             SqlCommand cmd = new SqlCommand(query, Connection);
             cmd.Parameters.AddWithValue("@username", username);
             cmd.Parameters.AddWithValue("@district", district);
+            cmd.Parameters.AddWithValue("@street", street);
+            cmd.Parameters.AddWithValue("@street", street);
+            cmd.Parameters.AddWithValue("@name", name);
             cmd.Parameters.AddWithValue("@housenum", housenum);
             cmd.Parameters.AddWithValue("@email", email);
             cmd.Parameters.AddWithValue("@password", password);
+            cmd.Parameters.AddWithValue("@mainphone", phone);
             try
             {
                 Connection.Open();
@@ -1330,17 +1380,143 @@ public void DeleteCustomer(string username)
             {
                 Connection.Open();
                 pharmPhones.Load(cmd.ExecuteReader());
-                
+
             }
-            catch(Exception ex) {
+            catch (Exception ex) {
                 Console.WriteLine(ex.Message);
             }
             finally
             {
-                 Connection.Close();
+                Connection.Close();
             }
             return pharmPhones;
         }
+        public int checkName(string name)
+        {
 
-    }
+            string q = $"select count(*)from products p where name='{name}'";
+            SqlCommand cmd = new SqlCommand(q, Connection);
+
+            int count = 0;
+            try
+            {
+                Connection.Open();
+
+
+
+
+                count = (int)cmd.ExecuteScalar();
+
+            }
+            catch (SqlException e)
+            {
+                // Log exception or handle errors here
+                Console.WriteLine($"Error inserting cosmetics : {e.Message}");
+            }
+            finally
+            {
+                Connection.Close();
+            }
+            return count;
+
+
+        }
+        public void UpdateItemsQuantity(string name, int quantity)
+        {
+
+            int prevQuantity = getnameQuantity(name);
+            string query = $"Update products set quantity={prevQuantity + quantity} where name='{name}'";
+
+            try
+            {
+                SqlCommand cmd = new SqlCommand(query, Connection);
+
+
+                Connection.Open();
+                cmd.ExecuteNonQuery();
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+
+            }
+            finally { Connection.Close(); }
+
+
+        }
+        public int getnameQuantity(string name)
+        {
+            //DataTable dt = new DataTable();
+            int quantity = 0;
+            string query = $"select quantity from products where name='{name}'";
+            SqlCommand cmd = new SqlCommand(query, Connection);
+            try
+            {
+                Connection.Open();
+                quantity = (int)cmd.ExecuteScalar();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally { Connection.Close(); }
+            return quantity;
+        }
+        public bool updateUserInfo(string username, string password, string email, string name)
+        {
+            string query = "update [user] set password=@password,email=@email,name=@name where username=@username";
+            SqlCommand cmd = new SqlCommand(query, Connection);
+            bool done;
+            cmd.Parameters.AddWithValue("@username", username);
+            cmd.Parameters.AddWithValue("@password", password);
+            cmd.Parameters.AddWithValue("@email", email);
+            cmd.Parameters.AddWithValue("@name", name);
+            try
+            {
+                Connection.Open();
+                cmd.ExecuteNonQuery();
+                done = true;
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                done = false;
+                Console.WriteLine("A7a bel smsm");
+            }
+            finally { Connection.Close(); }
+            return done;
+        }
+        public DataTable viewProfile(string username)
+        {
+            DataTable dt=new DataTable();
+            string query;
+            int ispharm = checkPharmacistUsers(username,"dsd");
+            if (ispharm!=0) { 
+                query=$"select* from pharmacist p join [user] u on (p.p_username=u.username) where u.username='{ username}'";
+            }
+            else
+            {
+                query = $"select* from customer p join [user] u on (p.c_username=u.username) where u.username='{username}'";
+
+            }
+            SqlCommand cmd=new SqlCommand(query, Connection);
+            try
+            {
+                Connection.Open();
+                dt.Load(cmd.ExecuteReader());
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                Connection.Close();
+            }
+            return dt;
+        }
+
+}
 }
