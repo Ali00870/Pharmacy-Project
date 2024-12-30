@@ -1004,7 +1004,7 @@ namespace Pharmacy_back.Models
         public DataTable GetPharmacist()
         {
             DataTable dt = new DataTable();
-            string query = "select  * from pharmacist";
+            string query = "select  * from pharmacist where p_username!='pharmacist10'";
             SqlCommand cmd = new SqlCommand(query, Connection);
 
             try
