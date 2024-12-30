@@ -1,4 +1,6 @@
 ﻿@page
+@using System.Data
+
 @model Pharmacy_back.Pages.Add_itemModel
 @{
     ViewData["Title"] = "Add Item";
@@ -10,12 +12,19 @@
     <p class="text-success">@Model.msg</p>
     <br />
     <form id="itemForm" method="post">
-     
-        
-
         <div class="mb-3">
             <label for="itemName" class="form-label">Name</label>
-            <input type="text" class="form-control" id="itemName" name="Name" placeholder="Test" required>
+            <input type="text" class="form-control mb-2" id="nameInput" placeholder="Type to filter names..." />
+            <select class="form-select" id="itemName" name="Name" required>
+                <option value="" disabled selected>Choose a name</option>
+                @if (Model.AvailableNames != null)
+                {
+                    foreach (DataRow row in Model.AvailableNames.Rows)
+                    {
+                        <option value="@row["name"]">@row["name"]</option>
+                    }
+                }
+            </select>
         </div>
 
         <div class="mb-3">
@@ -30,12 +39,12 @@
 
         <div class="mb-3">
             <label for="itemManufacturer" class="form-label">Manufacturer</label>
-            <input type="text" class="form-control" id="itemManufacturer" name="Manufacturer" placeholder="CIE206" >
+            <input type="text" class="form-control" id="itemManufacturer" name="Manufacturer" placeholder="CIE206">
         </div>
 
         <div class="mb-3">
             <label for="itemCategory" class="form-label">Category</label>
-            <select class="form-select" id="itemCategory" name="Category" value="medicine" >
+            <select class="form-select" id="itemCategory" name="Category" value="medicine">
                 <option value="medicine">Medicine</option>
                 <option value="cosmetic">Cosmetic</option>
             </select>
@@ -75,21 +84,29 @@
             <button type="button" id="cancelButton" class="btn btn-danger">Cancel</button>
         </div>
     </form>
-    
 
-    <!-- Script to handle field visibility and reset -->
     <script>
+        // Filter the dropdown list to match items that start with the user's input
+        document.getElementById('nameInput').addEventListener('input', function () {
+            const filter = this.value.toLowerCase();
+            const options = document.getElementById('itemName').options;
+
+            for (let i = 0; i < options.length; i++) {
+                const text = options[i].text.toLowerCase();
+                options[i].style.display = text.startsWith(filter) ? '' : 'none';
+            }
+        });
+
+        // Show/hide fields based on category
         document.getElementById('itemCategory').addEventListener('change', function () {
             let category = this.value;
             document.getElementById('medicineFields').style.display = category === 'medicine' ? 'block' : 'none';
             document.getElementById('cosmeticFields').style.display = category === 'cosmetic' ? 'block' : 'none';
         });
 
+        // Reset form on cancel
         document.getElementById('cancelButton').addEventListener('click', function () {
-            // Clear all inputs in the form
             document.getElementById('itemForm').reset();
-
-            // Reset visibility of category-specific fields
             document.getElementById('medicineFields').style.display = 'none';
             document.getElementById('cosmeticFields').style.display = 'none';
         });

@@ -9,8 +9,8 @@ namespace Pharmacy_back.Models
     public class DB
     {
 
-        public string ConnectionString = "Data Source=DESKTOP-MINNO8Q; Initial Catalog=master;Integrated Security=True; Trust Server Certificate=True ";
-        //public string ConnectionString = "Data Source =DESKTOP-O1HOQTT\\SQLEXPRESS01; Initial Catalog= master ; Integrated Security = True ; Trust Server Certificate = True ";
+       /* public string ConnectionString = "Data Source=DESKTOP-MINNO8Q; Initial Catalog=master;Integrated Security=True; Trust Server Certificate=True ";*/
+        public string ConnectionString = "Data Source =DESKTOP-O1HOQTT\\SQLEXPRESS01; Initial Catalog= master ; Integrated Security = True ; Trust Server Certificate = True ";
         public SqlConnection Connection;
 
         public DB()
@@ -975,8 +975,10 @@ namespace Pharmacy_back.Models
             {
 
                 Connection.Close();
+
             }
         }
+
         public void AddEmployee(int ID, string name, float salary, int shift)
         {
             string query = "Insert into Employee (id,e_name,salary,shift_hours)values(@id,@name,@salary,@shift)";
@@ -1358,6 +1360,7 @@ namespace Pharmacy_back.Models
             {
                 Connection.Open();
                 cmd.ExecuteNonQuery();
+                Console.WriteLine("suceed");
             }
             catch (SqlException ex)
             {
@@ -1518,5 +1521,28 @@ namespace Pharmacy_back.Models
             return dt;
         }
 
+        public DataTable GetAvailableProductNames()
+        {
+            DataTable productNamesTable = new DataTable();
+
+            string query = "SELECT DISTINCT name FROM products";
+  SqlCommand cmd = new SqlCommand(query, Connection);
+            try
+            { 
+                Connection.Open();
+                productNamesTable.Load(cmd.ExecuteReader());
+
+            }
+            catch( Exception ex) { throw ex; }
+            finally
+            {
+                Connection.Close( );    
+            }  
+
+                
+            return productNamesTable;
+        }
+    }
+
 }
-}
+
