@@ -5,20 +5,22 @@
 }
 
 <body>
+    <br />
+    <br />
+    <p class="text-success">@Model.msg</p>
+    <br />
     <form id="itemForm" method="post">
-        <div class="mb-3">
-            <label for="itemId" class="form-label">ID</label>
-            <input type="text" class="form-control" id="itemId" name="Product_ID" placeholder="00000000" required>
-        </div>
-
-        <div class="mb-3">
-            <label for="itemPrice" class="form-label">Price</label>
-            <input type="text" class="form-control" id="itemPrice" name="Price" placeholder="000" required>
-        </div>
+     
+        
 
         <div class="mb-3">
             <label for="itemName" class="form-label">Name</label>
             <input type="text" class="form-control" id="itemName" name="Name" placeholder="Test" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="itemPrice" class="form-label">Price</label>
+            <input type="text" class="form-control" id="itemPrice" name="Price" placeholder="000">
         </div>
 
         <div class="mb-3">
@@ -28,12 +30,12 @@
 
         <div class="mb-3">
             <label for="itemManufacturer" class="form-label">Manufacturer</label>
-            <input type="text" class="form-control" id="itemManufacturer" name="Manufacturer" placeholder="CIE206" required>
+            <input type="text" class="form-control" id="itemManufacturer" name="Manufacturer" placeholder="CIE206" >
         </div>
 
         <div class="mb-3">
             <label for="itemCategory" class="form-label">Category</label>
-            <select class="form-select" id="itemCategory" name="Category" required>
+            <select class="form-select" id="itemCategory" name="Category" value="medicine" >
                 <option value="medicine">Medicine</option>
                 <option value="cosmetic">Cosmetic</option>
             </select>
@@ -42,12 +44,12 @@
         <div id="medicineFields" style="display: none;">
             <div class="mb-3">
                 <label for="itemDosage" class="form-label">Dosage</label>
-                <input type="text" class="form-control" id="itemDosage" name="Dosage" placeholder="One tablet per day">
+                <input type="text" class="form-control" id="itemDosage" name="Dosage" placeholder="500mg">
             </div>
 
             <div class="mb-3">
                 <label for="itemIngredients" class="form-label">Active Ingredient(s)</label>
-                <input type="text" class="form-control" id="itemIngredients" name="Active_Ingredients" placeholder="500mg Paracetamol">
+                <input type="text" class="form-control" id="itemIngredients" name="Active_Ingredients" placeholder="Paracetamol">
             </div>
 
             <div class="mb-3">
@@ -73,6 +75,7 @@
             <button type="button" id="cancelButton" class="btn btn-danger">Cancel</button>
         </div>
     </form>
+    
 
     <!-- Script to handle field visibility and reset -->
     <script>

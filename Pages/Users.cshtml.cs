@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Pharmacy_back.Model;
+using Pharmacy_back.Models;
 using System.Data;
 
 namespace Pharmacy_back.Pages
@@ -10,7 +10,6 @@ namespace Pharmacy_back.Pages
         private readonly ILogger<UsersModel> _logger;
 
         public DB db { get; set; }
-        public int customers { get; set; }
         public DataTable userdata { get; set; }
         public UsersModel(ILogger<UsersModel> logger, DB db)
         {
@@ -19,8 +18,35 @@ namespace Pharmacy_back.Pages
         }
         public void OnGet()
         {
-            customers = db.Getcustomers();
             userdata= db.Getuserdata();
+            if (userdata == null)
+            {
+                userdata = new DataTable(); // Initialize to avoid null reference
+            }
+        }
+        public void OnPost(string c_username)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(c_username))
+                {
+                    db.DeleteCustomer(c_username);
+                    Console.WriteLine($"Customer with username '{c_username}' has been deleted.");
+                }
+                else
+                {
+                    Console.WriteLine("No username provided for deletion.");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error during deletion: {ex.Message}");
+            }
+            finally
+            {
+
+                userdata = db.Getuserdata();
+            }
         }
     }
 }

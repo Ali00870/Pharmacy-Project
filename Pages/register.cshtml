@@ -3,41 +3,44 @@
 @{
 }
 <body>
-<section class="register">
-    <div class="container">
-        <div class="main-content">
-            <h2 class="title">Welcome</h2>
+    <section class="register">
+        <div class="container">
+            <div class="main-content">
+                <h2 class="title">Welcome</h2>
 
-            <form method="post">
+                <form method="post">
                     @if (!string.IsNullOrEmpty(Request.Query["message"]))
                     {
                         <div class="error-message">@Request.Query["message"]</div>
                     }
-                <input type="text" placeholder="Username" asp-for="username" />
-                <input type="text" placeholder="Name" asp-for="name" />
-                <input type="email" placeholder="Email" asp-for="email"/>
-                <input type="password" placeholder="Password" asp-for="password"/>
-                <input type="password" placeholder="Repeat Password" asp-for="repeatpassword"/>
-                <button class="register-btn" asp-page-handler="register">Register</button>
-            </form>
+                    <input type="text" placeholder="Username" asp-for="username" />
+                    <input type="text" placeholder="Name" asp-for="name" />
+                    <input type="email" placeholder="Email" asp-for="email" />
+                    <input type="District" placeholder="District" asp-for="district" />
+                    <input type="Street" placeholder="Street" asp-for="street" />
+                    <input type="Phone number" placeholder="Phone number" asp-for="phone_number" />
+                    <input type="password" placeholder="Password" asp-for="password" />
+                    <input type="password" placeholder="Repeat Password" asp-for="repeatpassword" />
+                    <button class="register-btn" asp-page-handler="register">Register</button>
+                </form>
 
-            <p class="login-link">
-                Have an Account <a asp-page="/signin">Sign In</a>
-            </p>
+                <p class="login-link">
+                    Have an Account <a asp-page="/signin">Sign In</a>
+                </p>
 
 
-            <div class="register-btns">
-                @* <div class="apple-btn">
+                <div class="register-btns">
+                    @* <div class="apple-btn">
                     <i class="fa-brands fa-apple"></i>
                     <span>Sign Up With Apple</span>
-                </div> *@
+                    </div> *@
 
-               @*  <div class="google-btn">
+                    @*  <div class="google-btn">
                     <i class="fa-brands fa-google"></i>
                     <span>Sign Up With Google</span>
-                </div> *@
+                    </div> *@
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 </body>

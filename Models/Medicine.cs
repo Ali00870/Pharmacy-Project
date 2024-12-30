@@ -1,4 +1,4 @@
-﻿namespace Pharmacy_back.Model
+﻿namespace Pharmacy_back.Models
 {
     public class Medicine
     {
@@ -11,6 +11,6 @@
         public string Form { get; set; }
         public string Type { get; set; }
         public string Active_Ingredient { get; set; }
-
+        public string img {  get; set; }
     }
 }

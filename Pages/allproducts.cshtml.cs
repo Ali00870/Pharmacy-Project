@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Pharmacy_back.Model;
+using Pharmacy_back.Models;
 using System.Data;
 
 namespace Pharmacy_back.Pages
@@ -133,5 +133,11 @@ namespace Pharmacy_back.Pages
             
             return RedirectToPage("/View_Items", new { id =  id });
         }
+ public IActionResult OnPostLogout()
+    {
+        HttpContext.Session.Clear();
+        return RedirectToPage("/signin");
     }
+    }
+   
 }

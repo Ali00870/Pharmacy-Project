@@ -1,0 +1,101 @@
+﻿@page
+@model Pharmacy_back.Pages.ViewProfileModel
+@{
+}
+
+<style>
+
+    .profile-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        background-color: #f9f9f9;
+        overflow-y: auto;
+    }
+
+    .profile-section {
+        margin-bottom: 20px;
+    }
+
+        .profile-section h2 {
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+        }
+
+    .profile-row {
+        margin-bottom: 10px;
+    }
+
+        .profile-row label {
+            display: block;
+            font-weight: bold;
+        }
+
+        .profile-row span {
+            display: block;
+            margin-top: 5px;
+        }
+
+    
+
+        .profile-row label {
+            font-size: 14px;
+        }
+
+        .profile-row span {
+            font-size: 14px;
+        }
+    }
+</style>
+
+<body>
+
+<div class="profile-container">
+    <h2>User Profile</h2>
+    <div class="profile-section">
+
+        <div class="profile-row">
+            <label>Username:</label>
+            <span id="username">@Model.profile.Rows[0]["username"]</span>
+        </div>
+        <div class="profile-row">
+            <label>Name:</label>
+            <span id="name">@Model.profile.Rows[0]["name"]</span>
+        </div>
+        <div class="profile-row">
+            <label>Password:</label>
+            <span id="password">@Model.profile.Rows[0]["password"]</span>
+        </div>
+        <div class="profile-row">
+            <label>Email:</label>
+            <span id="email">@Model.profile.Rows[0]["email"]</span>
+        </div>
+    </div>
+
+
+    @if (string.IsNullOrEmpty(HttpContext.Session.GetString("pharmacy")))
+    {
+        <div class="profile-section" id="customer-section">
+            
+        <div class="profile-row">
+            <label>District:</label>
+            <span id="district">@Model.profile.Rows[0]["district"]</span>
+        </div>
+        <div class="profile-row">
+            <label>Street:</label>
+                <span id="street">@Model.profile.Rows[0]["street"]</span>
+        </div>
+        <div class="profile-row">
+            <label>House Number:</label>
+                <span id="house-number">@Model.profile.Rows[0]["house_number"]</span>
+        </div>
+        <div class="profile-row">
+            <label>Phone Number:</label>
+                <span id="phone-number">@Model.profile.Rows[0]["mainphone"]</span>
+        </div>
+    </div>}
+</div>
+</body>

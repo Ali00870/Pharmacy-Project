@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Pharmacy_back.Model;
+using Pharmacy_back.Models;
 using System.Data;
 using System.Reflection;
 
@@ -46,6 +46,11 @@ namespace Pharmacy_back.Pages
                 
                 table = Db.Getemployees(); 
             }
+        }
+        public IActionResult OnPostLogout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToPage("/signin");
         }
 
     }

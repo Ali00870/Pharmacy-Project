@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Pharmacy_back.Model;
+using Pharmacy_back.Models;
 
 namespace Pharmacy_back.Pages
 {
@@ -50,15 +50,23 @@ namespace Pharmacy_back.Pages
         // Property to check if the page is in "Edit" mode
         public bool IsEditMode { get; set; }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
-            if (!string.IsNullOrEmpty(pusername))
+            if (HttpContext.Session.GetString("username") == "pharmacist10")
             {
-                IsEditMode = true;
+                if (!string.IsNullOrEmpty(pusername))
+                {
+                    IsEditMode = true;
+                }
+                else
+                {
+                    IsEditMode = false;
+                }
+                return Page();
             }
             else
             {
-                IsEditMode = false;
+                return RedirectToPage("Index");
             }
         }
 
@@ -101,6 +109,11 @@ namespace Pharmacy_back.Pages
                 Console.WriteLine($"Error updating pharmacist: {ex}");
             }
             return RedirectToPage("/Allpharmacists");
+        }
+        public IActionResult OnPostLogout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToPage("/signin");
         }
     }
 }
