@@ -81,7 +81,8 @@
     <div class="container mt-5">
         <h1 class="text-center mb-4">Order Details</h1>
         <div class="cards-container">
-            @if (Model.dt.Rows.Count > 0)
+            
+            @if (@Model.dt!=null&&Model.dt.Rows.Count > 0)
             {
                 int orderNumber = 1; /* Initialize order counter */
                 @foreach (DataRow row in Model.dt.Rows)

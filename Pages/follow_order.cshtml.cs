@@ -30,10 +30,10 @@ namespace Pharmacy_back.Pages
         [BindProperty] public string? deliverynumber { get; set; }
 
         public DataTable dp { get; set; }
-        public DataTable dt { get; set; }
+        public DataTable? dt { get; set; }
         public void OnGet()
         {
-            
+            dt=new DataTable();
             c_username = HttpContext.Session.GetString("username");
             if (!c_username.IsNullOrEmpty())
             {
@@ -51,6 +51,7 @@ namespace Pharmacy_back.Pages
                 //deliverydate = dt.Rows[0]["delivery_date"].ToString();
                 
             }
+            else {  }
             
         }
         public IActionResult OnPostLogout()

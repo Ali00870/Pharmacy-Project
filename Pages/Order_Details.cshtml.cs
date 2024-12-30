@@ -19,7 +19,8 @@ namespace Pharmacy_back.Pages
 
         [BindProperty(SupportsGet = true)]
         public Medicine M { get; set; } = new Medicine(); // Ensure initialized
-
+        [BindProperty]
+        public string Address {  get; set; }
         [BindProperty(SupportsGet = true)]
         public Cosmetics C { get; set; } = new Cosmetics(); // Ensure initialized
         [BindProperty]
@@ -31,6 +32,8 @@ namespace Pharmacy_back.Pages
         public DateTime OrderDate {  get; set; }
         [BindProperty(SupportsGet =true)]
         public string SelectMsg {  get; set; }
+        [BindProperty(SupportsGet =true)]
+        public string AddressMsg { get; set; }
         public Order_DetailsModel(DB db)
         {
             this.db = db;
@@ -120,27 +123,27 @@ namespace Pharmacy_back.Pages
 
         public IActionResult OnPostAnotherItem()
         {
-            var username = HttpContext.Session.GetString("username");
-            if (string.IsNullOrEmpty(username))
-            {
-                // Redirect to the sign-in page if not logged in
-                return RedirectToPage("/signin", new { message = "Please sign in to place an order." });
-            }
+            //var username = HttpContext.Session.GetString("username");
+            //if (string.IsNullOrEmpty(username))
+            //{
+            //    // Redirect to the sign-in page if not logged in
+            //    return RedirectToPage("/signin", new { message = "Please sign in to place an order." });
+            //}
 
-            // Existing order placement logic here
-            var failedOrders = new List<string>();
-            var successfulOrders = 0;
+            //// Existing order placement logic here
+            //var failedOrders = new List<string>();
+            //var successfulOrders = 0;
 
-            // Load items from session and process orders
-            // ... (existing logic)
+            //// Load items from session and process orders
+            //// ... (existing logic)
 
-            orderMessage = $"Orders successful: {successfulOrders}. Our delivery man will call you soon!";
-            if (failedOrders.Any())
-            {
-                orderMessage += $" Failed orders: {string.Join(", ", failedOrders)}.";
-            }
+            //orderMessage = $"Orders successful: {successfulOrders}. Our delivery man will call you soon!";
+            //if (failedOrders.Any())
+            //{
+            //    orderMessage += $" Failed orders: {string.Join(", ", failedOrders)}.";
+            //}
 
-            return Page(); // Stay on the same page after successful order
+            // // Stay on the same page after successful order
         
             return RedirectToPage("/allproducts");
 
@@ -148,7 +151,7 @@ namespace Pharmacy_back.Pages
         public IActionResult OnPost()
         {
 
-            if (!SelectedItem.IsNullOrEmpty())
+            if (!SelectedItem.IsNullOrEmpty()&&!string.IsNullOrEmpty(Address))
 
 
             {
@@ -235,8 +238,10 @@ namespace Pharmacy_back.Pages
             else
             {
                // HttpContext.Session.SetString("SourcePage", "View_Items");
-               
+               if(SelectedItem.IsNullOrEmpty())
                return RedirectToPage("/Order_Details", new {SelectMsg="Please Select a Pharmacy"});
+                else
+                    return RedirectToPage("/Order_Details", new { AddressMsg = "Please Enter Delivery Address" });
             }
         }
         public IActionResult OnPostDeleteMedicine(int id)
@@ -292,7 +297,7 @@ namespace Pharmacy_back.Pages
 
         public IActionResult OnPostLogout()
         {
-            HttpContext.Session.Remove("username");
+            HttpContext.Session.Clear();
             return RedirectToPage("/signin");
         }
     }
