@@ -90,19 +90,19 @@
         // Product Sales Chart
         const salesCtx = document.getElementById('salesChart').getContext('2d');
         new Chart(salesCtx, {
-            type: 'bar',
+            type: 'doughnut',
             data: {
                 labels: ['Sept 2024', 'Oct 2024', 'Nov 2024'],
                 datasets: [
                     {
                         label: 'Cosmetics',
                         data: [@Model.cosmsept, @Model.cosmoct, @Model.cosmnov],
-                        backgroundColor: 'rgba(33, 150, 243, 0.6)',
+                        backgroundColor: ['#ff5252', '#ffca28', '#66bb6a'],
                     },
                     {
                         label: 'Medicine',
                         data: [@Model.medsept, @Model.medoct, @Model.mednov],
-                        backgroundColor: 'rgba(255, 193, 7, 0.6)',
+                        backgroundColor: ['#ff5252', '#ffca28', '#66bb6a'],
                     },
                 ],
             },
@@ -119,7 +119,7 @@
         new Chart(inventoryCtx, {
             type: 'pie',
             data: {
-                labels: ['Nearly out of stock', 'Out of Stock', 'Stocked'],
+                labels: ['Nearly Out of Stock', 'Out of Stock', 'Total Stock'],
                 datasets: [
                     {
                         data: [@Model.almostempty, @Model.empty, @Model.stocked],
@@ -135,6 +135,7 @@
             },
         });
 
+      
     </script>
 </body>
 </html>
