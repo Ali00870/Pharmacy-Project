@@ -25,5 +25,10 @@ namespace Pharmacy_back.Pages
             }
             else { return RedirectToPage("/Index"); }
         }
+        public IActionResult OnPostLogout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToPage("/signin");
+        }
     }
 }

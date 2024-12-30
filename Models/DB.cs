@@ -1342,18 +1342,14 @@ namespace Pharmacy_back.Models
         }
         public void UpdateAccounts(string username, string name, string district, string street, int housenum, string email, string password, string phone)
         {
-            string query = "update customer set [district]=@district,[street]=@street,[house_number]=@housenum where c_username=@username;" +
-                "update [user] set [name]=@name,[email]=@email,password=@password,mainphone=@mainphone where [username]=@username;";
+            updateUserInfo(username, password, email, name);
+            string query = "update customer set [district]=@district,[street]=@street,[house_number]=@housenum where c_username=@username";
             SqlCommand cmd = new SqlCommand(query, Connection);
             cmd.Parameters.AddWithValue("@username", username);
             cmd.Parameters.AddWithValue("@district", district);
             cmd.Parameters.AddWithValue("@street", street);
-            cmd.Parameters.AddWithValue("@street", street);
-            cmd.Parameters.AddWithValue("@name", name);
             cmd.Parameters.AddWithValue("@housenum", housenum);
-            cmd.Parameters.AddWithValue("@email", email);
-            cmd.Parameters.AddWithValue("@password", password);
-            cmd.Parameters.AddWithValue("@mainphone", phone);
+           
             try
             {
                 Connection.Open();
