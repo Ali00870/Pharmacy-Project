@@ -32,6 +32,9 @@ namespace Pharmacy_back.Pages
                 {
                     if (Username == "pharmacist10")
                     {
+                        DataTable dt = db.getPharmacy(Username);
+                        string pharmName = dt.Rows[0]["pharmacyname"].ToString();
+                        HttpContext.Session.SetString("pharmacy", pharmName);
                         return RedirectToPage("Index");
                     }
                     else
