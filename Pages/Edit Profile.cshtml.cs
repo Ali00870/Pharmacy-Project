@@ -62,7 +62,7 @@ namespace Pharmacy_back.Pages
             {
                 if (string.IsNullOrEmpty(HttpContext.Session.GetString("pharmacy")))
                 {
-                    db.UpdateAccounts(Username, Name,District, Street, HouseNum, Email, Password, PhoneNumber);
+                    db.UpdateAccounts(Username, Name, District, Street, HouseNum, Email, Password, PhoneNumber);
                     TempData["SuccessMessage"] = "Profile updated successfully!";
                     return RedirectToPage("/ViewProfile");
                 }
@@ -77,6 +77,7 @@ namespace Pharmacy_back.Pages
             {
                 return Page();
             }
+            
             
         }
     }

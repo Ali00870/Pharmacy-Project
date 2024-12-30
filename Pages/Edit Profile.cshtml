@@ -18,47 +18,56 @@
         {
         <div class="form-group">
             <label for="District">District</label>
-            <input type="text" class="form-control" asp-for=@Model.District required />
+            <input type="text" class="form-control" asp-for=@Model.District/>
+                <span class="text-danger" asp-validation-for=@Model.District></span>
         </div>
-            <span class="text-danger" asp-validation-for=@Model.District></span>
+            
         <div class="form-group">
             <label for="Street">Street</label>
-            <input type="text"  class="form-control" asp-for=@Model.Street required />
+            <input type="text"  class="form-control" asp-for=@Model.Street />
+             <span class="text-danger" asp-validation-for=@Model.Street></span>
+
         </div>
-            <span class="text-danger" asp-validation-for=@Model.Street></span>
+           
         <div class="form-group">
             <label for="HouseNum">House Number</label>
-            <input type="number" class="form-control" asp-for=@Model.HouseNum required />
+            <input type="number" class="form-control" asp-for=@Model.HouseNum />
+                <span class="text-danger" asp-validation-for=@Model.HouseNum></span>
                 
         </div>
-            <span class="text-danger" asp-validation-for=@Model.HouseNum></span>
+            
             <div class="form-group">
                 <label for="PhoneNumber">Phone Number</label>
-                <input type="number"  class="form-control" asp-for=@Model.PhoneNumber required />
+                <input type="number"  class="form-control" asp-for=@Model.PhoneNumber />
+                <span class="text-danger" asp-validation-for=@Model.PhoneNumber></span>
             </div>
-            <span class="text-danger" asp-validation-for=@Model.PhoneNumber></span>
+            
 
         }
         <div class="form-group">
             <label for="Name">Name</label>
-            <input type="text" class="form-control" asp-for=@Model.Name required />
+            <input type="text" class="form-control" asp-for=@Model.Name />
+            <span class="text-danger" asp-validation-for=@Model.Name></span>
         </div>
         <div class="form-group">
             <label for="Email">Email</label>
-            <input type="email" class="form-control" asp-for=@Model.Email required />
+            <input type="email" class="form-control" asp-for=@Model.Email />
+            <span class="text-danger" asp-validation-for=@Model.Email></span>
         </div>
-        <span class="text-danger" asp-validation-for=@Model.Email></span>
+        
 
         <div class="form-group">
             <label for="Password">Password</label>
-            <input type="password" class="form-control" asp-for=@Model.Password required />
+            <input type="password" class="form-control" asp-for=@Model.Password />
+            <span class="text-danger" asp-validation-for=@Model.Password></span>
         </div>
-        <span class="text-danger" asp-validation-for=@Model.Password></span>
+        
 
         <!-- Repeated Password Field -->
         <div class="form-group">
             <label for="ConfirmPassword">Confirm Password</label>
-            <input type="password" id="ConfirmPassword" name="confirmPassword" class="form-control" required />
+            <input type="password" asp-for=@Model.repeatPassword class="form-control" />
+            <span class="text-danger" asp-validation-for=@Model.Password></span>
         </div>
 
         <!-- Submit Button -->
