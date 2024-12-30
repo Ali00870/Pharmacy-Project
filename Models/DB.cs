@@ -374,7 +374,7 @@ namespace Pharmacy_back.Models
         public int Getsmallstock()
         {
             int count = 0;
-            string query = "select count(*) from [dbo].[products] where [quantity] <10 and [quantity]>0";
+            string query = "select count(*) from [dbo].[products] where [quantity] <70 and [quantity]>0";
             SqlCommand cmd = new SqlCommand(query, Connection);
 
 
