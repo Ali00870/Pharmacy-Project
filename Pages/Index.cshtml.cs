@@ -32,5 +32,15 @@ namespace Pharmacy_back.Pages
             return RedirectToPage("/Add_item");
         
         }
+        public IActionResult OnPostLogout()
+        {
+            HttpContext.Session.Remove("username");
+            return RedirectToPage("/signin");
+        }
+        public IActionResult OnPostEditProfile()
+        {
+            return RedirectToPage("/Edit_Profile");
+        }
+
     }
 }

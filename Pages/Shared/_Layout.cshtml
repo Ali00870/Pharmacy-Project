@@ -44,9 +44,59 @@
                 </ul>
 
                 <div class="login-signup">
-                    <a asp-page="/signin">Login <i class="fa-solid fa-right-to-bracket"></i></a>
-                    <a asp-page="/register">Sign Up <i class="fa-solid fa-user-plus"></i></a>
+                    @{
+                        var username = Context.Session.GetString("username");
+                        var currentPage = Context.Request.Path; // Get the current page path
+
+                        if (!string.IsNullOrEmpty(username))
+                        {
+                            <p>Welcome, @username!</p>
+
+                            <form method="post" asp-page-handler="Logout" style="display:inline;">
+                                <button type="submit" class="btn btn-outline-warning small-btn">
+                                    Log Out <i class="fa-solid fa-right-from-bracket"></i>
+                                </button>
+                            </form>
+
+                            <!-- Show Edit Profile button only on Index page and if username contains "customer" -->
+                            @if (currentPage == "/" && username.Contains("customer"))
+                            {
+                                <form method="post">
+                                    <button type="submit" asp-page="/Edit_Profile" class="btn btn-primary">Edit Profile</button>
+                                </form>
+                            }
+                        }
+                        else
+                        {
+                            <a class="btn btn-primary small-btn" asp-page="/signin">Login <i class="fa-solid fa-right-to-bracket"></i></a>
+                            <a class="btn btn-primary small-btn" asp-page="/register">Sign Up <i class="fa-solid fa-user-plus"></i></a>
+                        }
+                    }
                 </div>
+
+
+                <style>
+                    .login-signup {
+                        display: flex;
+                        justify-content: flex-end;
+                        align-items: center;
+                        gap: 10px;
+                        padding-right: 50px;
+                    }
+
+                    .small-btn {
+                        font-size: 14px; /* Smaller text */
+                        padding: 6px 12px; /* Reduced padding */
+                        height: auto; /* Allow height to adjust based on content */
+                        line-height: 1.4; /* Adjust line height for better alignment */
+                    }
+                </style>
+
+
+
+                <a href="/Order_Details" class="cart-link">
+                    <i class="fas fa-shopping-cart"></i>
+                </a>
             </div>
         </nav>
     </header>

@@ -1,0 +1,86 @@
+﻿@page
+@model Pharmacy_back.Pages.Edit_ProfileModel
+@{
+    ViewData["Title"] = "Edit Profile";
+}
+
+<div class="container mt-4">
+    <h3 class="text-center">Edit Profile</h3>
+
+    <!-- Edit Profile Form -->
+    <form method="post" asp-page-handler="EditProfile" id="editProfileForm">
+        <!-- Username (Read-Only) -->
+        <div class="form-group">
+            <label for="Username">Username</label>
+            <input type="text" id="Username" class="form-control" asp-for="Username" readonly />
+        </div>
+
+        <!-- Editable Fields -->
+        <div class="form-group mt-3">
+            <label for="District">District</label>
+            <input type="text" id="District" class="form-control" asp-for="District" required />
+        </div>
+
+        <div class="form-group mt-3">
+            <label for="Street">Street</label>
+            <input type="text" id="Street" class="form-control" asp-for="Street" required />
+        </div>
+
+        <div class="form-group mt-3">
+            <label for="HouseNum">House Number</label>
+            <input type="number" id="HouseNum" class="form-control" asp-for="HouseNum" required />
+        </div>
+
+        <div class="form-group mt-3">
+            <label for="Email">Email</label>
+            <input type="email" id="Email" class="form-control" asp-for="Email" required />
+        </div>
+
+        <div class="form-group mt-3">
+            <label for="Password">New Password</label>
+            <input type="password" id="Password" class="form-control" asp-for="Password" required />
+        </div>
+
+        <div class="form-group mt-3">
+            <label for="ConfirmPassword">Confirm New Password</label>
+            <input type="password" id="ConfirmPassword" class="form-control" required />
+        </div>
+
+        <!-- Save Changes Button -->
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-primary" id="saveButton">Save Changes</button>
+        </div>
+    </form>
+
+    <!-- Confirmation Box -->
+    <div id="confirmationBox" class="alert alert-success mt-4 d-none">
+        <strong>Success!</strong> Your profile has been updated.
+    </div>
+</div>
+
+<!-- Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    document.getElementById("editProfileForm").addEventListener("submit", function (e) {
+        // Prevent form submission if passwords do not match
+        const password = document.getElementById("Password").value;
+        const confirmPassword = document.getElementById("ConfirmPassword").value;
+
+        if (password !== confirmPassword) {
+            alert("Passwords do not match. Please correct them.");
+            e.preventDefault();
+            return;
+        }
+
+        // Simulate form submission process
+        e.preventDefault(); // Prevent default form submission to handle feedback
+
+        document.getElementById("saveButton").disabled = true; // Disable button to prevent multiple clicks
+
+        // Simulate success delay for feedback
+        setTimeout(() => {
+            document.getElementById("confirmationBox").classList.remove("d-none");
+        }, 500);
+    });
+</script>

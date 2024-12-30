@@ -252,26 +252,36 @@ namespace Pharmacy_back.Pages
         {
             return RedirectToPage("/allproducts");
         }
-        public void OnPost()
+        public IActionResult OnPost()
         {
-            var failedOrders = new List<string>();
-            var successfulOrders = 0;
-            var medicineJson = HttpContext.Session.GetString(SessionKey);
-            Medicines = !string.IsNullOrEmpty(medicineJson)
-                ? JsonSerializer.Deserialize<List<Medicine>>(medicineJson)
-                : new List<Medicine>();
             
-            // Load existing Cosmetics from the session
-            var cosmeticsJson = HttpContext.Session.GetString(SessionKeyC);
-            Cosmetics = !string.IsNullOrEmpty(cosmeticsJson)
-                ? JsonSerializer.Deserialize<List<Cosmetics>>(cosmeticsJson)
-                : new List<Cosmetics>();
-            // Process Medicines
-            foreach (var M in Medicines)
+
+            if (!SelectedItem.IsNullOrEmpty())
+
+
             {
-                
-                int pid = M.Id;
-                int quantity = M.Quantity;
+                string username = HttpContext.Session.GetString("username");
+                if (string.IsNullOrEmpty(username)) { return RedirectToPage("/signin"); }
+
+                var failedOrders = new List<string>();
+                var successfulOrders = 0;
+                var medicineJson = HttpContext.Session.GetString(SessionKey);
+                Medicines = !string.IsNullOrEmpty(medicineJson)
+                    ? JsonSerializer.Deserialize<List<Medicine>>(medicineJson)
+                    : new List<Medicine>();
+
+                // Load existing Cosmetics from the session
+                var cosmeticsJson = HttpContext.Session.GetString(SessionKeyC);
+                Cosmetics = !string.IsNullOrEmpty(cosmeticsJson)
+                    ? JsonSerializer.Deserialize<List<Cosmetics>>(cosmeticsJson)
+                    : new List<Cosmetics>();
+                OrderDate = DateTime.Now;
+                // Process Medicines
+                foreach (var M in Medicines)
+                {
+
+                    int pid = M.Id;
+                    int quantity = M.Quantity;
 
                 try
                 {
@@ -300,25 +310,59 @@ namespace Pharmacy_back.Pages
                 int pid = M.Id;
                 int quantity = M.Quantity;
 
-                try
-                {
-                    string msg = "f";
-                    int done = db.InsertOrder(username, pid, quantity, SelectedItem,ref msg);
-                    if (done == 1)
+                    try
                     {
-                        successfulOrders++;
+
+                        string msg = "f";
+                        int done = db.InsertOrder(username, pid, quantity, SelectedItem, ref msg, OrderDate);
+                        if (done == 1)
+                        {
+                            successfulOrders++;
+                        }
+                        else
+                        {
+                            failedOrders.Add($"Cosmetic ID: {pid}");
+                        }
+
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        failedOrders.Add($"Cosmetic ID: {pid}");
+                        failedOrders.Add($"Cosmetic ID: {pid}, Error: {ex.Message}");
                     }
-                    
                 }
-                catch (Exception ex)
-                {
-                    failedOrders.Add($"Cosmetic ID: {pid}, Error: {ex.Message}");
-                }
+
+
+               
+                if( successfulOrders == 0) { return RedirectToPage("/Order_Details", new { SelectMsg = "Please Order at least one Item" }); }
+                HttpContext.Session.Remove(SessionKey);
+                HttpContext.Session.Remove(SessionKeyC);
+                HttpContext.Session.Remove("totalPrice");
+                return RedirectToPage("/follow_order", new { c_username = username });
+                
             }
+            else
+            {
+               // HttpContext.Session.SetString("SourcePage", "View_Items");
+               
+               return RedirectToPage("/Order_Details", new {SelectMsg="Please Select a Pharmacy"});
+            }
+        }
+        public IActionResult OnPostDeleteMedicine(int id)
+        {
+            // Load existing Medicines from the session
+            var medicineJson = HttpContext.Session.GetString(SessionKey);
+            var medicines = !string.IsNullOrEmpty(medicineJson)
+                ? JsonSerializer.Deserialize<List<Medicine>>(medicineJson)
+                : new List<Medicine>();
+
+            // Remove the medicine with the given ID
+            var medicineToRemove = medicines.FirstOrDefault(m => m.Id == id);
+            if (medicineToRemove != null)
+            {
+                medicines.Remove(medicineToRemove);
+                var priceString = HttpContext.Session.GetString("totalPrice");
+                TotalPrice = !string.IsNullOrEmpty(priceString) ? float.Parse(priceString) : 0;
+                TotalPrice -= medicineToRemove.Price * medicineToRemove.Quantity;
 
             // Provide feedback
             orderMessage = $"Orders successful: {successfulOrders}. Our delivery man will call you soon!";
