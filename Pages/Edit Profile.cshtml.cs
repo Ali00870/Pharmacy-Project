@@ -93,7 +93,7 @@ namespace Pharmacy_back.Pages
             else
             {
                 db.updateUserInfo(Username, Email, Name, PhoneNumber);
-                // TempData["SuccessMessage"] = "Profile updated successfully!";
+                // TempData["SuccessMessage"] = "Profile updated successfully!";//
                 return RedirectToPage("/ViewProfile");
             }
 
