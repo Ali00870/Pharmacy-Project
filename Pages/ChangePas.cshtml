@@ -1,0 +1,26 @@
+﻿@page
+@model Pharmacy_back.Pages.ChangePasModel
+@{
+}
+<body>
+
+<div>
+    <form method="post">
+<div class="form-group">
+    <label for="Password">Password</label>
+    <input type="password" class="form-control" asp-for="Password" />
+    <span class="text-danger" asp-validation-for="Password"></span>
+</div>
+
+<div class="form-group">
+    <label for="ConfirmPassword">Confirm Password</label>
+    <input type="password" asp-for="repeatPassword" class="form-control" />
+    <span class="text-danger" asp-validation-for="repeatPassword"></span>
+</div>
+<div class="form-group">
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+</div>
+        </form>
+</div>
+
+</body>

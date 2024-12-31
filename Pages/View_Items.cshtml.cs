@@ -42,7 +42,7 @@ namespace Pharmacy_back.Pages
         public string img { get; set; }
         public void OnGet()
         {
-           
+
             int count = db.check(id);
             if (count == 1)
             {
@@ -90,30 +90,39 @@ namespace Pharmacy_back.Pages
 
                 return Page(); // Stay on the same page
             }
+            if (order_quantity > db.getQuantity(id))
+            {
+                ModelState.AddModelError(string.Empty, $"Quantity ordered bigger than stock quantity:{db.getQuantity(id)}");
+
+                // Reload item data to retain details on the page
+                LoadItemDetails();
+
+                return Page(); // Stay on the same page
+            }
             string namee = HttpContext.Session.GetString("prod_name");
             float pricee = !string.IsNullOrEmpty(HttpContext.Session.GetString("prod_price")) ? float.Parse(HttpContext.Session.GetString("prod_price")) : 0;
             Medicine medicine = new Medicine();
             medicine.Id = id;
             string imgg = HttpContext.Session.GetString("img");
-            medicine.img= imgg;
+            medicine.img = imgg;
             medicine.Price = pricee;
             medicine.Name = namee;
-            
+
             Cosmetics cosmetics = new Cosmetics();
             cosmetics.Id = id; cosmetics.Price = pricee; cosmetics.Name = namee;
             cosmetics.img = imgg;
             int count = db.check(id);
             string jsonstring;
-          
+
             if (count == 1)
             {
-               
-                 jsonstring = JsonSerializer.Serialize(cosmetics);
-                
+
+                jsonstring = JsonSerializer.Serialize(cosmetics);
+
             }
             else
             {
-                
+
                 jsonstring = JsonSerializer.Serialize(medicine);
                 //return RedirectToPage("/Order_details", new { order_quantity = order_quantity, jsonstring = jsonstring,type=type });
             }

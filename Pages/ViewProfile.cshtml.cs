@@ -8,7 +8,7 @@ namespace Pharmacy_back.Pages
     public class ViewProfileModel : PageModel
     {
         private readonly DB dB;
-        public DataTable profile {  get; set; }=new DataTable();
+        public DataTable profile { get; set; } = new DataTable();
         public ViewProfileModel(DB d)
         {
             dB = d;
@@ -18,10 +18,10 @@ namespace Pharmacy_back.Pages
             if (!string.IsNullOrEmpty(HttpContext.Session.GetString("username")))
             {
 
-                string username=HttpContext.Session.GetString("username").ToString();
-                profile=dB.viewProfile(username);
+                string username = HttpContext.Session.GetString("username").ToString();
+                profile = dB.viewProfile(username);
                 return Page();
-                
+
             }
             else { return RedirectToPage("/Index"); }
         }

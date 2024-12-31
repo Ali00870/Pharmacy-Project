@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Pharmacy_back.Models;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Data;
 
 namespace Pharmacy_back.Pages
 {
@@ -13,31 +14,35 @@ namespace Pharmacy_back.Pages
         [BindProperty]
         public string Username { get; set; }
         [BindProperty]
-        [MaxLength(50,ErrorMessage = "District information must be less than 50 characters")]
+
 
         public string District { get; set; }
         [BindProperty]
-        [MaxLength(50,ErrorMessage ="Street information must be less than 50 characters")]
+
         public string Street { get; set; }
         [BindProperty]
         public int HouseNum { get; set; }
         [BindProperty]
-        [EmailAddress(ErrorMessage ="Invalid Email Address")]
+
 
         public string Email { get; set; }
-        [BindProperty]
-        [StringLength(8,ErrorMessage ="Password must be exactly 8 characters")]
-       
-        public string Password { get; set; }
-        [BindProperty]
+
+        //[MinLength(3,ErrorMessage ="Password must be exactly 8 characters")]
+
+        //public string Password { get; set; }
+        //[BindProperty]
         //[Compare(nameof(Password),ErrorMessage ="Repeated password must match the password")]
-        public string repeatPassword {  get; set; }
+        //public string repeatPassword {  get; set; }
         [BindProperty]
-        [MaxLength(50,ErrorMessage ="Name must be less than 50 characters")]
+
         public string Name { get; set; }
         [BindProperty]
-        [MaxLength(15,ErrorMessage ="Phone number must be less than 15 digits")]
+
         public string PhoneNumber { get; set; }
+        [BindProperty]
+        public double salary { get; set; }
+        [BindProperty]
+        public int shift_hours { get; set; }
 
 
         public Edit_ProfileModel(DB database)
@@ -47,38 +52,55 @@ namespace Pharmacy_back.Pages
 
         public void OnGet()
         {
-            //if (!string.IsNullOrEmpty(HttpContext.Session.GetString("username")))
-            //{ Username = HttpContext.Session.GetString("username");
-            //    return Page();
-            //}
-            //else { return RedirectToPage("/Index"); }
+
             Username = HttpContext.Session.GetString("username");
-            
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("pharmacy")))
+            {
+                DataTable dt = db.viewProfile(Username);
+                Name = dt.Rows[0]["Name"].ToString();
+                Email = dt.Rows[0]["email"].ToString();
+                // Password = dt.Rows[0]["password"].ToString();
+                //repeatPassword = dt.Rows[0]["password"].ToString();
+                Street = dt.Rows[0]["street"].ToString();
+                District = dt.Rows[0]["district"].ToString();
+                HouseNum = (int)dt.Rows[0]["house_number"];
+                PhoneNumber = dt.Rows[0]["mainphone"].ToString();
+
+            }
+            else
+            {
+                DataTable dt = db.viewProfile(Username);
+                Name = dt.Rows[0]["Name"].ToString();
+                Email = dt.Rows[0]["email"].ToString();
+                //Password = dt.Rows[0]["password"].ToString();
+                //repeatPassword = dt.Rows[0]["password"].ToString();
+                salary = (double)dt.Rows[0]["salary"];
+                shift_hours = (int)dt.Rows[0]["shift_hours"];
+                PhoneNumber = dt.Rows[0]["mainphone"].ToString();
+
+            }
         }
 
         public IActionResult OnPost()
         {
-            if (ModelState.IsValid)
+
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("pharmacy")))
             {
-                if (string.IsNullOrEmpty(HttpContext.Session.GetString("pharmacy")))
-                {
-                    db.UpdateAccounts(Username, Name, District, Street, HouseNum, Email, Password, PhoneNumber);
-                    TempData["SuccessMessage"] = "Profile updated successfully!";
-                    return RedirectToPage("/ViewProfile");
-                }
-                else
-                {
-                    db.updateUserInfo(Username, Password, Email, Name);
-                    TempData["SuccessMessage"] = "Profile updated successfully!";
-                    return RedirectToPage("/ViewProfile");
-                }
+                db.UpdateAccounts(Username, Name, District, Street, HouseNum, Email, PhoneNumber);
+                // TempData["SuccessMessage"] = "Profile updated successfully!";
+                return RedirectToPage("/ViewProfile");
             }
             else
             {
-                return Page();
+                db.updateUserInfo(Username, Email, Name, PhoneNumber);
+                // TempData["SuccessMessage"] = "Profile updated successfully!";
+                return RedirectToPage("/ViewProfile");
             }
-            
-            
+
+
+
+
         }
+
     }
 }

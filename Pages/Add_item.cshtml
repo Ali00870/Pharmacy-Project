@@ -1,6 +1,4 @@
 ﻿@page
-@using System.Data
-
 @model Pharmacy_back.Pages.Add_itemModel
 @{
     ViewData["Title"] = "Add Item";
@@ -12,99 +10,111 @@
     <p class="text-success">@Model.msg</p>
     <br />
     <form id="itemForm" method="post">
+        <!-- Product Name Input -->
         <div class="mb-3">
             <label for="itemName" class="form-label">Name</label>
-            <input type="text" class="form-control mb-2" id="nameInput" placeholder="Type to filter names..." />
-            <select class="form-select" id="itemName" name="Name" required>
-                <option value="" disabled selected>Choose a name</option>
-                @if (Model.AvailableNames != null)
+            <input list="productNames" class="form-control" id="itemName" name="Name" placeholder="Test" required>
+            <datalist id="productNames">
+                @foreach (var product in Model.ProductNames)
                 {
-                    foreach (DataRow row in Model.AvailableNames.Rows)
-                    {
-                        <option value="@row["name"]">@row["name"]</option>
-                    }
+                    <option value="@product"></option>
                 }
-            </select>
+            </datalist>
         </div>
 
+        <!-- Price Input -->
         <div class="mb-3">
             <label for="itemPrice" class="form-label">Price</label>
             <input type="text" class="form-control" id="itemPrice" name="Price" placeholder="000">
         </div>
 
+        <!-- Quantity Input -->
         <div class="mb-3">
             <label for="itemQuantity" class="form-label">Quantity</label>
             <input type="number" class="form-control" id="itemQuantity" name="Quantity" placeholder="0" required>
         </div>
 
+        <!-- Manufacturer Input -->
         <div class="mb-3">
             <label for="itemManufacturer" class="form-label">Manufacturer</label>
             <input type="text" class="form-control" id="itemManufacturer" name="Manufacturer" placeholder="CIE206">
         </div>
 
+        <!-- Category Dropdown -->
         <div class="mb-3">
             <label for="itemCategory" class="form-label">Category</label>
-            <select class="form-select" id="itemCategory" name="Category" value="medicine">
+            <select class="form-select" id="itemCategory" name="Category" required>
+                <option value="">Select Category</option>
                 <option value="medicine">Medicine</option>
                 <option value="cosmetic">Cosmetic</option>
             </select>
         </div>
 
+        <!-- Medicine Specific Fields -->
         <div id="medicineFields" style="display: none;">
             <div class="mb-3">
                 <label for="itemDosage" class="form-label">Dosage</label>
                 <input type="text" class="form-control" id="itemDosage" name="Dosage" placeholder="500mg">
             </div>
-
             <div class="mb-3">
                 <label for="itemIngredients" class="form-label">Active Ingredient(s)</label>
                 <input type="text" class="form-control" id="itemIngredients" name="Active_Ingredients" placeholder="Paracetamol">
             </div>
-
             <div class="mb-3">
                 <label for="itemForm" class="form-label">Form</label>
                 <input type="text" class="form-control" id="itemForm" name="Form" placeholder="Tablets">
             </div>
         </div>
 
+        <!-- Cosmetic Specific Fields -->
         <div id="cosmeticFields" style="display: none;">
             <div class="mb-3">
                 <label for="itemType" class="form-label">Type</label>
                 <input type="text" class="form-control" id="itemType" name="Type" placeholder="Shampoo, Makeup">
             </div>
-
             <div class="mb-3">
                 <label for="itemDescription" class="form-label">Description</label>
                 <input type="text" class="form-control" id="itemDescription" name="Description" placeholder="For dry hair, gentle care">
             </div>
         </div>
 
+        <!-- Buttons -->
         <div class="d-flex justify-content-between">
             <button type="submit" class="btn btn-primary">Save Item</button>
             <button type="button" id="cancelButton" class="btn btn-danger">Cancel</button>
         </div>
     </form>
 
+    <!-- Script to handle category selection and validation -->
     <script>
-        // Filter the dropdown list to match items that start with the user's input
-        document.getElementById('nameInput').addEventListener('input', function () {
-            const filter = this.value.toLowerCase();
-            const options = document.getElementById('itemName').options;
-
-            for (let i = 0; i < options.length; i++) {
-                const text = options[i].text.toLowerCase();
-                options[i].style.display = text.startsWith(filter) ? '' : 'none';
-            }
-        });
-
-        // Show/hide fields based on category
         document.getElementById('itemCategory').addEventListener('change', function () {
             let category = this.value;
             document.getElementById('medicineFields').style.display = category === 'medicine' ? 'block' : 'none';
             document.getElementById('cosmeticFields').style.display = category === 'cosmetic' ? 'block' : 'none';
         });
 
-        // Reset form on cancel
+        document.getElementById('itemForm').addEventListener('submit', function (event) {
+            var itemName = document.getElementById('itemName').value;
+            var category = document.getElementById('itemCategory').value;
+
+            // If the product name is not in the datalist, check if the category is selected
+            if (!isProductInList(itemName) && !category) {
+                event.preventDefault(); // Prevent form submission
+                alert("Please select a category (Medicine or Cosmetic) if the product name is not listed.");
+            }
+        });
+
+        // Check if the product name exists in the datalist
+        function isProductInList(productName) {
+            var productList = document.getElementById('productNames').getElementsByTagName('option');
+            for (var i = 0; i < productList.length; i++) {
+                if (productList[i].value === productName) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         document.getElementById('cancelButton').addEventListener('click', function () {
             document.getElementById('itemForm').reset();
             document.getElementById('medicineFields').style.display = 'none';

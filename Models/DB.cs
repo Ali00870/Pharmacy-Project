@@ -9,8 +9,8 @@ namespace Pharmacy_back.Models
     public class DB
     {
 
-       /* public string ConnectionString = "Data Source=DESKTOP-MINNO8Q; Initial Catalog=master;Integrated Security=True; Trust Server Certificate=True ";*/
-        public string ConnectionString = "Data Source =DESKTOP-O1HOQTT\\SQLEXPRESS01; Initial Catalog= master ; Integrated Security = True ; Trust Server Certificate = True ";
+        public string ConnectionString = "Data Source=DESKTOP-MINNO8Q; Initial Catalog=master;Integrated Security=True; Trust Server Certificate=True ";
+        //public string ConnectionString = "Data Source =DESKTOP-O1HOQTT\\SQLEXPRESS01; Initial Catalog= master ; Integrated Security = True ; Trust Server Certificate = True ";
         public SqlConnection Connection;
 
         public DB()
@@ -56,7 +56,7 @@ namespace Pharmacy_back.Models
         public DataTable allproducts(int offset = 0)
         {
             DataTable d = new DataTable();
-            string query = $"Select  p.id,p.[name],p.price,p.img \r\nfrom products p join medicine m on(p.id=m.id) \r\norder by p.[name]\r\noffset {offset} rows fetch next 5 rows only;\r\n";
+            string query = $"Select  p.id,p.[name],p.price,p.img \r\nfrom products p join medicine m on(p.id=m.id) where p.quantity>0 \r\norder by p.[name]\r\noffset {offset} rows fetch next 5 rows only;\r\n";
             SqlCommand cmd = new SqlCommand(query, Connection);
             try
             {
@@ -73,7 +73,7 @@ namespace Pharmacy_back.Models
         public DataTable allproducts2(int offset = 0)
         {
             DataTable d = new DataTable();
-            string query = $"Select  p.id,p.[name],p.price,p.img \r\nfrom products p join Cosmetics m on(p.id=m.id) \r\norder by p.[name]\r\noffset {offset} rows fetch next 6 rows only;\r\n";
+            string query = $"Select  p.id,p.[name],p.price,p.img \r\nfrom products p join Cosmetics m on(p.id=m.id) where p.quantity>0 \r\norder by p.[name]\r\noffset {offset} rows fetch next 6 rows only;\r\n";
             SqlCommand cmd = new SqlCommand(query, Connection);
             try
             {
@@ -374,7 +374,7 @@ namespace Pharmacy_back.Models
         public int Getsmallstock()
         {
             int count = 0;
-            string query = "select count(*) from [dbo].[products] where [quantity] <70 and [quantity]>0";
+            string query = "select count(*) from [dbo].[products] where [quantity] <10 and [quantity]>0";
             SqlCommand cmd = new SqlCommand(query, Connection);
 
 
@@ -840,7 +840,7 @@ namespace Pharmacy_back.Models
         {
             DataTable dt = new DataTable();
             string query = "select* from Customer_order o join products p on(o.Product_id=p.id) " +
-                $"\r\nwhere pharmacy_name='{pharmacy}' and status='pending' " +
+                $"\r\nwhere status='pending' " +
                 "and order_date is not null\r\norder by order_date asc";
             SqlCommand cmd = new SqlCommand(query, Connection);
             try
@@ -903,7 +903,7 @@ namespace Pharmacy_back.Models
             String query = "select count(*) from pharmacist join [User] u on pharmacist.p_username=u.username where u.username=@username";
             SqlCommand cmd = new SqlCommand(query, Connection);
             cmd.Parameters.AddWithValue("@username", username);
-           // cmd.Parameters.AddWithValue("@password", password);
+            // cmd.Parameters.AddWithValue("@password", password);
             try
             {
                 Connection.Open();
@@ -975,10 +975,8 @@ namespace Pharmacy_back.Models
             {
 
                 Connection.Close();
-
             }
         }
-
         public void AddEmployee(int ID, string name, float salary, int shift)
         {
             string query = "Insert into Employee (id,e_name,salary,shift_hours)values(@id,@name,@salary,@shift)";
@@ -1342,21 +1340,21 @@ namespace Pharmacy_back.Models
 
             return b;
         }
-        public void UpdateAccounts(string username, string name, string district, string street, int housenum, string email, string password, string phone)
+        public void UpdateAccounts(string username, string name, string district, string street, int housenum, string email, string phone)
         {
-            updateUserInfo(username, password, email, name);
+            updateUserInfo(username, email, name, phone);
             string query = "update customer set [district]=@district,[street]=@street,[house_number]=@housenum where c_username=@username";
             SqlCommand cmd = new SqlCommand(query, Connection);
             cmd.Parameters.AddWithValue("@username", username);
             cmd.Parameters.AddWithValue("@district", district);
             cmd.Parameters.AddWithValue("@street", street);
             cmd.Parameters.AddWithValue("@housenum", housenum);
-           
+            cmd.Parameters.AddWithValue("@name", name);
+
             try
             {
                 Connection.Open();
                 cmd.ExecuteNonQuery();
-                Console.WriteLine("suceed");
             }
             catch (SqlException ex)
             {
@@ -1381,7 +1379,8 @@ namespace Pharmacy_back.Models
                 pharmPhones.Load(cmd.ExecuteReader());
 
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 Console.WriteLine(ex.Message);
             }
             finally
@@ -1462,15 +1461,16 @@ namespace Pharmacy_back.Models
             finally { Connection.Close(); }
             return quantity;
         }
-        public bool updateUserInfo(string username, string password, string email, string name)
+        public bool updateUserInfo(string username, string email, string name, string phone)
         {
-            string query = "update [user] set password=@password,email=@email,name=@name where username=@username";
+            string query = "update [user] set email=@email,name=@name,mainphone=@phone where username=@username";
             SqlCommand cmd = new SqlCommand(query, Connection);
             bool done;
             cmd.Parameters.AddWithValue("@username", username);
-            cmd.Parameters.AddWithValue("@password", password);
+
             cmd.Parameters.AddWithValue("@email", email);
             cmd.Parameters.AddWithValue("@name", name);
+            cmd.Parameters.AddWithValue("@phone", phone);
             try
             {
                 Connection.Open();
@@ -1482,31 +1482,32 @@ namespace Pharmacy_back.Models
             {
                 Console.WriteLine(ex.Message);
                 done = false;
-                Console.WriteLine("A7a bel smsm");
+
             }
             finally { Connection.Close(); }
             return done;
         }
         public DataTable viewProfile(string username)
         {
-            DataTable dt=new DataTable();
+            DataTable dt = new DataTable();
             string query;
-            int ispharm = checkPharmacistUsers(username,"dsd");
-            if (ispharm!=0) { 
-                query=$"select* from pharmacist p join [user] u on (p.p_username=u.username) where u.username='{ username}'";
+            int ispharm = checkPharmacistUsers(username, "dsd");
+            if (ispharm != 0)
+            {
+                query = $"select* from pharmacist p join [user] u on (p.p_username=u.username) where u.username='{username}'";
             }
             else
             {
                 query = $"select* from customer p join [user] u on (p.c_username=u.username) where u.username='{username}'";
 
             }
-            SqlCommand cmd=new SqlCommand(query, Connection);
+            SqlCommand cmd = new SqlCommand(query, Connection);
             try
             {
                 Connection.Open();
                 dt.Load(cmd.ExecuteReader());
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -1516,29 +1517,52 @@ namespace Pharmacy_back.Models
             }
             return dt;
         }
-
-        public DataTable GetAvailableProductNames()
+        public List<string> GetProductNames()
         {
-            DataTable productNamesTable = new DataTable();
-
-            string query = "SELECT DISTINCT name FROM products";
-  SqlCommand cmd = new SqlCommand(query, Connection);
+            List<string> names = new List<string>();
+            DataTable dt = new DataTable();
+            string query = "select [name] from products";
+            SqlCommand cmd = new SqlCommand(query, Connection);
             try
-            { 
+            {
                 Connection.Open();
-                productNamesTable.Load(cmd.ExecuteReader());
+                dt.Load(cmd.ExecuteReader());
+                foreach (DataRow row in dt.Rows)
+                {
+                    names.Add(row["name"].ToString());
+                }
 
             }
-            catch( Exception ex) { throw ex; }
-            finally
+            catch (Exception ex)
             {
-                Connection.Close( );    
-            }  
-
-                
-            return productNamesTable;
+                Console.WriteLine(ex.Message);
+            }
+            finally { Connection.Close(); }
+            return names;
         }
-    }
+        public int Updatepass(string username, string password)
+        {
+            string query = $"update [user] set password=@password where username='{username}'";
+            SqlCommand cmd = new SqlCommand(query, Connection);
+            int s = 0;
+            try
+            {
+                Connection.Open();
+                cmd.Parameters.AddWithValue("@password", password);
+                cmd.ExecuteNonQuery();
+                s = 1;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                s = 0;
+            }
+            finally { Connection.Close(); }
+            return s;
+        }
+        
 
+    }
 }
+
 
