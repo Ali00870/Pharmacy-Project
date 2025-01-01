@@ -82,7 +82,7 @@ namespace Pharmacy_back.Pages
             // Load total price from the session
             var priceString = HttpContext.Session.GetString("totalPrice");
             TotalPrice = !string.IsNullOrEmpty(priceString) ? float.Parse(priceString) : 0;
-
+         
             // Only add items if jsonstring is set AND a flag indicates it's from View_Items
             if (!string.IsNullOrEmpty(jsonstring) && HttpContext.Session.GetString("SourcePage") == "View_Items")
             {
@@ -116,6 +116,17 @@ namespace Pharmacy_back.Pages
                 jsonstring = "";
                 HttpContext.Session.Remove("SourcePage");
             }
+            if (!string.IsNullOrEmpty(HttpContext.Session.GetString("username"))){
+                if (string.IsNullOrEmpty(HttpContext.Session.GetString("pharmacy"))){
+                    username = HttpContext.Session.GetString("username")!;
+                    DataTable dt=db.c_address(username);
+                    if (dt != null)
+                    {
+                        Address = dt.Rows[0]["full_address"].ToString();
+                    }
+                }
+            }
+
         }
 
 
@@ -123,27 +134,7 @@ namespace Pharmacy_back.Pages
 
         public IActionResult OnPostAnotherItem()
         {
-            //var username = HttpContext.Session.GetString("username");
-            //if (string.IsNullOrEmpty(username))
-            //{
-            //    // Redirect to the sign-in page if not logged in
-            //    return RedirectToPage("/signin", new { message = "Please sign in to place an order." });
-            //}
-
-            //// Existing order placement logic here
-            //var failedOrders = new List<string>();
-            //var successfulOrders = 0;
-
-            //// Load items from session and process orders
-            //// ... (existing logic)
-
-            //orderMessage = $"Orders successful: {successfulOrders}. Our delivery man will call you soon!";
-            //if (failedOrders.Any())
-            //{
-            //    orderMessage += $" Failed orders: {string.Join(", ", failedOrders)}.";
-            //}
-
-            // // Stay on the same page after successful order
+            
         
             return RedirectToPage("/allproducts");
 
@@ -181,7 +172,7 @@ namespace Pharmacy_back.Pages
                     try
                     {
                         string msg = "f";
-                        int done = db.InsertOrder(username, pid, quantity, SelectedItem, ref msg, OrderDate);
+                        int done = db.InsertOrder(username, pid, quantity, SelectedItem, ref msg, OrderDate,Address);
                         if (done == 1)
                         {
                             successfulOrders++;
@@ -209,7 +200,7 @@ namespace Pharmacy_back.Pages
                     {
 
                         string msg = "f";
-                        int done = db.InsertOrder(username, pid, quantity, SelectedItem, ref msg, OrderDate);
+                        int done = db.InsertOrder(username, pid, quantity, SelectedItem, ref msg, OrderDate,Address);
                         if (done == 1)
                         {
                             successfulOrders++;

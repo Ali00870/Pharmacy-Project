@@ -8,6 +8,7 @@ namespace Pharmacy_back.Pages
     public class Add_itemModel : PageModel
     {
         [BindProperty]
+        
         public string Name { get; set; }
 
         [BindProperty]
@@ -46,6 +47,7 @@ namespace Pharmacy_back.Pages
         // Handle form submission
         public IActionResult OnPost()
         {
+
             DB db = new DB();
 
             // Validate if the product name exists and category is selected

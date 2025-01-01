@@ -631,7 +631,7 @@ namespace Pharmacy_back.Models
             else { return false; }
 
         }
-        public int InsertOrder(string username, int product_id, int quantity, string pharmacyname, ref string msg, DateTime order_date)
+        public int InsertOrder(string username, int product_id, int quantity, string pharmacyname, ref string msg, DateTime order_date,string Address)
         {
             DataTable d = getpharmloc(pharmacyname);
             string ploc = d.Rows[0]["pharmacylocation"].ToString();
@@ -643,9 +643,9 @@ namespace Pharmacy_back.Models
                 // Use parameterized query to prevent SQL injection
                 string mainquery = @"
             INSERT INTO Customer_order
-                (pharmacy_name, pharmacy_location, C_username, Product_id, [status], quantity, order_date)
+                (pharmacy_name, pharmacy_location, C_username, Product_id, [status], quantity, order_date,deliveryAddress)
             VALUES
-                (@PharmacyName, @PharmacyLocation, @Username, @ProductId, @Status, @Quantity, @OrderDate)";
+                (@PharmacyName, @PharmacyLocation, @Username, @ProductId, @Status, @Quantity, @OrderDate,@deliveryAddress)";
 
                 SqlCommand cmd = new SqlCommand(mainquery, Connection);
 
@@ -657,6 +657,7 @@ namespace Pharmacy_back.Models
                 cmd.Parameters.AddWithValue("@Status", "Pending");
                 cmd.Parameters.AddWithValue("@Quantity", quantity);
                 cmd.Parameters.AddWithValue("@OrderDate", order_date);
+                cmd.Parameters.AddWithValue("@deliveryAddress",Address);
 
                 try
                 {
@@ -857,12 +858,14 @@ namespace Pharmacy_back.Models
 
 
         }
-        public void DeliverOrder(int id)
+        public void DeliverOrder(int id,DateTime deliverDate)
         {
-            string query = $"update customer_order set status='Delivered' where id={id}";
+            string query = $"update customer_order set status='Delivered',delivery_date=@deliverDate where id={id}";
+
             SqlCommand cmd = new SqlCommand(query, Connection);
             try
             {
+                cmd.Parameters.AddWithValue("@deliverDate", deliverDate);
                 Connection.Open();
                 cmd.ExecuteNonQuery();
             }
@@ -876,14 +879,18 @@ namespace Pharmacy_back.Models
             }
 
         }
-        public void DeleteOrder(int id)
+        public void DeleteOrder(int id,int quantity,int Pid)
         {
             string query = $"delete from customer_order where id={id}";
+            int oldQuantity=getQuantity(Pid);
+            string query2 = $"Update products set quantity={oldQuantity + quantity} where id={Pid}";
             SqlCommand cmd = new SqlCommand(query, Connection);
+            SqlCommand cmd2= new SqlCommand(query2, Connection);
             try
             {
                 Connection.Open();
                 cmd.ExecuteNonQuery();
+                cmd2.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
@@ -1340,7 +1347,7 @@ namespace Pharmacy_back.Models
 
             return b;
         }
-        public void UpdateAccounts(string username, string name, string district, string street, int housenum, string email, string phone)
+        public void UpdateAccounts(string username, string name, string district, string street, int? housenum, string email, string phone)
         {
             updateUserInfo(username, email, name, phone);
             string query = "update customer set [district]=@district,[street]=@street,[house_number]=@housenum where c_username=@username";
@@ -1559,6 +1566,23 @@ namespace Pharmacy_back.Models
             }
             finally { Connection.Close(); }
             return s;
+        }
+        public DataTable c_address(string username) { 
+            DataTable dt=new DataTable();
+            string query = $"select* from CustomerFullAddress where c_username='{username}'";
+            SqlCommand cmd = new SqlCommand(query, Connection);
+            try
+            {
+                Connection.Open();
+                dt.Load(cmd.ExecuteReader());
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            finally { Connection.Close(); }
+            return dt;
+        
         }
         
 

@@ -36,16 +36,17 @@ namespace Pharmacy_back.Pages
 
         }
 
-        public IActionResult OnPostDeliver(int id)
+        public IActionResult OnPostDeliver(int id,int quantity)
         {
-            db.DeliverOrder(id);
+            DateTime deliverDate=DateTime.Now;
+            db.DeliverOrder(id,deliverDate);
             //TempData["Message"] = "Order deleted successfully.";
             return RedirectToPage();
         }
-        public IActionResult OnPostDelete(int id)
+        public IActionResult OnPostDelete(int id,int quantity,int Pid)
         {
-            db.DeleteOrder(id);
-            //TempData["Message"] = "Order deleted successfully.";
+            db.DeleteOrder(id,quantity,Pid);
+            
             return RedirectToPage();
         }
         public IActionResult OnPostLogout()

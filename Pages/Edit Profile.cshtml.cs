@@ -15,34 +15,27 @@ namespace Pharmacy_back.Pages
         public string Username { get; set; }
         [BindProperty]
 
-
-        public string District { get; set; }
+        public string? District { get; set; }
         [BindProperty]
-
-        public string Street { get; set; }
+        public string? Street { get; set; }
         [BindProperty]
-        public int HouseNum { get; set; }
+        public int? HouseNum { get; set; }
         [BindProperty]
-
+        [EmailAddress(ErrorMessage ="Invalid Email Address")]
 
         public string Email { get; set; }
 
-        //[MinLength(3,ErrorMessage ="Password must be exactly 8 characters")]
-
-        //public string Password { get; set; }
-        //[BindProperty]
-        //[Compare(nameof(Password),ErrorMessage ="Repeated password must match the password")]
-        //public string repeatPassword {  get; set; }
+        
         [BindProperty]
-
+        [MaxLength(50,ErrorMessage ="Name must not exceed 50 charcters")]
         public string Name { get; set; }
         [BindProperty]
-
+        [MaxLength(15,ErrorMessage ="Phone number must not exceed 15 digits")]
         public string PhoneNumber { get; set; }
         [BindProperty]
-        public double salary { get; set; }
+        public double? salary { get; set; }
         [BindProperty]
-        public int shift_hours { get; set; }
+        public int? shift_hours { get; set; }
 
 
         public Edit_ProfileModel(DB database)
@@ -83,21 +76,26 @@ namespace Pharmacy_back.Pages
 
         public IActionResult OnPost()
         {
-
-            if (string.IsNullOrEmpty(HttpContext.Session.GetString("pharmacy")))
+            if (ModelState.IsValid)
             {
-                db.UpdateAccounts(Username, Name, District, Street, HouseNum, Email, PhoneNumber);
-                // TempData["SuccessMessage"] = "Profile updated successfully!";
-                return RedirectToPage("/ViewProfile");
+                if (string.IsNullOrEmpty(HttpContext.Session.GetString("pharmacy")))
+                {
+                    db.UpdateAccounts(Username, Name, District, Street, HouseNum, Email, PhoneNumber);
+                   
+                    return RedirectToPage("/ViewProfile");
+                }
+                else
+                {
+                    db.updateUserInfo(Username, Email, Name, PhoneNumber);
+                    
+                    return RedirectToPage("/ViewProfile");
+                }
+
             }
             else
             {
-                db.updateUserInfo(Username, Email, Name, PhoneNumber);
-                // TempData["SuccessMessage"] = "Profile updated successfully!";//
-                return RedirectToPage("/ViewProfile");
+                return Page();
             }
-
-
 
 
         }
