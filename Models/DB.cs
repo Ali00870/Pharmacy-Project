@@ -930,7 +930,7 @@ namespace Pharmacy_back.Models
         public int checkusername(string username, string password)
         {
             int count = 0;
-            string query = "select count(*) from [User] where username=@username and password=@password";
+            string query = "select count(*) from [User] where username=@username";
             try
             {
                 Connection.Open();

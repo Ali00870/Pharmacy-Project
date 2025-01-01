@@ -1,10 +1,16 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.VisualBasic;
 using Pharmacy_back.Models;
+using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.Metrics;
+using System.Numerics;
 namespace Pharmacy_back.Pages
 {
     public class registerModel : PageModel
     {
+
+
         public DB db { get; set; }
         [BindProperty]
         public string username { get; set; }
@@ -14,7 +20,7 @@ namespace Pharmacy_back.Pages
         public string street { get; set; }
         [BindProperty]
         public string phone_number { get; set; }
-
+        [Required, Range(6, 8, ErrorMessage = "please enter password between (6 - 8) Letters")]
         [BindProperty]
         public string password { get; set; }
         [BindProperty]
@@ -33,28 +39,25 @@ namespace Pharmacy_back.Pages
         }
         public IActionResult OnPostRegister()
         {
-            //{   if (username.Contains("pharmacist"))
-            //    {
-            //        if (password == repeatpassword)
-            //        {
-
-            //            db.InsertNewUsers(username, email, name, password);
-            //            return RedirectToPage("/Index", new {});
-            //        }
-            //        else
-            //        {
-            //            string message = "The password isn't identical ";
-            //            return RedirectToPage("/register", new { message = message });
-            //        }
-            //    }
-            // else
+            if (db.checkusername(username, "sdj") ==0)
             {
+
                 if (password == repeatpassword)
                 {
+                    if (password.Length>=6&& password.Length<=8)
+                    {
 
-                    HttpContext.Session.SetString(username, password);
-                    db.InsertNewUsers(username, email, name, password, district, street, phone_number);
-                    return RedirectToPage("/Index");
+                        HttpContext.Session.SetString(username, password);
+                        db.InsertNewUsers(username, email, name, password, district, street, phone_number);
+                        HttpContext.Session.SetString("username",username);
+                        return RedirectToPage("/Index");
+                    }
+                    else
+                    {
+                        string message = "please enter password between(6 - 8) Letters";
+                        return RedirectToPage("/register", new { message = message });
+                        //return Page();
+                    }
                 }
                 else
                 {
@@ -62,6 +65,12 @@ namespace Pharmacy_back.Pages
                     return RedirectToPage("/register", new { message = message });
                 }
             }
+            else
+            {
+                string message = "The Username already exists";
+                return RedirectToPage("/register", new { message = message });
+            }
+            
         }
     }
 }
