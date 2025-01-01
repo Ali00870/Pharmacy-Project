@@ -95,8 +95,7 @@ namespace Pharmacy_back.Pages
             else
             {
                 products2 = d.allproducts2();
-                // If no filters are selected, show all products
-                //FilteredResults = products.AsEnumerable().Select(row => row.Field<string>("Name")).ToList();
+               
             }
         }
         public  void OnPostShowMore(string n)

@@ -41,6 +41,11 @@ namespace Pharmacy_back.Pages
                 return RedirectToPage("/ViewProfile");
             }
         }
+        public IActionResult OnPostLogout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToPage("/signin");
+        }
 
     }
 }

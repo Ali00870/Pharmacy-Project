@@ -99,6 +99,11 @@ namespace Pharmacy_back.Pages
 
 
         }
+        public IActionResult OnPostLogout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToPage("/signin");
+        }
 
     }
 }

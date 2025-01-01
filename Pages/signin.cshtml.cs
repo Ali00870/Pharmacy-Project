@@ -12,8 +12,13 @@ namespace Pharmacy_back.Pages
         public string Username { get; set; }
         [BindProperty]
         public string Password { get; set; }
-        public void OnGet()
+        public IActionResult OnGet()
         {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("username")))
+            {
+                return Page();
+            }
+            else { return RedirectToPage("/Index"); }
         }
         public signinModel(DB db)
         {

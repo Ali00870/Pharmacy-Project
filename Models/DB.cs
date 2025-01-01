@@ -1584,6 +1584,24 @@ namespace Pharmacy_back.Models
             return dt;
         
         }
+        public bool checkAdmin(string username)
+        {
+            string query = $"select count(*) from Manager where username='{username}'";
+            SqlCommand cmd=new SqlCommand(query, Connection);
+            int count=0;
+            try
+            {
+                Connection.Open();
+                count=(int)cmd.ExecuteScalar();
+            }
+            catch( Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+               
+            }
+            finally { Connection.Close(); }
+            return count > 0;
+        }
         
 
     }

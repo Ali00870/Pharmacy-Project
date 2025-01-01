@@ -2,44 +2,49 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Pharmacy_back.Models;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace Pharmacy_back.Pages
 {
     public class Add_itemModel : PageModel
     {
         [BindProperty]
-        
+       
         public string Name { get; set; }
-
+        
         [BindProperty]
         public float Price { get; set; }
 
         [BindProperty]
+       
         public int Quantity { get; set; }
 
         [BindProperty]
-        public string Manufacturer { get; set; }
+        public string? Manufacturer { get; set; }
 
         [BindProperty]
+       
         public string Category { get; set; }
 
         [BindProperty]
-        public string Dosage { get; set; } // Medicine only
+        public string? Dosage { get; set; } // Medicine only
 
         [BindProperty]
-        public string Active_Ingredients { get; set; } // Medicine only
+        public string? Active_Ingredients { get; set; } // Medicine only
 
         [BindProperty]
-        public string Form { get; set; } // Medicine only
+        public string? Form { get; set; } // Medicine only
 
         [BindProperty]
-        public string Type { get; set; } // Cosmetics only
+        public string? Type { get; set; } // Cosmetics only
 
         [BindProperty]
-        public string Description { get; set; } // Cosmetics only
+        public string? Description { get; set; } // Cosmetics only
 
         [BindProperty(SupportsGet = true)]
-        public string msg { get; set; }
+        public string? msg { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string? quantityMsg { get; set; }
 
         [BindProperty(SupportsGet = true)]
         public List<string> ProductNames { get; set; } = new List<string>();
@@ -53,7 +58,8 @@ namespace Pharmacy_back.Pages
             // Validate if the product name exists and category is selected
             if (string.IsNullOrEmpty(Name) || string.IsNullOrEmpty(Category))
             {
-                msg = "Please provide a product name and select a category.";
+                msg = "Please provide a product name and quantity and select a category.";
+                
                 return RedirectToPage("/Add_item", new { msg = msg });
             }
 
@@ -85,7 +91,7 @@ namespace Pharmacy_back.Pages
             }
             else
             {
-                return RedirectToPage("Index");
+                return RedirectToPage("/Index");
             }
         }
 

@@ -59,6 +59,7 @@ namespace Pharmacy_back.Pages
             HttpContext.Session.Clear();
             return RedirectToPage("/signin");
         }
+       
     }
 
 }

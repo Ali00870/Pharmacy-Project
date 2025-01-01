@@ -42,6 +42,7 @@ namespace Pharmacy_back.Pages
                     Allpharmacists = true;
                     Allemployeees = true;
                     Edit = true;
+                    
                 }
                 else if(!string.IsNullOrEmpty(HttpContext.Session.GetString("pharmacy")))
                 {
@@ -83,6 +84,12 @@ namespace Pharmacy_back.Pages
 
             return RedirectToPage("/HandleOrders");
         
+        }
+        public IActionResult OnPostUsers()
+        {
+
+            return RedirectToPage("/Users");
+
         }
         public IActionResult OnPostLogout()
         {

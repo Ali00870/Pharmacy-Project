@@ -16,16 +16,26 @@ namespace Pharmacy_back.Pages
             _logger = logger;
             this.db = db;
         }
-        public void OnGet()
+        public IActionResult OnGet()
         {
-            userdata= db.Getuserdata();
-            if (userdata == null)
+            string? username = HttpContext.Session.GetString("username");
+            if (db.checkAdmin(username))
             {
-                userdata = new DataTable(); // Initialize to avoid null reference
+                userdata = db.Getuserdata();
+                if (userdata == null)
+                {
+                    userdata = new DataTable(); // Initialize to avoid null reference
+                }
+                return Page();
+            }
+            else
+            {
+                return RedirectToPage("/Index");
             }
         }
         public void OnPost(string c_username)
         {
+
             try
             {
                 if (!string.IsNullOrEmpty(c_username))
@@ -47,6 +57,11 @@ namespace Pharmacy_back.Pages
 
                 userdata = db.Getuserdata();
             }
+        }
+        public IActionResult OnPostLogout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToPage("/signin");
         }
     }
 }
