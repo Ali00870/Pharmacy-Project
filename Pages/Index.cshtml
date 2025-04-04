@@ -1,0 +1,346 @@
+﻿@page
+@using System.Data
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+
+
+
+
+
+
+
+
+
+
+<body>
+<div class="cart">
+    <div class="top-cart">
+        <h3>My Cart <span class="cart-total-count">(0 Items in Cart)</span></h3>
+        <span class="close-cart">
+            <i class="fa-regular fa-circle-xmark"></i>
+        </span>
+    </div>
+        @{
+            bool showAddItemButton = !string.IsNullOrEmpty(Request.Query["showAddItem"]);
+        }
+
+
+
+        <div class="login-signup">
+            <a asp-page="signin">Login <i class="fa-solid fa-right-to-bracket"></i></a>
+            <a asp-page="/register">Sign Up <i class="fa-solid fa-user-plus"></i></a>
+        </div>
+        <div class="cart-items"></div>
+
+    <div class="bottom-cart">
+        <div class="cart-total">
+            <p>Cart Total</p>
+            <p class="cart-total-price">$0</p>
+        </div>
+
+        <div class="cart-buttons">
+            <a href="/checkout.html" class="btn-cart">Proceed To Checkout</a>
+            <button class="btn-cart trans-bg shop-more-btn">Shop More</button>
+        </div>
+    </div>
+</div>
+
+<!-- End Cart -->
+<!-- Start Slider -->
+<section class="slider">
+    <div class="container">
+        <div class="sidebar">
+            <h2><i class="fa-solid fa-bars"></i> Shop By Department</h2>
+            <a href="/allproducts">All Categories</a>
+            <a href="#med">Best Seller Medicine</a>
+            <a href="#cosm">Best Seller Cosmetics</a>
+           @*  <a href="">Medicines</a> *@
+           @*  <a href="">Vitamins & Supplements</a>
+            <a href="">Personal Care</a> *@
+
+        </div>
+
+        <div class="swiper-slider mySwiper">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <a href=""><img src="https://media.gettyimages.com/id/1434361182/photo/modern-medical-store-interior.jpg?s=612x612&w=0&k=20&c=9BO0KAO5jpoFtzsFcmTTWwhBgYMRPXuYyVJQ9dMu1y4=" alt="Slider" /></a>
+                </div>
+                <div class="swiper-slide">
+                    <a href=""><img src="https://media.gettyimages.com/id/1502427930/photo/shelves-with-medicaments-in-pharmacy.jpg?s=612x612&w=0&k=20&c=9tpdZMHOYeq4bUp4GMMxVZqaJhXnij0vadCkt0g2hIM=" alt="Slider" /></a>
+                </div>
+                <div class="swiper-slide">
+                    <a href=""><img src="https://media.gettyimages.com/id/1197837359/photo/mature-woman-buying-a-medicine-at-the-pharmacy.jpg?s=1024x1024&w=gi&k=20&c=NiHwQ335bR1sdKZzKLCzZb96B_K3ABcAuH4nfwMBDyA=" alt="Slider" /></a>
+                </div>
+            </div>
+            <div class="swiper-pagination"></div>
+        </div>
+    </div>
+</section>
+<!-- End Slider -->
+    <div class="container my-4">
+        <div class="row text-center">
+            @if (Model.AddItems)
+            {
+                <div class="col-md-3 my-2">
+                    <form method="post" asp-page-handler="AddItem">
+                        <button type="submit" class="btn btn-lg btn-block shadow-lg custom-button">Add Item</button>
+                    </form>
+                </div>
+            }
+            @if (Model.statistcs)
+            {
+                <div class="col-md-3 my-2">
+                    <form method="post" asp-page-handler="Statistics">
+                        <button type="submit" class="btn btn-lg btn-block shadow-lg custom-button">Statistics</button>
+                    </form>
+                </div>
+            }
+            @if (Model.Allemployeees)
+            {
+                <div class="col-md-3 my-2">
+                    <form method="post" asp-page-handler="AllEmployees">
+                        <button type="submit" class="btn btn-lg btn-block shadow-lg custom-button">All Employees</button>
+                    </form>
+                </div>
+            }
+            @if (Model.Allpharmacists)
+            {
+                <div class="col-md-3 my-2">
+                    <form method="post" asp-page-handler="AllPharmacists">
+                        <button type="submit" class="btn btn-lg btn-block shadow-lg custom-button">All Pharmacists</button>
+                    </form>
+                </div>
+            }
+            @if (Model.Handle)
+            {
+                <div class="col-md-3 my-2">
+                <form method="post" asp-page-handler="HandleOrders">
+
+                        <button type="submit" class="btn btn-lg btn-block shadow-lg custom-button">Handle Orders</button>
+                </form>
+                </div>
+
+            }
+        </div>
+    </div>
+
+    <style>
+        .custom-button {
+            background-color: #FF4500;
+            color: #fff;
+            border: none;
+            transition: all 0.3s ease-in-out;
+        }
+
+            .custom-button:hover {
+                background-color: #e03e00;
+                transform: scale(1.05);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            }
+    </style>
+   
+    @*  @if (Model.Edit)
+    {
+        <form method="post" asp-page-handler="">
+            <button type="submit" class="btn btn-success btn-lg btn-block shadow-lg">AddItem</button>
+        </form>
+    }
+ *@
+
+<!-- Start Features -->
+<div class="features">
+    <div class="container">
+        <div class="feature">
+            <img src="/img/features1.png" alt="Feature" />
+
+            <div class="text">
+                <h4>Free Shipping</h4>
+                <p>Free Shipping In All Orders</p>
+            </div>
+        </div>
+           
+        <div class="feature">
+            <img src="/img/features2.png" alt="Feature" />
+
+            <div class="text">
+                <h4>Free Shipping</h4>
+                <p>Free Shipping In All Orders</p>
+            </div>
+        </div>
+
+        <div class="feature">
+            <img src="/img/features3.png" alt="Feature" />
+
+            <div class="text">
+                <h4>Free Shipping</h4>
+                <p>Free Shipping In All Orders</p>
+            </div>
+        </div>
+
+        <div class="feature">
+            <img src="/img/features4.png" alt="Feature" />
+
+            <div class="text">
+                <h4>Free Shipping</h4>
+                <p>Free Shipping In All Orders</p>
+            </div>
+        </div>
+
+        <div class="feature">
+            <img src="/img/features5.png" alt="Feature" />
+
+            <div class="text">
+                <h4>Free Shipping</h4>
+                <p>Free Shipping In All Orders</p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Features -->
+<!-- Start Banner -->
+<section class="banner">
+    <div class="container">
+        <div class="banner-item">
+            <div class="banner-glass"></div>
+            <a href="#"></a>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRaUyDnuaok3n7JyRKf0xmdltXqAdmnpOcd3g&s" alt="" />
+        </div>
+
+        <div class="banner-item">
+            <div class="banner-glass"></div>
+            <a href="#"></a>
+            <img src="https://www.expatfocus.com/stable/wp-content/uploads/2023/07/Prescriptions-and-Medications.png" alt="" />
+        </div>
+
+        <div class="banner-item">
+            <div class="banner-glass"></div>
+            <a href="#"></a>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTROKkDpnsztDJQJrbzvjWzmZy67U4ZXPcWNA&s" alt="" />
+        </div>
+    </div>
+</section>
+<!-- End Banner -->
+<!-- Start Big Banner -->
+<section class="banner banner-big">
+    <div class="container">
+        <div class="banner-item">
+            <div class="banner-glass"></div>
+            <a href="#"></a>
+            <img src="https://harb.fkhealthplus.com/pmp/assets/1727255659446_ROI_RC_All_Adopts.jpg" alt="" />
+        </div>
+
+        <div class="banner-item">
+            <div class="banner-glass"></div>
+            <a href="#"></a>
+            <img src="https://img.freepik.com/premium-photo/makeup-collection-cosmetics-cosmetics-black-background_950347-1405.jpg" alt="" />
+        </div>
+    </div>
+</section>
+<!-- End Big Banner -->
+
+<section class="medicine-section">
+    <div class="container">
+        <div class="medicine-section-content">
+            <div class="medicine-section-main-content mySwiper">
+                <div class="main-title" id="med">
+                        <h2><span>Best Selling Medicine </span></h2>
+                </div>
+                <div class="product">
+                    <div class="card-container">
+                        @foreach (DataRow row in @Model.BestMed.Rows)
+                        {
+                            <div class="card">
+                                    
+                                    <form  method="post" asp-route-id="@row["Product_id"]">
+                                <h3>@row["name"]</h3>
+                                <p class="price">$@row["price"]</p>
+                                <img src="@row["img"]" height="200" alt="img"/>
+
+                                    <button type="submit" style="padding: 10px 15px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                                    Add to Cart
+                                </button>
+                                    </form>
+                            </div>
+                        }
+                        </div>
+
+                </div>
+                    
+                @* <div class="medicine-section-products swiper-wrapper">
+
+                </div>
+
+                <div class="swiper-button-next swip-btn medicine-swip-btn"></div>
+                <div class="swiper-button-prev swip-btn medicine-swip-btn"></div> *@
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- End Computer Section -->
+<!-- Start Mobile Section -->
+<section class="mobile-section">
+    <div class="container">
+        <div class="mobile-section-content">
+            <div class="mobile-section-main-content mySwiper">
+                <div class="main-title" id="cosm">
+                    <h2> <span>Best Selling Cosmetics</span></h2>
+                    </div>
+                    <div class="product">
+                        <div class="card-container">
+                    
+                        @foreach (DataRow row in @Model.BestCosm.Rows)
+                        {
+                                <form  method="post" asp-route-id="@row["Product_id"]">
+                                <div class="card">
+
+                                    
+                                        <h3>@row["name"]</h3>
+                                        <p class="price">$@row["price"]</p>
+                                        <img src="@row["img"]" alt="img" height="200"/>
+                                        <button type="submit" style="padding: 10px 15px; background-color: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                                            Add to Cart
+                                        </button>
+                                    
+                                </div>
+                                </form>
+                        }
+                        </div>
+                        </div>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+</section>
+    
+<!-- End mobile Section -->
+<!-- Start Banner -->
+<section class="banner">
+    <div class="container">
+        <div class="banner-item">
+            <div class="banner-glass"></div>
+            <a href="#"></a>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCmX8dGcP2YHXFMcKYkW1KiU89zU7to44qbQ&s" alt="" />
+        </div>
+
+        <div class="banner-item">
+            <div class="banner-glass"></div>
+            <a href="#"></a>
+            <img src="https://img.freepik.com/free-photo/black-white-medical-tools-hand-with-pills_23-2148439006.jpg" alt="" />
+        </div>
+
+        <div class="banner-item">
+            <div class="banner-glass"></div>
+            <a href="#"></a>
+            <img src="https://assets1.cbsnewsstatic.com/hub/i/r/2023/09/13/bf44e4ab-af60-4d01-ad19-e2d04f2af8e6/thumbnail/1280x720/a66361606a7a20955d26fdf6f890af1c/0913-cmo-fdacongestant-lapook-2286432-640x360.jpg?v=e3aa8b4a58817620ee227c79202c9709" alt="" />
+        </div>
+    </div>
+</section>
+<!-- End Banner -->
+<!-- Start News Letter -->
+
+</body>

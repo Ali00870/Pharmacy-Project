@@ -1,0 +1,65 @@
+﻿@page
+@model Pharmacy_back.Pages.View_ItemsModel
+@{
+}
+
+<body>
+<!-- Start Item Content -->
+<div class="item">
+    <div class="container">
+        <div class="item-img">
+            <div class="big-img">
+                <img id="big-img" src="@Model.img" alt="product img" />
+            </div>
+            <div class="small-imgs">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSfsswdyRP4RZjAMwODIB5rLLjWjQ8Kr_NtziTgO67pLJl1xrOSuyhxqEcqGFNhQA4p4H0&usqp=CAU" alt="product img" />
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDf6_B6bwSho9uPF2F9-ne31OStJ1cx5YtuA&s" alt="product img" />
+                <img src="https://wimpoleclinic.com/wp-content/uploads/medications-that-cause-hair-loss-featured-image.jpg" alt="product img" />
+                <img src="https://www.cots-tri.co.uk/wp-content/uploads/2015/10/photo-1471864190281-a93a3070b6de.jpg" alt="product img" />
+            </div>
+        </div>
+
+        <div class="item-details">
+            <h1 class="name">@Model.name</h1>
+            <div class="stars">
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+                <i class="fa-solid fa-star"></i>
+            </div>
+
+            <div class="price">
+                <p><span> $ @Model.Price</span></p>
+
+            </div>
+
+
+
+
+                @if (Model.Description != null)
+                {
+                    <p class="text-details">@Model.Description</p>
+                }
+                else
+                {
+                    <p class="text-details">@Model.Dosage </p> <p class="text-details">@Model.Form </p> <p class="text-details">@Model.Active_Ingredients </p>
+                }
+
+                <form method="post">
+                    <label class="form-control">quantity u need : <input type="Quantity" asp asp-for=order_quantity /></label> <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <button>Add To Cart <i class="fa-solid fa-cart-arrow-down"></i></button>
+                </form>
+                <div class="icons">
+                    <span><i class="fa-regular fa-heart"></i></span>
+                    <span><i class="fa-solid fa-sliders"></i></span>
+                    <span><i class="fa-solid fa-print"></i></span>
+                    <span><i class="fa-solid fa-share-nodes"></i></span>
+
+                </div>
+
+        </div>
+    </div>
+</div>
+<!-- End Item Content -->
+</body>

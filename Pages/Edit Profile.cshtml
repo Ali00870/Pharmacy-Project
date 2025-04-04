@@ -1,0 +1,110 @@
+﻿@page
+@model Pharmacy_back.Pages.Edit_ProfileModel
+@{
+    ViewData["Title"] = "Edit Profile";
+}
+
+<div class="container mt-4">
+    <h3 class="text-center">Edit Profile</h3>
+
+    <!-- Edit Mode -->
+    <form method="post" id="editProfileForm">
+        <div class="form-group">
+            <label for="Username">Username</label>
+            <input type="text"  class="form-control" asp-for=@Model.Username readonly />
+        </div>
+        @if(string.IsNullOrEmpty(HttpContext.Session.GetString("pharmacy")))
+        
+        {
+        <div class="form-group">
+            <label for="District">District</label>
+            <input type="text" class="form-control" asp-for=@Model.District/>
+                <span class="text-danger" asp-validation-for=@Model.District></span>
+        </div>
+            
+        <div class="form-group">
+            <label for="Street">Street</label>
+            <input type="text"  class="form-control" asp-for=@Model.Street />
+             <span class="text-danger" asp-validation-for=@Model.Street></span>
+
+        </div>
+           
+        <div class="form-group">
+            <label for="HouseNum">House Number</label>
+            <input type="number" class="form-control" asp-for=@Model.HouseNum />
+                <span class="text-danger" asp-validation-for=@Model.HouseNum></span>
+                
+        </div>
+            
+            <div class="form-group">
+                <label for="PhoneNumber">Phone Number</label>
+                <input type="number"  class="form-control" asp-for=@Model.PhoneNumber />
+                <span class="text-danger" asp-validation-for=@Model.PhoneNumber></span>
+            </div>
+            
+
+        }
+        <div class="form-group">
+            <label for="Name">Name</label>
+            <input type="text" class="form-control" asp-for=@Model.Name />
+            <span class="text-danger" asp-validation-for=@Model.Name></span>
+        </div>
+        <div class="form-group">
+            <label for="Email">Email</label>
+            <input type="email" class="form-control" asp-for=@Model.Email />
+            <span class="text-danger" asp-validation-for=@Model.Email></span>
+        </div>
+        
+
+        <div class="form-group">
+            <label for="Password">Password</label>
+            <input type="password" class="form-control" asp-for=@Model.Password />
+            <span class="text-danger" asp-validation-for=@Model.Password></span>
+        </div>
+        
+
+        <!-- Repeated Password Field -->
+        <div class="form-group">
+            <label for="ConfirmPassword">Confirm Password</label>
+            <input type="password" asp-for=@Model.repeatPassword class="form-control" />
+            <span class="text-danger" asp-validation-for=@Model.Password></span>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="text-center mt-3">
+            <button type="submit" class="btn btn-primary" >Save Changes</button>
+        </div>
+    </form>
+
+        <!-- Confirmation Box -->
+        @* <div id="confirmationBox" class="alert alert-success mt-4" style="display:none;">
+            <strong>Success!</strong> Your profile has been updated.
+        </div> *@
+</div>
+
+@* <!-- Bootstrap Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    document.getElementById("editProfileForm").addEventListener("submit", function (e) {
+        // Prevent form submission if passwords do not match
+        var password = document.getElementById("Password").value;
+        var confirmPassword = document.getElementById("ConfirmPassword").value;
+
+        if (password !== confirmPassword) {
+            alert("Passwords do not match. Please check your entries.");
+            e.preventDefault();
+        } else {
+            // Show the confirmation box after successful form submission
+            e.preventDefault(); // Prevent the default form submission to handle confirmation
+
+            // Simulate form submission process
+            setTimeout(function () {
+                // After the "Save Changes" action, show the confirmation box
+                document.getElementById("confirmationBox").style.display = "block";
+                document.getElementById("saveButton").disabled = true; // Disable the button after submission
+            }, 1000); // Simulate a delay for a real database call
+        }
+    });
+</script> *@
+   

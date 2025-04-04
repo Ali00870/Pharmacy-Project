@@ -1,0 +1,161 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Pharmacy_back</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/all.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/swiper-bundle.min.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <div class="container top-nav">
+            <a asp-page="/Index" class="logo">
+                <img src="/img/WhatsApp Image 2024-12-26 at 12.40.22 PM.jpeg" alt="logo" width="125" height="100" />
+            </a>
+        </div>
+
+        <nav>
+            <div class="links container">
+                <ul>
+                    <li class="active"><a asp-page="/Index">Home</a></li>
+                    <li><a asp-page="/allproducts">All Products</a></li>
+                    <li><a href="#footer">About Us</a></li>
+                    
+                </ul>
+
+                <div class="login-signup">
+                    @{
+                        var username = Context.Session.GetString("username");
+                        if (!string.IsNullOrEmpty(username))
+                        {
+                            <p>Welcome, @username!</p>
+
+                            <form method="post" asp-page-handler="Logout" style="display:inline;">
+                                <button type="submit" class="btn btn-outline-warning small-btn">
+                                    Log Out <i class="fa-solid fa-right-from-bracket"></i>
+                                </button>
+                            </form>
+
+
+
+
+                            <a class="btn btn-outline-warning btn-sm small-btn" asp-page="/Edit Profile">
+                                Edit Profile <i class="fa-solid fa-user-edit"></i>
+                            </a>
+                            <a class="btn btn-outline-warning btn-sm small-btn" asp-page="/ViewProfile">
+                                View Profile <i class="fa-solid fa-user-edit"></i>
+                            </a>
+                        }
+                            else
+                            {
+                            <a class="btn btn-primary small-btn" asp-page="/signin">Login <i class="fa-solid fa-right-to-bracket"></i></a>
+                            <a class="btn btn-primary small-btn" asp-page="/register">Sign Up <i class="fa-solid fa-user-plus"></i></a>
+
+                            }
+                    }
+                </div>
+
+                <style>
+                    .login-signup {
+                        display: flex;
+                        justify-content: flex-end;
+                        align-items: center;
+                        gap: 10px;
+                        padding-right: 50px;
+                    }
+
+                    .small-btn {
+                        font-size: 14px; /* Smaller text */
+                        padding: 6px 12px; /* Reduced padding */
+                        height: auto; /* Allow height to adjust based on content */
+                        line-height: 1.4; /* Adjust line height for better alignment */
+                    }
+                </style>
+
+
+
+                <a href="/Order_Details" class="cart-link">
+                    <i class="fas fa-shopping-cart"></i>
+                </a>
+            </div>
+        </nav>
+
+    </header>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const navbar = document.getElementById("navbar");
+
+            window.addEventListener("scroll", function () {
+                if (window.scrollY > 50) {
+                    navbar.classList.add("scrolled");
+                } else {
+                    navbar.classList.remove("scrolled");
+                }
+            });
+        });
+    </script>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer>
+        <div class="container" id="footer">
+            <div class="big-row">
+                
+                    <img src="/img/WhatsApp Image 2024-12-26 at 12.40.22 PM.jpeg" alt="logo" width="125" height="100" />
+           
+                <div class="hotline">
+                    <i class="fa-solid fa-headset"></i>
+                    <div class="text">
+                        <h5>Hotline Free 24/24:</h5>
+                        <h6>0403588513</h6>
+                    </div>
+                </div>
+
+                <p class="text-lg-start">
+                    At Sydality, we are committed to delivering trusted healthcare solutions with personalized care. From prescriptions to wellness products, our team ensures your health and well-being are our top priorities.
+                </p>
+            </div>
+
+            <div class="row">
+                <h4>FAQ & Help</h4>
+                <div class="links">
+                    <a href="#">FAQ</a>
+                    <a href="/follow_order">Ordering Tracking</a>
+                    <a href="#">Events</a>
+                    <a href="#">Help Center</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="bottom-footer">
+            <div class="container">
+                <p>Copyrights &copy; <span>Sydality</span> All Rights Reserved</p>
+                <div class="payment-img">
+                    <img src="/img/payment-1.png" alt="" />
+                    <img src="/img/payment-2.png" alt="" />
+                    <img src="/img/payment-3.png" alt="" />
+                    <img src="/img/payment-4.png" alt="" />
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
+    <script src="~/js/all.min.js" asp-append-version="true"></script>
+    <script src="~/js/fetchProducts.js" asp-append-version="true"></script>
+    <script src="~/js/main.js" asp-append-version="true"></script>
+    <script src="~/js/swiper.js" asp-append-version="true"></script>
+    <script src="~/js/swiper-bundle.min.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>

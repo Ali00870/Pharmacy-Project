@@ -1,0 +1,36 @@
+﻿@page
+@model Pharmacy_back.Pages.signinModel
+@{
+}
+
+<body>
+<!-- Start Sign In -->
+<section class="signin">
+    <div class="container">
+        <div class="main-content">
+            <h2 class="title">Welcome Back</h2>
+
+            <form method="post">
+                    @if (!string.IsNullOrEmpty(Request.Query["message"]))
+                    {
+                        <div class="error-message">@Request.Query["message"]</div>
+                    }
+                <input type="text" placeholder="Username"asp-for="Username" />
+                <input type="password" placeholder="Password" asp-for="Password" />
+
+
+                <button class="login-btn" >Login</button>
+            </form>
+
+            <p class="signup-link">
+                Don't Have an Account <a asp-page="/register">Sign Up</a>
+            </p>
+
+
+           
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+<script src="./js/main.js"></script>

@@ -1,0 +1,44 @@
+﻿@page
+@model Pharmacy_back.Pages.AllempolyeesModel
+@{
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">username</th>
+            
+            <th scope="col">Salary</th>
+            <th scope="col">Shift_hours</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @for (int i = 0; i < Model.table.Rows.Count; i++)
+        {
+            <tr>
+                @for (int j = 0; j < Model.table.Columns.Count; j++)
+                {
+                    <td>@Model.table.Rows[i][j]</td>
+                }
+
+                
+                <td>
+                    <form method="post" asp-page-handler="Edit">
+                        <input type="hidden" name="ID" value="@Model.table.Rows[i]["id"]" />
+                        <button type="submit" class="btn btn-primary">Edit</button>
+                    </form>
+                </td>
+
+                
+                <td>
+                    <form method="post" asp-page-handler="Delete">
+                        <input type="hidden" name="ID" value="@Model.table.Rows[i]["id"]" />
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+T
+</table>
